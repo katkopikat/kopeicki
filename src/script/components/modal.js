@@ -17,7 +17,17 @@ export function addExpenseModal(category) {
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <div>${category}</div>
+            <p>${category}</p>
+            <input type="number"></input>
+            <span id="currency">BYN</span>
+            <label for="date">Choose date:</label>
+            <input type="date" id="date"
+              value=${new Date().toISOString().split('T')[0]}
+              min="2018-01-01" max=${new Date().toISOString().split('T')[0]} >
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Leave a descrioption here" id="description"></textarea>
+              <label for="description">Description</label>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
