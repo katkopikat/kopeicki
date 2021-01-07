@@ -12,12 +12,12 @@ export default function createElement(tagName, classes, children, ...attr) {
 
   if (children && Array.isArray(children)) {
     children.forEach((child) => element.append(child));
-  } else if (children && typeof children === 'string') element.innerText = children;
+  } else if (children && typeof children === 'string') element.innerHTML = children;
   else if (children && typeof children === 'object') element.append(children);
 
   if (attr.length) {
     attr.forEach(([attrName, attrValue]) => {
-      if (attrName.match(/value|id|placeholder|cols|rows|autocorrect|spellcheck/)) {
+      if (attrName.match(/id|placeholder/)) {
         element.setAttribute(attrName, attrValue);
       } else {
         element.dataset[attrName] = attrValue;

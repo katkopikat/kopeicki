@@ -1,4 +1,5 @@
 import './styles/main.scss';
-import createExpensesList from './script/components/expenses';
 
-createExpensesList();
+import expenses from './script/components/expenses';
+
+expenses();
