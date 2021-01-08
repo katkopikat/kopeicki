@@ -13,6 +13,6 @@
   },
   "rules": {
     "no-console": "off",
-    "import/extensions": "ignorePackages"
+    "import/extensions": "off"
   }
 }
