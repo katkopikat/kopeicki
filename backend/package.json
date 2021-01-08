@@ -7,7 +7,9 @@
   "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "heroku-setup": "heroku git:remote -a rsclone-coinkeeper",
+    "deploy": "cd .. && git push heroku `git subtree split --prefix backend`:master --force"
   },
   "repository": {
     "type": "git",
