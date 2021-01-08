@@ -1,4 +1,5 @@
 import express from 'express';
+import transactionRouter from './resources/transactions/transaction.router.js';
 
 const app = express();
 
@@ -11,5 +12,7 @@ app.use('/', (req, res, next) => {
   }
   next();
 });
+
+app.use('/transactions', transactionRouter);
 
 export default app;
