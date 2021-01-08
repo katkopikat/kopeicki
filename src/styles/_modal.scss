@@ -1,0 +1,86 @@
+.expense-modal {
+  background: $blue;
+
+  input,
+  textarea,
+  textarea:focus {
+    background: $blue;
+  }
+}
+
+.modal-header {
+  color: $dark;
+  padding: 1rem 1rem 0 0;
+  border: 0;
+}
+
+.modal-body {
+  color: $dark;
+
+  input,
+  textarea {
+    color: $dark;
+    border: none;
+    outline: none;
+  }
+
+  textarea {
+    resize: none;
+
+    &:focus {
+      padding-left: 0;
+    }
+  }
+
+  .textarea-label {
+    padding-left: 0;
+    color: $light;
+  }
+
+  input[type='date'] {
+    position: relative;
+    overflow: visible;
+  }
+
+  input[type='date']::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    margin: 0;
+    padding: 0;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+
+  &__title {
+    text-transform: uppercase;
+  }
+
+  &__amount {
+    padding-right: 0.2em;
+    font-size: 2rem;
+    outline: none;
+
+    &:hover {
+      cursor: auto;
+    }
+  }
+
+  &__category-name {
+    text-transform: lowercase;
+  }
+}
+
+.modal-footer {
+  justify-content: flex-start;
+  border: 0;
+
+  .btn {
+    background: $light;
+    text-transform: uppercase;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

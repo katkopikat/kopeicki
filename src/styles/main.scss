@@ -1,4 +1,10 @@
+@import './variables';
 @import '../../node_modules/bootstrap/scss/bootstrap';
+@import './modal';
 @import './transactions';
 @import './wallet';
 @import './expenses';
+
+body {
+  background: $dark;
+}
