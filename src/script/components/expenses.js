@@ -60,10 +60,11 @@ function createExpensesList(container) {
   allExpenseCategories.forEach((category) => {
     const categoryName = createElement('span', '', category.name);
     const categoryIcon = createElement('i', ['fas', category.icon]);
+    const categoryIconDiv = createElement('div', 'category-icon', categoryIcon);
     const categoryElem = createElement(
       'div',
-      'expenses-list__item',
-      [categoryIcon, categoryName],
+      'flex-list__item',
+      [categoryIconDiv, categoryName],
       ['category', category.name],
     );
 
@@ -72,14 +73,14 @@ function createExpensesList(container) {
 }
 
 export default function expenses() {
-  const expensesContainer = createElement('div', ['container-sm', 'expenses-list']);
+  const expensesContainer = createElement('div', ['flex-list']);
 
-  document.querySelector('.transactions-dashboard').append(expensesContainer);
+  document.querySelector('.expenses').append(expensesContainer);
 
   createExpensesList(expensesContainer);
 
   expensesContainer.addEventListener('click', (e) => {
-    const expense = e.target.closest('.expenses-list__item');
+    const expense = e.target.closest('.flex-list__item');
 
     if (!expense) return;
 

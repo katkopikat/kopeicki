@@ -12,5 +12,5 @@ export default function createWallet() {
 
   const walletDiv = createElement('div', ['container-sm', 'wallet'], [walletTitle, incomeReceived]);
 
-  document.querySelector('.transactions-dashboard').append(walletDiv);
+  document.querySelector('.accounts').append(walletDiv);
 }

@@ -1,11 +1,84 @@
 .transactions-container {
-  background-color: violet;
+  .transactions-dashboard {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+    padding: 1.5rem;
+
+    &__item {
+      width: 100%;
+      padding: 1rem;
+      border: 1px solid $gray;
+      border-radius: 8px;
+
+      h4 {
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+      }
+
+      .flex-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        column-gap: 1rem;
+        row-gap: 1rem;
+
+        &__item {
+          width: 6.25rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          row-gap: 0.5em;
+
+          .category-icon {
+            padding: 0.5em;
+            border-radius: 50%;
+
+            i {
+              font-size: 3em;
+            }
+          }
+
+          span {
+            color: $light;
+            text-align: center;
+          }
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
 }
 
-.transactions-dashboard {
-  background-color: yellow;
+.accounts {
+  h4 {
+    color: $yellow;
+  }
+
+  .category-icon {
+    background: $yellow;
+  }
 }
 
-.transactions-history {
-  background-color: grey;
+.expenses {
+  h4 {
+    color: $blue;
+  }
+
+  .category-icon {
+    background: $blue;
+  }
+}
+
+.income {
+  h4 {
+    color: $green;
+  }
+
+  .category-icon {
+    background: $green;
+  }
 }
