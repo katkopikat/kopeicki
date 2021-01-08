@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import app from './app.js';
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 const MONGO_CONNECTION_STRING = 'mongodb+srv://admin:7FITZQDF5qpnQbRS@rscluster.msaso.mongodb.net/rsclone?retryWrites=true&w=majority';
 
 mongoose.connect(MONGO_CONNECTION_STRING, {
