@@ -74,7 +74,7 @@ function createExpensesList(container) {
 export default function expenses() {
   const expensesContainer = createElement('div', ['container-sm', 'expenses-list']);
 
-  document.querySelector('main').append(expensesContainer);
+  document.querySelector('.transactions-dashboard').append(expensesContainer);
 
   createExpensesList(expensesContainer);
 
