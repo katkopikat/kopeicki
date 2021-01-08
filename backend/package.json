@@ -1,0 +1,30 @@
+{
+  "name": "rsclone-backend",
+  "version": "1.0.0",
+  "description": "rest api for CoinKeeper clone",
+  "private": true,
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/katkopikat/rsclone.git"
+  },
+  "author": "Katy Rog, Yulia Kri, Aliaksei Akulau, Vladimir A",
+  "license": "ISC",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.17.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
