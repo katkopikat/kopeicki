@@ -3,11 +3,15 @@ import { createModal, addExpenseModal } from './modal';
 
 const allExpenseCategories = [
   {
+    name: 'Groceries',
+    icon: 'fa-car',
+  },
+  {
     name: 'Entertainment',
     icon: 'fa-car',
   },
   {
-    name: 'Food & Dining',
+    name: 'Eating out',
     icon: 'fa-car',
   },
   {
@@ -23,7 +27,7 @@ const allExpenseCategories = [
     icon: 'fa-car',
   },
   {
-    name: 'Bills & Fees',
+    name: 'Services',
     icon: 'fa-car',
   },
   {
@@ -39,7 +43,7 @@ const allExpenseCategories = [
     icon: 'fa-car',
   },
   {
-    name: 'Personal Care',
+    name: 'Beauty',
     icon: 'fa-car',
   },
   {
@@ -47,7 +51,7 @@ const allExpenseCategories = [
     icon: 'fa-car',
   },
   {
-    name: 'Gifts & Donations',
+    name: 'Gifts',
     icon: 'fa-car',
   },
   {
