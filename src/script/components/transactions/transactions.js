@@ -2,7 +2,7 @@ import createElement from '../../utils/create';
 import { allAccountsCategories, accountModal } from '../../data/accounts';
 import { allExpensesCategories, expenseModal } from '../../data/expenses';
 import { allIncomeCategories, incomeModal } from '../../data/income';
-import { dragStart, dragEnd } from './dragnDrop';
+import { dragStart, dragEnd, dragOver, dragEnter, dragLeave, dragDrop } from './dragnDrop';
 import createCategoryList from './categories';
 
 export default function displayTransactionsPage(/* options */) {
@@ -36,9 +36,17 @@ export default function displayTransactionsPage(/* options */) {
   createCategoryList(allIncomeCategories, true, incomeModal, incomeDiv);
 
   const draggables = document.querySelectorAll('[draggable="true"]');
+  const wallets = document.querySelectorAll('[draggable="false"]');
 
   draggables.forEach((draggable) => {
     draggable.addEventListener('dragstart', dragStart);
     draggable.addEventListener('dragend', dragEnd);
+  });
+
+  wallets.forEach((wallet) => {
+    wallet.addEventListener('dragover', dragOver);
+    wallet.addEventListener('dragenter', dragEnter);
+    wallet.addEventListener('dragleave', dragLeave);
+    wallet.addEventListener('drop', dragDrop);
   });
 }

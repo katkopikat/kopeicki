@@ -14,6 +14,7 @@ export const allIncomeCategories = [
 ];
 
 export const incomeModal = {
+  type: 'income',
   class: 'income-modal',
   title: 'Earned',
   saveBtn: 'Received!',

@@ -13,6 +13,7 @@ export default function createCategoryList(list, isDraggable, modalOpts, contain
       'flex-list__item',
       [categoryIconDiv, categoryName],
       ['category', category.name],
+      ['type', modalOpts.type],
       ['draggable', isDraggable],
     );
 

@@ -62,6 +62,10 @@
   .add {
     background: $yellow;
   }
+
+  .flex-list__item * {
+    pointer-events: none;
+  }
 }
 
 .expenses {

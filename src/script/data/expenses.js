@@ -54,6 +54,7 @@ export const allExpensesCategories = [
 ];
 
 export const expenseModal = {
+  type: 'expense',
   class: 'expenses-modal',
   title: 'Spent',
   saveBtn: 'Spent it!',
