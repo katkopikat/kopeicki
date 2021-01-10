@@ -19,7 +19,7 @@
       .flex-list {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: flex-start;
         column-gap: 1rem;
         row-gap: 1rem;
 
@@ -58,8 +58,13 @@
     color: $yellow;
   }
 
-  .category-icon {
+  .category-icon,
+  .add {
     background: $yellow;
+  }
+
+  .flex-list__item * {
+    pointer-events: none;
   }
 }
 
@@ -68,7 +73,8 @@
     color: $blue;
   }
 
-  .category-icon {
+  .category-icon,
+  .add {
     background: $blue;
   }
 }
@@ -78,7 +84,20 @@
     color: $green;
   }
 
-  .category-icon {
+  .category-icon,
+  .add {
     background: $green;
   }
+}
+
+.add {
+  padding: 0.5em;
+  line-height: 42px;
+  border-radius: 50%;
+}
+
+.add::before {
+  content: ' \002B';
+  padding: 0 14px;
+  font-size: 2rem;
 }
