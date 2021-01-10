@@ -1,4 +1,4 @@
-.expense-modal {
+.expenses-modal {
   background: $blue;
 
   input,
@@ -8,10 +8,56 @@
   }
 }
 
-.modal-content{
+.income-modal {
+  background: $green;
+
+  input,
+  textarea,
+  textarea:focus {
+    background: $green;
+  }
+}
+
+.modal-content {
   line-height: 1;
 
-  .form-floating{
+  .form-floating {
+    padding-top: 0.25rem;
+  }
+}
+
+.expenses-modal {
+  background: $blue;
+
+  input,
+  textarea,
+  textarea:focus {
+    background: $blue;
+  }
+}
+
+.modal-content {
+  line-height: 1;
+
+  .form-floating {
+    padding-top: 0.25rem;
+  }
+}
+
+.-modal {
+  background: $blue;
+
+  input,
+  textarea,
+  textarea:focus {
+    background: $blue;
+  }
+}
+
+.modal-content {
+  line-height: 1;
+
+  .form-floating {
     padding-top: 0.25rem;
   }
 }
@@ -47,12 +93,12 @@
     color: $light;
   }
 
-  .form-control{
+  .form-control {
     font-style: italic;
     color: white;
     overflow: hidden;
 
-    &:not(:placeholder-shown){
+    &:not(:placeholder-shown) {
       padding-left: 0;
     }
   }
@@ -97,10 +143,10 @@
   justify-content: flex-start;
   border: 0;
 
- * {
-   margin: 0;
+  * {
+    margin: 0;
   }
-  
+
   .btn {
     background: $light;
     text-transform: uppercase;

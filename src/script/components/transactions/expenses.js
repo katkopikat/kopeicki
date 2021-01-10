@@ -1,5 +1,5 @@
 import createElement from '../../utils/create';
-import { createModal, addExpenseModal } from '../modal';
+import { createModal, addTransactionModal } from '../modal';
 import createCategoryList from './categories';
 
 const allExpenseCategories = [
@@ -69,7 +69,13 @@ export default function displayExpenses() {
 
     const { category } = expense.dataset;
 
-    const expenseModal = createModal(addExpenseModal(category), 'add-expense');
+    const expenseModal = createModal(
+      addTransactionModal(category, {
+        class: 'expenses-modal',
+        title: 'Spent',
+        saveBtn: 'Spent it!',
+      }),
+    );
 
     expenseModal.show();
   });

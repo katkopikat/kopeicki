@@ -1,5 +1,5 @@
 import createElement from '../../utils/create';
-import { createModal, addExpenseModal } from '../modal';
+import { createModal, addTransactionModal } from '../modal';
 import createCategoryList from './categories';
 
 const allIncomeCategories = [
@@ -29,7 +29,13 @@ export default function displayIncome() {
 
     const { category } = income.dataset;
 
-    const incomeModal = createModal(addExpenseModal(category), 'add-income');
+    const incomeModal = createModal(
+      addTransactionModal(category, {
+        class: 'income-modal',
+        title: 'Earned',
+        saveBtn: 'Received!',
+      }),
+    );
 
     incomeModal.show();
   });
