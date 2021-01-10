@@ -1,6 +1,9 @@
 import createElement from '../../utils/create';
+import { createModal, addTransactionModal } from '../modal';
 
-export default function createCategoryList(container, list) {
+export default function createCategoryList(list, isDraggable, modalOpts, container) {
+  const listContainer = createElement('div', 'flex-list');
+
   list.forEach((category) => {
     const categoryName = createElement('span', '', category.name);
     const categoryIcon = createElement('i', ['fas', category.icon]);
@@ -10,9 +13,10 @@ export default function createCategoryList(container, list) {
       'flex-list__item',
       [categoryIconDiv, categoryName],
       ['category', category.name],
+      ['draggable', isDraggable],
     );
 
-    container.append(categoryElem);
+    listContainer.append(categoryElem);
   });
 
   const addCategoryBtn = createElement(
@@ -21,5 +25,19 @@ export default function createCategoryList(container, list) {
     '<div class="add"></div> <span>Add category</span>',
   );
 
-  container.append(addCategoryBtn);
+  listContainer.append(addCategoryBtn);
+
+  listContainer.addEventListener('click', (e) => {
+    const categoryItem = e.target.closest('.flex-list__item');
+
+    if (!categoryItem) return;
+
+    const { category } = categoryItem.dataset;
+
+    const modal = createModal(addTransactionModal(category, modalOpts));
+
+    modal.show();
+  });
+
+  container.append(listContainer);
 }
