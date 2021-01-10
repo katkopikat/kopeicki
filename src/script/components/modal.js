@@ -17,13 +17,13 @@ export function addExpenseModal(category) {
           </div>
           <div class="modal-body">
             <h5 class="modal-body__title">SPEND</h5>
-            <p><span class="modal-body__amount" role="textbox" contenteditable></span>BYN</p>
+            <p><span class="modal-body__amount" role="textbox" contenteditable>0.00</span>BYN</p>
             <span class="modal-body__category-name">at #${category}</span>
             <input type="date" class="modal-body__date"
               value=${new Date().toISOString().split('T')[0]}
               min="2018-01-01" max=${new Date().toISOString().split('T')[0]} >
             <div class="form-floating">
-              <textarea class="form-control" placeholder="Leave a descrioption here" id="description"></textarea>
+              <textarea class="form-control" placeholder="Leave a descrioption here" id="description" maxlength="45"></textarea>
               <label for="description" class="textarea-label">Do you have any comments?</label>
             </div>
           </div>
