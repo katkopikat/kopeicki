@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import Router from 'express';
 import asyncHandler from 'express-async-handler';
 import Transaction from './transaction.model.js';
 
