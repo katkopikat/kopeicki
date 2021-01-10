@@ -35,7 +35,7 @@ export default function createCategoryList(list, isDraggable, modalOpts, contain
 
     const { category } = categoryItem.dataset;
 
-    const modal = createModal(addTransactionModal(category, modalOpts));
+    const modal = createModal(addTransactionModal(list, category, modalOpts));
 
     modal.show();
   });

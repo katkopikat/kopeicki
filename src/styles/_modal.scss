@@ -2,6 +2,7 @@
   background: $blue;
 
   input,
+  select,
   textarea,
   textarea:focus {
     background: $blue;
@@ -12,45 +13,10 @@
   background: $green;
 
   input,
+  select,
   textarea,
   textarea:focus {
     background: $green;
-  }
-}
-
-.modal-content {
-  line-height: 1;
-
-  .form-floating {
-    padding-top: 0.25rem;
-  }
-}
-
-.expenses-modal {
-  background: $blue;
-
-  input,
-  textarea,
-  textarea:focus {
-    background: $blue;
-  }
-}
-
-.modal-content {
-  line-height: 1;
-
-  .form-floating {
-    padding-top: 0.25rem;
-  }
-}
-
-.-modal {
-  background: $blue;
-
-  input,
-  textarea,
-  textarea:focus {
-    background: $blue;
   }
 }
 
@@ -73,7 +39,9 @@
   color: $dark;
 
   input,
+  select,
   textarea {
+    font-size: 1.2rem;
     color: $dark;
     border: none;
     outline: none;
