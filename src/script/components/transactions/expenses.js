@@ -1,5 +1,6 @@
-import createElement from '../utils/create';
-import { createModal, addExpenseModal } from './modal';
+import createElement from '../../utils/create';
+import { createModal, addExpenseModal } from '../modal';
+import createCategoryList from './categories';
 
 const allExpenseCategories = [
   {
@@ -31,10 +32,6 @@ const allExpenseCategories = [
     icon: 'fa-car',
   },
   {
-    name: 'Car',
-    icon: 'fa-car',
-  },
-  {
     name: 'Travel',
     icon: 'fa-car',
   },
@@ -60,28 +57,10 @@ const allExpenseCategories = [
   },
 ];
 
-function createExpensesList(container) {
-  allExpenseCategories.forEach((category) => {
-    const categoryName = createElement('span', '', category.name);
-    const categoryIcon = createElement('i', ['fas', category.icon]);
-    const categoryIconDiv = createElement('div', 'category-icon', categoryIcon);
-    const categoryElem = createElement(
-      'div',
-      'flex-list__item',
-      [categoryIconDiv, categoryName],
-      ['category', category.name],
-    );
+export default function displayExpenses() {
+  const expensesContainer = createElement('div', 'flex-list');
 
-    container.append(categoryElem);
-  });
-}
-
-export default function expenses() {
-  const expensesContainer = createElement('div', ['flex-list']);
-
-  document.querySelector('.expenses').append(expensesContainer);
-
-  createExpensesList(expensesContainer);
+  createCategoryList(expensesContainer, allExpenseCategories);
 
   expensesContainer.addEventListener('click', (e) => {
     const expense = e.target.closest('.flex-list__item');
@@ -94,4 +73,6 @@ export default function expenses() {
 
     expenseModal.show();
   });
+
+  document.querySelector('.expenses').append(expensesContainer);
 }
