@@ -1,55 +1,55 @@
 export const allExpensesCategories = [
   {
     name: 'Groceries',
-    icon: 'fa-car',
+    icon: 'icons/expenses/groceries.svg',
   },
   {
     name: 'Entertainment',
-    icon: 'fa-car',
+    icon: 'icons/expenses/entertainment.svg',
   },
   {
     name: 'Eating out',
-    icon: 'fa-car',
+    icon: '/icons/expenses/eating_out.svg',
   },
   {
     name: 'Shopping',
-    icon: 'fa-car',
+    icon: '/icons/expenses/shopping.svg',
   },
   {
     name: 'Transport',
-    icon: 'fa-car',
+    icon: '/icons/expenses/transport.svg',
   },
   {
     name: 'Home',
-    icon: 'fa-car',
+    icon: '/icons/expenses/home.svg',
   },
   {
     name: 'Services',
-    icon: 'fa-car',
+    icon: '/icons/expenses/services.svg',
   },
   {
     name: 'Travel',
-    icon: 'fa-car',
+    icon: '/icons/expenses/travel.svg',
   },
   {
     name: 'Healthcare',
-    icon: 'fa-car',
+    icon: '/icons/expenses/healthcare.svg',
   },
   {
     name: 'Beauty',
-    icon: 'fa-car',
+    icon: '/icons/expenses/beauty.svg',
   },
   {
     name: 'Education',
-    icon: 'fa-car',
+    icon: '/icons/expenses/education.svg',
   },
   {
     name: 'Gifts',
-    icon: 'fa-car',
+    icon: '/icons/expenses/gifts.svg',
   },
   {
     name: 'Other',
-    icon: 'fa-car',
+    icon: '/icons/expenses/other.svg',
   },
 ];
 

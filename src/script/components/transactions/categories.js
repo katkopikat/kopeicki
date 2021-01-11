@@ -6,8 +6,10 @@ export default function createCategoryList(list, isDraggable, modalOpts, contain
 
   list.forEach((category) => {
     const categoryName = createElement('span', '', category.name);
-    const categoryIcon = createElement('i', ['fas', category.icon]);
+    const imgSrc = `background-image: url(${category.icon});`;
+    const categoryIcon = createElement('div', 'icon-svg', null, ['style', imgSrc]);
     const categoryIconDiv = createElement('div', 'category-icon', categoryIcon);
+
     const categoryElem = createElement(
       'div',
       'flex-list__item',
@@ -35,7 +37,7 @@ export default function createCategoryList(list, isDraggable, modalOpts, contain
 
     const { category } = categoryItem.dataset;
 
-    const modal = createModal(addTransactionModal(category, modalOpts));
+    const modal = createModal(addTransactionModal(list, category, modalOpts));
 
     modal.show();
   });

@@ -1,6 +1,6 @@
 import { createModal, addTransactionModal } from '../modal';
-import { expenseModal } from '../../data/expenses';
-import { incomeModal } from '../../data/income';
+import { allExpensesCategories, expenseModal } from '../../data/expenses';
+import { allIncomeCategories, incomeModal } from '../../data/income';
 
 export function dragStart() {
   this.classList.add('dragging');
@@ -31,8 +31,11 @@ export function dragDrop() {
   const { category } = document.querySelector('.dragging').dataset;
   const { type } = document.querySelector('.dragging').dataset;
 
+  const categoriesList = type === 'income' ? allIncomeCategories : allExpensesCategories;
+  const modalOpts = type === 'income' ? incomeModal : expenseModal;
+
   const modal = createModal(
-    addTransactionModal(category, type === 'income' ? incomeModal : expenseModal),
+    addTransactionModal(categoriesList, category, modalOpts, this.dataset.category),
   );
 
   modal.show();

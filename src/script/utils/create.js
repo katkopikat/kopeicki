@@ -17,7 +17,7 @@ export default function createElement(tagName, classes, children, ...attr) {
 
   if (attr.length) {
     attr.forEach(([attrName, attrValue]) => {
-      if (attrName.match(/id|placeholder|draggable/)) {
+      if (attrName.match(/id|placeholder|draggable|style/)) {
         element.setAttribute(attrName, attrValue);
       } else {
         element.dataset[attrName] = attrValue;
