@@ -34,8 +34,12 @@
             padding: 0.5em;
             border-radius: 50%;
 
-            i {
-              font-size: 3em;
+            .icon-svg {
+              background-size: contain;
+              background-repeat: no-repeat;
+              background-position: center;
+              height: 48px;
+              width: 48px;
             }
           }
 
