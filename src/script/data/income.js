@@ -1,15 +1,15 @@
 export const allIncomeCategories = [
   {
     name: 'Salary',
-    icon: 'fa-car',
+    icon: 'icons/income/salary.svg',
   },
   {
     name: 'Freelance',
-    icon: 'fa-car',
+    icon: 'icons/income/freelance.svg',
   },
   {
     name: 'Other',
-    icon: 'fa-car',
+    icon: 'icons/income/coins.svg',
   },
 ];
 

@@ -4,8 +4,8 @@ export const allExpensesCategories = [
     icon: 'icons/expenses/groceries.svg',
   },
   {
-    name: 'Entertainment',
-    icon: 'icons/expenses/entertainment.svg',
+    name: 'Transport',
+    icon: '/icons/expenses/transport.svg',
   },
   {
     name: 'Eating out',
@@ -16,8 +16,8 @@ export const allExpensesCategories = [
     icon: '/icons/expenses/shopping.svg',
   },
   {
-    name: 'Transport',
-    icon: '/icons/expenses/transport.svg',
+    name: 'Entertainment',
+    icon: 'icons/expenses/entertainment.svg',
   },
   {
     name: 'Home',
@@ -28,12 +28,12 @@ export const allExpensesCategories = [
     icon: '/icons/expenses/services.svg',
   },
   {
-    name: 'Travel',
-    icon: '/icons/expenses/travel.svg',
-  },
-  {
     name: 'Healthcare',
     icon: '/icons/expenses/healthcare.svg',
+  },
+  {
+    name: 'Travel',
+    icon: '/icons/expenses/travel.svg',
   },
   {
     name: 'Beauty',

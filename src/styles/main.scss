@@ -2,8 +2,9 @@
 @import '../../node_modules/bootstrap/scss/bootstrap';
 @import './modal';
 @import './transactions';
+@import './history';
 @import './dragnDrop';
 
 body {
-  background: $dark;
+  background: var(--dark);
 }

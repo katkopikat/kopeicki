@@ -18,12 +18,12 @@ export default function displayTransactionsPage(/* options */) {
   );
   const incomeDiv = createElement('div', 'transactions-dashboard__item income', '<h4>Income</h4>');
 
-  const dashboard = createElement('div', 'col-sm transactions-dashboard', [
+  const dashboard = createElement('div', 'col-7 transactions-dashboard', [
     accountsDiv,
     expensesDiv,
     incomeDiv,
   ]);
-  const history = createElement('div', 'col-sm transactions-history');
+  const history = createElement('div', 'col-4 transactions-history');
 
   const row = createElement('div', 'row', [dashboard, history]);
 
