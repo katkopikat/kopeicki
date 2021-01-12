@@ -21,7 +21,7 @@
   "author": "Katy Rog, Yulia Kri, Aliaksei Akulau, Vladimir A",
   "license": "ISC",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=14.0.0 <15.0.0"
   },
   "devDependencies": {
     "eslint": "^7.17.0",
