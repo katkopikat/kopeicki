@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import { requestLogger } from './logger.js';
 import transactionRouter from './resources/transactions/transaction.router.js';
 import authRouter from './resources/routes/auth.js';
 import checkAuthentication from './resources/utils/tokenCheck.js';
@@ -8,6 +9,7 @@ import checkAuthentication from './resources/utils/tokenCheck.js';
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(requestLogger);
 
 app.options('*', cors());
 
