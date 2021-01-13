@@ -1,4 +1,4 @@
-export const allIncomeCategories = [
+export default [
   {
     name: 'Salary',
     icon: 'fa-car',
@@ -12,10 +12,3 @@ export const allIncomeCategories = [
     icon: 'fa-car',
   },
 ];
-
-export const incomeModal = {
-  type: 'income',
-  class: 'income-modal',
-  title: 'Earned',
-  saveBtn: 'Received!',
-};

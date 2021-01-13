@@ -1,4 +1,4 @@
-.expenses-modal {
+.modal-content.expenses {
   background: $blue;
 
   input,
@@ -9,7 +9,7 @@
   }
 }
 
-.income-modal {
+.modal-content.income {
   background: $green;
 
   input,
