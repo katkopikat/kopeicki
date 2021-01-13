@@ -16,6 +16,14 @@ export default [
     description: 'Milk, bread',
   },
   {
+    date: '2019-01-05',
+    type: 'expense',
+    category: 'travel',
+    account: 'myvisa1',
+    amount: '60000',
+    description: '',
+  },
+  {
     date: '2020-07-07',
     type: 'expense',
     category: 'joy',

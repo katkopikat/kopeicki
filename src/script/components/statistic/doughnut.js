@@ -58,7 +58,6 @@ function generateChart(type, time) {
     data: {
       labels: Object.keys(summaryObj),
       datasets: [{
-        label: `Expenses for the ${period}`,
         data: Object.values(summaryObj),
         backgroundColor: [
           'rgba(243, 94, 110, 1)',
@@ -88,15 +87,20 @@ function generateChart(type, time) {
     },
     options: {
       cutoutPercentage: 70,
-      elements: {
-        center: {
-          text: `Total ${type} for the ${time} ${calculateTotalSum()} rub. `,
-          color: centerTextColor, // Default is #000000
-          fontStyle: 'Segoe UI', // Default is Arial
-          sidePadding: 20, // Default is 20 (as a percentage)
-          minFontSize: 12, // Default is 20 (in px), set to false and text will not wrap.
-          lineHeight: 24, // Default is 25 (in px), used for when text wraps
-        },
+      // elements: {
+      //   center: {
+      //     text: `Total ${type} for the ${time} ${calculateTotalSum()} rub. `,
+      //     color: centerTextColor, // Default is #000000
+      //     fontStyle: 'Segoe UI', // Default is Arial
+      //     sidePadding: 20, // Default is 20 (as a percentage)
+      //     minFontSize: 12, // Default is 20 (in px), set to false and text will not wrap.
+      //     lineHeight: 24, // Default is 25 (in px), used for when text wraps
+      //   },
+      // },
+        title: {
+          display: true,
+          position: 'bottom',
+          text: `Total ${type} for the ${time} ${calculateTotalSum()} rub.`
       },
       // legend: `Total sum ${sum}`,
     },
