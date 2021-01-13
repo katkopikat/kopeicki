@@ -5,7 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body style="background-color: #252836">
     <h1>May the force be with you, padawans!</h1>
+    <canvas class="bar-container" max-width="500" max-height="500"></canvas>
+    <div class="wrapper-doughnut">
+        <canvas class="doughnut-container" max-width="500" max-height="500"></canvas>
+    </div>      
+    
+
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-secondary active">
+          <input type="radio" name="period" id="month" autocomplete="off" checked> Month
+        </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="period" id="year" autocomplete="off"> Year
+        </label>
+      </div>
+
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-secondary active">
+          <input type="radio" name="type" id="expense" autocomplete="off" checked> Expense
+        </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="type" id="income" autocomplete="off"> Income
+        </label>
+      </div>
+
 </body>
 </html>
