@@ -3,13 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Statistics</title>
 </head>
 <body style="background-color: #252836">
-    <h1>May the force be with you, padawans!</h1>
     <canvas class="bar-container" max-width="500" max-height="500"></canvas>
 
     <div class="btn-group btn-group-toggle bar-years" data-toggle="buttons">
+    </div>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label class="btn btn-secondary active">
+        <input type="radio" name="type-tr" id="expense" autocomplete="off" checked> Expense
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" name="type-tr" id="income" autocomplete="off"> Income
+      </label>
     </div>
 
 
@@ -21,9 +28,6 @@
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
         <label class="btn btn-secondary active">
           <input type="radio" name="period" id="month" autocomplete="off" checked> Month
-        </label>
-        <label class="btn btn-secondary">
-          <input type="radio" name="period" id="6 month" autocomplete="off"> 6 month
         </label>
         <label class="btn btn-secondary">
           <input type="radio" name="period" id="year" autocomplete="off"> Year

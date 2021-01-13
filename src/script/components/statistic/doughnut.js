@@ -5,29 +5,12 @@ import history from '../../helpers/history_transactions';
 
 const canvas = document.querySelector('.doughnut-container');
 const bgColor = document.documentElement.hasAttribute('theme') ? 'rgba(234, 237, 241, 1)' : 'rgba(37, 40, 54, 1)';
-const centerTextColor = document.documentElement.hasAttribute('theme') ? 'rgba(37, 40, 54, 1)' : 'rgba(234, 237, 241, 1)';
 const today = new Date();
 let typeTransaction = 'expense';
 let period = 'mounth';
 let summaryObj = null;
 let doughnut = null;
 
-// function filterTransaction() {
-//   const filtredHistory = history.filter((transaction) => {
-//     const trDate = new Date(transaction.date);
-//     if (period === 'year') {
-//       return trDate.getFullYear() === today.getFullYear() && transaction.type === typeTransaction;
-//     } if (period === '6 month') {
-//       const todayM = today.getMonth();
-//       const transM = trDate.getMonth();
-//       return transaction.type === typeTransaction
-//         && ((transM - 6 >= todayM)
-//           ? (transM > transM - 6 && transM <= todayM) // 11-6 => 5    11, 10, 9, 8, 7, 6
-//           : (transM > todayM + 6 && todayM - 6 >= 0)); // 3 =>  3 2 1 0 11 10
-//       // && transM < ((todayM - 6 > 0) ? todayM - 6 : todayM + 6); 0= > 0 11 10 9 8 7
-//     }
-//     return trDate.getMonth() === today.getMonth() && transaction.type === typeTransaction;
-//   });
 function filterTransaction() {
   const filtredHistory = history.filter((transaction) => {
     const trDate = new Date(transaction.date);
@@ -82,7 +65,7 @@ function generateChart(type, time) {
           'rgba(0, 93, 236, 1)',
         ],
         borderColor: bgColor,
-        borderWidth: 2,
+        borderWidth: 1,
       }],
     },
     options: {
@@ -102,7 +85,6 @@ function generateChart(type, time) {
         position: 'bottom',
         text: `Total ${type} for the ${time} ${calculateTotalSum()} rub.`,
       },
-      // legend: `Total sum ${sum}`,
     },
 
   });

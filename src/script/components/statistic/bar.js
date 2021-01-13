@@ -1,16 +1,21 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-param-reassign */
 import { Chart } from 'chart.js';
 import history from '../../helpers/history_transactions';
 
 const barContainer = document.querySelector('.bar-container');
 const yearsBtnsContainer = document.querySelector('.bar-years');
-
-const typeTransaction = 'expense';
-const monthRU = ['янв', 'фев', 'март', 'апр', 'май', 'июн', 'июл', 'авг', 'сент', 'окт', 'нояб', 'дек'];
-let choosenYear = new Date().getFullYear();
 let barChart = null;
+let typeTransaction = 'expense';
+const monthRU = ['янв', 'фев', 'март', 'апр', 'май', 'июн', 'июл', 'авг', 'сент', 'окт', 'нояб', 'дек'];
+
+let choosenYear = new Date().getFullYear();
 const yearsList = [];
 let summaryObj = {};
+
+function setBarColor() {
+  return new Array(12).fill(typeTransaction === 'expense' ? 'rgba(50, 124, 235, 1)' : 'rgba(75, 192, 192, 1)');
+}
 
 function countYears() {
   history.forEach((trans) => {
@@ -57,9 +62,9 @@ function filterTransaction() {
   clearObject();
 
   const filtredHistory = history.filter((transaction) => {
+    const trYear = new Date(transaction.date).getFullYear();
     // eslint-disable-next-line eqeqeq
-    return transaction.type === typeTransaction 
-        && new Date(transaction.date).getFullYear() == choosenYear;
+    return transaction.type === typeTransaction && trYear == choosenYear;
   });
 
   summaryObj = filtredHistory.reduce((summary, trans) => {
@@ -85,6 +90,18 @@ function buttonsListeners() {
       }
     });
   });
+
+  document.querySelectorAll('[name="type-tr"]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (btn.checked === true) {
+        typeTransaction = btn.id;
+        barChart.destroy();
+        filterTransaction();
+        setBarColor();
+        generateBarChart();
+      }
+    });
+  });
 }
 
 countYears();
@@ -101,23 +118,8 @@ export default function generateBarChart() {
       datasets: [{
         label: `${typeTransaction}`,
         data: Object.values(summaryObj),
-        backgroundColor: [
-          'rgba(47, 186, 147, 0.65)',
-          'rgba(47, 186, 147, 0.7)',
-          'rgba(47, 186, 147, 0.75)',
-          'rgba(47, 186, 147, 0.8)',
-          'rgba(47, 186, 147, 0.85)',
-          'rgba(47, 186, 147, 0.9)',
-          'rgba(47, 186, 147, 0.85)',
-          'rgba(47, 186, 147, 0.8)',
-          'rgba(47, 186, 147, 0.75)',
-          'rgba(47, 186, 147, 0.7)',
-          'rgba(47, 186, 147, 0.65)',
-          'rgba(47, 186, 147, 0.6)',
-        ],
-        borderColor: [
-          'rgba(47, 186, 147, 1)',
-        ],
+        backgroundColor: setBarColor(),
+        borderColor: setBarColor(),
         borderWidth: 1,
       }],
     },
