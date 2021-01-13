@@ -97,10 +97,10 @@ function generateChart(type, time) {
       //     lineHeight: 24, // Default is 25 (in px), used for when text wraps
       //   },
       // },
-        title: {
-          display: true,
-          position: 'bottom',
-          text: `Total ${type} for the ${time} ${calculateTotalSum()} rub.`
+      title: {
+        display: true,
+        position: 'bottom',
+        text: `Total ${type} for the ${time} ${calculateTotalSum()} rub.`,
       },
       // legend: `Total sum ${sum}`,
     },
@@ -113,24 +113,29 @@ export default function generateDoughnutChart() {
   generateChart(typeTransaction, period);
 }
 
-document.onclick = function () {
-  document.querySelectorAll('[name="period"]').forEach((btn) => {
-    if (btn.checked === true) {
-      period = btn.id;
-      // deleteChart();
-    }
+function buttonsListeners() {
+  document.querySelectorAll('[name="period"]').forEach((btnPer) => {
+    btnPer.addEventListener('click', () => {
+      if (btnPer.checked === true) {
+        period = btnPer.id;
+        doughnut.destroy();
+        generateDoughnutChart();
+      }
+    });
   });
 
   document.querySelectorAll('[name="type"]').forEach((btn) => {
-    if (btn.checked === true) {
-      typeTransaction = btn.id;
-      // deleteChart();
-    }
+    btn.addEventListener('click', () => {
+      if (btn.checked === true) {
+        typeTransaction = btn.id;
+        doughnut.destroy();
+        generateDoughnutChart();
+      }
+    });
   });
-  doughnut.destroy();
-  generateDoughnutChart();
-};
+}
 
+setTimeout(buttonsListeners, 10);
 Chart.pluginService.register({
   beforeDraw(chart) {
     if (chart.config.options.elements.center) {

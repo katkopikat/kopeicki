@@ -16,6 +16,22 @@ export default [
     description: 'Milk, bread',
   },
   {
+    date: '2021-01-04',
+    type: 'income',
+    category: 'freelance',
+    account: 'myvisa1',
+    amount: '1000',
+    description: '',
+  },
+  {
+    date: '2019-04-01',
+    type: 'income',
+    category: 'salary',
+    account: 'myvisa1',
+    amount: '15000',
+    description: '',
+  },
+  {
     date: '2019-01-05',
     type: 'expense',
     category: 'travel',
