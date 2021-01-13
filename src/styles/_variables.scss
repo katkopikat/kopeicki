@@ -1,0 +1,31 @@
+// $yellow: #f2c200;
+// $gr:#1000f2;
+// $blue: #327ceb;
+// $green: #66ab0c;
+// $dark: #14161E;
+// $middle: #161821;
+// $light: #ffffff;
+// $gray: #5c5c5c;
+
+:root{
+    --accounts: #f2c200;
+    --expenses: #327ceb;
+    --income: #66ab0c;
+    --dark: #14161E;
+    --middle: #161821;
+    --light: #ececec;
+    --gray: #5c5c5c;
+    --filter: invert(0);
+    --shadow: 0 4px 7px -1px rgba(0, 0, 0, 0.4);
+}
+:root[theme='light']{
+    --accounts: #ECAF12;
+    --expenses: #F35E6E;
+    --income: #2FBA93;
+    --dark: #E3E9EF;
+    --middle: #EAEDF1;
+    --light: #14161E;
+    --gray: #5c5c5c;
+    --filter: invert(1);
+    --shadow: 8px 10px 14px -7px rgba(0, 0, 0, 0.1);
+}
