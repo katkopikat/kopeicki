@@ -1,4 +1,5 @@
 .transactions-container {
+  // background-color: $middle;
   .transactions-dashboard {
     display: flex;
     flex-direction: column;
@@ -7,12 +8,13 @@
 
     &__item {
       width: 100%;
-      padding: 1rem;
-      border: 1px solid $gray;
+      padding: 1.3rem;
       border-radius: 8px;
+      box-shadow: var(--shadow);
 
       h4 {
-        margin-bottom: 2rem;
+        font-size: calc(1.1rem + 0.3vw);
+        margin-bottom: 1rem;
         text-transform: uppercase;
       }
 
@@ -20,37 +22,48 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
-        column-gap: 1rem;
-        row-gap: 1rem;
+        column-gap: 0.8rem;
+        row-gap: 0.8rem;
 
         &__item {
-          width: 6.25rem;
+          width: 6rem;
           display: flex;
           flex-direction: column;
           align-items: center;
-          row-gap: 0.5em;
+          row-gap: 0.2em;
 
           .category-icon {
-            padding: 0.5em;
+            padding: 0.8em;
             border-radius: 50%;
 
             .icon-svg {
-              background-size: contain;
+              background-size: 90%;
               background-repeat: no-repeat;
               background-position: center;
-              height: 48px;
-              width: 48px;
+              height: 42px;
+              width: 42px;
+              filter: var(--filter);
             }
           }
 
           span {
-            color: $light;
+            color: var(--light);
             text-align: center;
+            font-size: 0.85rem;
           }
 
           &:hover {
             cursor: pointer;
           }
+
+           &:hover .icon-svg {
+            filter: invert(1);
+          }
+
+          // &:hover .icon-svg {
+          //   transition: all 0.15s;
+          //   transform: scale(1.1);
+          // }
         }
       }
     }
@@ -59,38 +72,52 @@
 
 .accounts {
   h4 {
-    color: $yellow;
+    color: var(--accounts);
+  }
+  .category-icon{
+    background-color: var(--accounts);
   }
 
-  .category-icon,
   .add {
-    background: $yellow;
+    border: 2px solid var(--accounts);
+    color:  var(--accounts);
   }
 
   .flex-list__item * {
     pointer-events: none;
   }
+  .flex-list__item .add {
+     pointer-events: all;
+  }
 }
 
 .expenses {
   h4 {
-    color: $blue;
+    color: var(--expenses);
   }
 
-  .category-icon,
+  .category-icon{
+    background-color: var(--expenses);
+  }
+  
   .add {
-    background: $blue;
+    border: 2px solid var(--expenses);
+    color:  var(--expenses);
   }
 }
 
 .income {
   h4 {
-    color: $green;
+    color: var(--income);
   }
 
-  .category-icon,
+  .category-icon{
+    background-color: var(--income);
+  }
+  
   .add {
-    background: $green;
+    border: 2px solid var(--income);
+    color:  var(--income);
   }
 }
 
@@ -98,10 +125,23 @@
   padding: 0.5em;
   line-height: 42px;
   border-radius: 50%;
+  transition: all 0.25s;
 }
 
-.add::before {
+.add:before {
   content: ' \002B';
   padding: 0 14px;
   font-size: 2rem;
 }
+
+.add:hover {
+  border-radius: 0%;
+  transition: all 0.25s;
+  // transform: rotate(90deg);
+}
+
+// .add:hover::before {
+//   transition: all 0.4s;
+//   transform: rotate(90deg);
+//   color: red;
+// }

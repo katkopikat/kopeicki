@@ -1,10 +1,15 @@
 export default [
   {
-    name: 'Bank account',
-    icon: 'fa-car',
+    name: 'Credit card',
+    icon: 'icons/accounts/credit-card.svg',
   },
   {
     name: 'Cash',
-    icon: 'fa-car',
+    icon: 'icons/accounts/wallet.svg',
   },
+  {
+    name: 'Bank account',
+    icon: 'icons/accounts/bank.svg',
+  },
+
 ];

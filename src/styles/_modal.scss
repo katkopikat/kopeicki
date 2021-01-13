@@ -1,22 +1,22 @@
 .modal-content.expenses {
-  background: $blue;
+  background: var(--expenses);
 
   input,
   select,
   textarea,
   textarea:focus {
-    background: $blue;
+    background: var(--expenses);
   }
 }
 
 .modal-content.income {
-  background: $green;
+  background: var(--income);
 
   input,
   select,
   textarea,
   textarea:focus {
-    background: $green;
+    background: var(--income);
   }
 }
 
@@ -29,20 +29,20 @@
 }
 
 .modal-header {
-  color: $dark;
+  color: var(--dark);
   padding: 1rem 1rem 0 0;
   border: 0;
 }
 
 .modal-body {
   padding: 0 2rem;
-  color: $dark;
+  color: var(--dark);
 
   input,
   select,
   textarea {
     font-size: 1.2rem;
-    color: $dark;
+    color: var(--dark);
     border: none;
     outline: none;
   }
@@ -58,7 +58,7 @@
   .textarea-label {
     padding-left: 0;
     font-style: italic;
-    color: $light;
+    color: var(--light);
   }
 
   .form-control {
@@ -116,11 +116,15 @@
   }
 
   .btn {
-    background: $light;
+    background: var(--light);
     text-transform: uppercase;
 
     &:hover {
       cursor: pointer;
     }
   }
+}
+
+.btn-close{
+  opacity: 0.25 ;
 }
