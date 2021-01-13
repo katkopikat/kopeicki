@@ -1,4 +1,4 @@
-export const allIncomeCategories = [
+export default [
   {
     name: 'Salary',
     icon: 'icons/income/salary.svg',
@@ -12,10 +12,3 @@ export const allIncomeCategories = [
     icon: 'icons/income/coins.svg',
   },
 ];
-
-export const incomeModal = {
-  type: 'income',
-  class: 'income-modal',
-  title: 'Earned',
-  saveBtn: 'Received!',
-};

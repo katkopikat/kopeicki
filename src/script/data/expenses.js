@@ -1,4 +1,4 @@
-export const allExpensesCategories = [
+export default [
   {
     name: 'Groceries',
     icon: 'icons/expenses/groceries.svg',
@@ -52,10 +52,3 @@ export const allExpensesCategories = [
     icon: '/icons/expenses/other.svg',
   },
 ];
-
-export const expenseModal = {
-  type: 'expense',
-  class: 'expenses-modal',
-  title: 'Spent',
-  saveBtn: 'Spent it!',
-};

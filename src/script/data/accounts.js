@@ -1,4 +1,4 @@
-export const allAccountsCategories = [
+export default [
   {
     name: 'Credit card',
     icon: 'icons/accounts/credit-card.svg',
@@ -13,9 +13,3 @@ export const allAccountsCategories = [
   },
 
 ];
-
-export const accountModal = {
-  class: 'expenses-modal',
-  title: 'Spent',
-  saveBtn: 'Spent it!',
-};

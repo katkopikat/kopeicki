@@ -1,7 +1,28 @@
 import createElement from '../../utils/create';
-import { createModal, addTransactionModal } from '../modal';
+import allAccountsCategories from '../../data/accounts';
+import allExpensesCategories from '../../data/expenses';
+import allIncomeCategories from '../../data/income';
+import { modal, transactionModal } from '../modal';
 
-export default function createCategoryList(list, isDraggable, modalOpts, container) {
+export default function createCategoryList(group, container) {
+  let list;
+
+  switch (group) {
+    case 'accounts':
+      list = [...allAccountsCategories];
+      break;
+    case 'expenses':
+      list = [...allExpensesCategories];
+      break;
+    case 'income':
+      list = [...allIncomeCategories];
+      break;
+    default:
+      break;
+  }
+
+  const isDraggable = !!(group !== 'accounts');
+
   const listContainer = createElement('div', 'flex-list');
 
   list.forEach((category) => {
@@ -15,7 +36,7 @@ export default function createCategoryList(list, isDraggable, modalOpts, contain
       'flex-list__item',
       [categoryIconDiv, categoryName],
       ['category', category.name],
-      ['type', modalOpts.type],
+      ['group', group],
       ['draggable', isDraggable],
     );
 
@@ -36,9 +57,9 @@ export default function createCategoryList(list, isDraggable, modalOpts, contain
     if (!categoryItem) return;
 
     const { category } = categoryItem.dataset;
+    const type = categoryItem.dataset.group;
 
-    const modal = createModal(addTransactionModal(list, category, modalOpts));
-
+    modal.setContent(transactionModal({ type, to: category }));
     modal.show();
   });
 

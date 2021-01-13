@@ -1,7 +1,4 @@
 import createElement from '../../utils/create';
-import { allAccountsCategories, accountModal } from '../../data/accounts';
-import { allExpensesCategories, expenseModal } from '../../data/expenses';
-import { allIncomeCategories, incomeModal } from '../../data/income';
 import { dragStart, dragEnd, dragOver, dragEnter, dragLeave, dragDrop } from './dragnDrop';
 import createCategoryList from './categories';
 
@@ -31,22 +28,22 @@ export default function displayTransactionsPage(/* options */) {
 
   document.querySelector('main').append(mainContainer);
 
-  createCategoryList(allAccountsCategories, false, accountModal, accountsDiv);
-  createCategoryList(allExpensesCategories, true, expenseModal, expensesDiv);
-  createCategoryList(allIncomeCategories, true, incomeModal, incomeDiv);
+  createCategoryList('accounts', accountsDiv);
+  createCategoryList('expenses', expensesDiv);
+  createCategoryList('income', incomeDiv);
 
   const draggables = document.querySelectorAll('[draggable="true"]');
-  const wallets = document.querySelectorAll('[draggable="false"]');
+  const accounts = document.querySelectorAll('[draggable="false"]');
 
   draggables.forEach((draggable) => {
     draggable.addEventListener('dragstart', dragStart);
     draggable.addEventListener('dragend', dragEnd);
   });
 
-  wallets.forEach((wallet) => {
-    wallet.addEventListener('dragover', dragOver);
-    wallet.addEventListener('dragenter', dragEnter);
-    wallet.addEventListener('dragleave', dragLeave);
-    wallet.addEventListener('drop', dragDrop);
+  accounts.forEach((account) => {
+    account.addEventListener('dragover', dragOver);
+    account.addEventListener('dragenter', dragEnter);
+    account.addEventListener('dragleave', dragLeave);
+    account.addEventListener('drop', dragDrop);
   });
 }
