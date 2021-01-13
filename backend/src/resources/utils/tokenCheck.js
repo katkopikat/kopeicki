@@ -1,25 +1,29 @@
 import jsonWebToken from 'jsonwebtoken';
+import 'dotenv/config.js';
 
-const NO_AUTH_URLS = ['/', '/auth/register', '/auth/login'];
+const NO_AUTH_URLS = ['/', '/users/', '/users/login'];
+const REFRESH_URL = '/users/token';
 
 const checkAuthentication = (req, res, next) => {
   if (NO_AUTH_URLS.includes(req.path)) return next();
 
   const tokenString = req.headers.authorization;
   if (!tokenString) {
-    // return [null, 'invalid Authorization'];
     return res.status(401).send('invalid Authorization 1');
   }
   const [type, token] = tokenString.split(' ');
   if (type !== 'Bearer') {
-    // return [null, 'invalid Authorization'];
     return res.status(401).send('invalid Authorization 2');
   }
   try {
-    jsonWebToken.verify(token, 'secret-key');
+    console.log(process.env.TOKEN_SECRET_KEY);
+    if (REFRESH_URL.includes(req.path)) {
+      jsonWebToken.verify(token, process.env.REFRESH_TOKEN_SECRET_KEY);
+    } else {
+      jsonWebToken.verify(token, process.env.TOKEN_SECRET_KEY);
+    }
   } catch {
-    // return [null, 'invalid token'];
-    return res.status(401).send('invalid token');
+    return res.status(401).send('invalid token3');
   }
   return next();
 };

@@ -1,12 +1,14 @@
 import jsonWebToken from 'jsonwebtoken';
+import 'dotenv/config.js';
 
-import TokenSchema from '../models/Token.js';
+import TokenSchema from './Token.model.js';
+
+const expTimeRefresh = 5 * 60 * 60;
 
 export const saveLastToken = async (tokenData) => {
   const savedToken = await TokenSchema.findOneAndUpdate(
     { userId: tokenData.userId },
     { $set: { token: tokenData.refreshToken, expire: tokenData.expire } },
-    // { $set: { tokenData } },
     { new: true, upsert: true },
   );
   return savedToken;
@@ -17,18 +19,22 @@ export const getTokens = async (email, userId) => {
     email,
     userId,
   },
-  'secret-key', {
-    expiresIn: 3600,
+  process.env.TOKEN_SECRET_KEY, {
+    expiresIn: process.env.TOKEN_EXPIRE_TIME,
   });
 
   const refreshToken = jsonWebToken.sign({
     email,
     userId,
   },
-  'refresh-secret-key', {
-    expiresIn: 4000,
+  process.env.REFRESH_TOKEN_SECRET_KEY, {
+    expiresIn: process.env.REFRESH_TOKEN_EXPIRE_TIME,
   });
-  await saveLastToken({ refreshToken, userId, expire: Date.now() + 4000 });
+  await saveLastToken({
+    refreshToken,
+    userId,
+    expire: Date.now() + expTimeRefresh,
+  });
   return { token, refreshToken };
 };
 
@@ -36,14 +42,11 @@ export const refreshTokens = async (email, userId) => {
   console.log('userID from refresh', userId);
   const token = await TokenSchema.findOne({ userId });
   console.log('find token', token);
-  // console.log('token time', token.expire);
   if (!token) {
-    // return new Error('Token is not found');
     return [null, 'wrong token'];
   }
   console.log('actualData', Date.now());
   if (Date.now() > token.expire) {
-    // throw new Error('Token is expired');
     return [null, 'expired token'];
   }
 
