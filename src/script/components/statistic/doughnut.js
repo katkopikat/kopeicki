@@ -12,6 +12,22 @@ let period = 'mounth';
 let summaryObj = null;
 let doughnut = null;
 
+// function filterTransaction() {
+//   const filtredHistory = history.filter((transaction) => {
+//     const trDate = new Date(transaction.date);
+//     if (period === 'year') {
+//       return trDate.getFullYear() === today.getFullYear() && transaction.type === typeTransaction;
+//     } if (period === '6 month') {
+//       const todayM = today.getMonth();
+//       const transM = trDate.getMonth();
+//       return transaction.type === typeTransaction
+//         && ((transM - 6 >= todayM)
+//           ? (transM > transM - 6 && transM <= todayM) // 11-6 => 5    11, 10, 9, 8, 7, 6
+//           : (transM > todayM + 6 && todayM - 6 >= 0)); // 3 =>  3 2 1 0 11 10
+//       // && transM < ((todayM - 6 > 0) ? todayM - 6 : todayM + 6); 0= > 0 11 10 9 8 7
+//     }
+//     return trDate.getMonth() === today.getMonth() && transaction.type === typeTransaction;
+//   });
 function filterTransaction() {
   const filtredHistory = history.filter((transaction) => {
     const trDate = new Date(transaction.date);

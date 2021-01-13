@@ -16,6 +16,14 @@ export default [
     description: 'Milk, bread',
   },
   {
+    date: '2020-07-07',
+    type: 'expense',
+    category: 'joy',
+    account: 'myvisa1',
+    amount: '3000',
+    description: '',
+  },
+  {
     date: '2021-01-03',
     type: 'expense',
     category: 'transport',
@@ -32,7 +40,15 @@ export default [
     description: '',
   },
   {
-    date: '06.01.21',
+    date: '2020-12-12',
+    type: 'income',
+    category: 'casino',
+    account: 'myvisa1',
+    amount: '10000',
+    description: '',
+  },
+  {
+    date: '2020-01-05',
     type: 'income',
     category: 'freelance',
     account: 'myvisa1',
@@ -120,7 +136,7 @@ export default [
     description: '',
   },
   {
-    date: '10.01.21',
+    date: '2020-01-21',
     type: 'expense',
     category: 'graceries',
     account: 'myvisa1',
