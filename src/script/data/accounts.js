@@ -1,4 +1,4 @@
-export const allAccountsCategories = [
+export default [
   {
     name: 'Bank account',
     icon: 'fa-car',
@@ -8,9 +8,3 @@ export const allAccountsCategories = [
     icon: 'fa-car',
   },
 ];
-
-export const accountModal = {
-  class: 'expenses-modal',
-  title: 'Spent',
-  saveBtn: 'Spent it!',
-};

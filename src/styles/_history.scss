@@ -1,0 +1,58 @@
+.day-of-week {
+  font-size: 2rem;
+  text-transform: uppercase;
+  color: $light;
+}
+
+.date {
+  font-size: 1.5rem;
+  color: $light;
+}
+
+.day {
+  padding: 1rem;
+  background: #161821;
+  border-radius: 8px;
+
+  p {
+    margin: 0;
+  }
+
+  .row::after {
+    content: '';
+    width: calc(100% - 1rem);
+    height: 1px;
+    margin: 0.5rem auto;
+    background: $gray;
+  }
+
+  .row:last-child::after {
+    display: none;
+  }
+
+  .col:last-child {
+    text-align: right;
+  }
+
+  .account-name {
+    font-size: 1.125rem;
+    color: $gray;
+  }
+
+  .category-name {
+    font-size: 1.25rem;
+    color: $light;
+  }
+
+  .money-amount {
+    font-size: 2rem;
+    color: $blue;
+  }
+
+  .description {
+    padding-left: 10%;
+    font-size: 0.875rem;
+    font-style: italic;
+    color: $gray;
+  }
+}

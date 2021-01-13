@@ -1,6 +1,4 @@
-import { createModal, addTransactionModal } from '../modal';
-import { allExpensesCategories, expenseModal } from '../../data/expenses';
-import { allIncomeCategories, incomeModal } from '../../data/income';
+import { modal, transactionModal } from '../modal';
 
 export function dragStart() {
   this.classList.add('dragging');
@@ -29,14 +27,8 @@ export function dragDrop() {
   this.classList.remove('hovered');
 
   const { category } = document.querySelector('.dragging').dataset;
-  const { type } = document.querySelector('.dragging').dataset;
+  const type = document.querySelector('.dragging').dataset.group;
 
-  const categoriesList = type === 'income' ? allIncomeCategories : allExpensesCategories;
-  const modalOpts = type === 'income' ? incomeModal : expenseModal;
-
-  const modal = createModal(
-    addTransactionModal(categoriesList, category, modalOpts, this.dataset.category),
-  );
-
+  modal.setContent(transactionModal({ type, from: this.dataset.category, to: category }));
   modal.show();
 }
