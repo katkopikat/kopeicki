@@ -1,7 +1,8 @@
 import './styles/main.scss';
 
-import displayTransactionsPage from './script/components/transactions/transactions';
-import displaySettingsPage from './script/components/settings/settings';
 
-displayTransactionsPage();
 displaySettingsPage();
+displayTransactionsPage();
+
+import displaySettingsPage from './script/components/settings/settings';
+import displayTransactionsPage from './script/components/transactions/transactions';
