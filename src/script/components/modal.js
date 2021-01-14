@@ -1,6 +1,10 @@
 import { Modal } from 'bootstrap';
 import createElement from '../utils/create';
 import { insertAfter, createSelect } from '../utils/DOM';
+import ApiClient from '../api/api';
+
+const api = new ApiClient('https://rsclone-coinkeeper.herokuapp.com'); // http://localhost:8000
+api.login('user1@rsclone.com', 'test');
 
 function createModal() {
   function create() {
@@ -110,8 +114,18 @@ export function transactionModal(options) {
       date: date.value,
       description: description.value,
     };
-
     console.log(transactionInfo);
+
+    const tx = {
+      date: date.value,
+      user: api.userId,
+      account: selectFrom.value,
+      amount: moneyAmount.innerText,
+      category: selectTo.value,
+      type: 'expense',
+      description: description.value,
+    };
+    api.saveTransaction(tx).then((result) => console.log(result));
 
     modal.hide();
   });
