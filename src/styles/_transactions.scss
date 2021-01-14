@@ -1,8 +1,7 @@
 .transactions-container {
   // background-color: $middle;
   .transactions-dashboard {
-    display: flex;
-    flex-direction: column;
+    @include flex-col;
     row-gap: 2rem;
     padding: 1.5rem;
 
@@ -27,8 +26,7 @@
 
         &__item {
           width: 6rem;
-          display: flex;
-          flex-direction: column;
+          @include flex-col;
           align-items: center;
           row-gap: 0.2em;
 
@@ -56,7 +54,7 @@
             cursor: pointer;
           }
 
-           &:hover .icon-svg {
+          &:hover .icon-svg {
             filter: invert(1);
           }
 
@@ -74,20 +72,20 @@
   h4 {
     color: var(--accounts);
   }
-  .category-icon{
+  .category-icon {
     background-color: var(--accounts);
   }
 
   .add {
     border: 2px solid var(--accounts);
-    color:  var(--accounts);
+    color: var(--accounts);
   }
 
   .flex-list__item * {
     pointer-events: none;
   }
   .flex-list__item .add {
-     pointer-events: all;
+    pointer-events: all;
   }
 }
 
@@ -96,13 +94,13 @@
     color: var(--expenses);
   }
 
-  .category-icon{
+  .category-icon {
     background-color: var(--expenses);
   }
-  
+
   .add {
     border: 2px solid var(--expenses);
-    color:  var(--expenses);
+    color: var(--expenses);
   }
 }
 
@@ -111,13 +109,13 @@
     color: var(--income);
   }
 
-  .category-icon{
+  .category-icon {
     background-color: var(--income);
   }
-  
+
   .add {
     border: 2px solid var(--income);
-    color:  var(--income);
+    color: var(--income);
   }
 }
 
