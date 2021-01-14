@@ -2,7 +2,7 @@ import createElement from '../../utils/create';
 import allAccountsCategories from '../../data/accounts';
 import allExpensesCategories from '../../data/expenses';
 import allIncomeCategories from '../../data/income';
-import { modal, transactionModal } from '../modal';
+import { modal, transactionModal, newCategoryModal } from '../modal';
 
 export default function createCategoryList(group, container) {
   let list;
@@ -47,6 +47,7 @@ export default function createCategoryList(group, container) {
     'div',
     'flex-list__item add-category',
     '<div class="add"></div> <span>Add category</span>',
+    ['group', group],
   );
 
   listContainer.append(addCategoryBtn);
@@ -56,10 +57,16 @@ export default function createCategoryList(group, container) {
 
     if (!categoryItem) return;
 
-    const { category } = categoryItem.dataset;
     const type = categoryItem.dataset.group;
 
-    modal.setContent(transactionModal({ type, to: category }));
+    if (!categoryItem.classList.contains('add-category')) {
+      const { category } = categoryItem.dataset;
+
+      modal.setContent(transactionModal({ type, to: category }));
+    } else {
+      modal.setContent(newCategoryModal(type));
+    }
+
     modal.show();
   });
 
