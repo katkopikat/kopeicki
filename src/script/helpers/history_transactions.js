@@ -128,7 +128,7 @@ export default [
     description: '',
   },
   {
-    date: '2021-09-01',
+    date: '2020-07-05',
     type: 'income',
     category: 'gift',
     account: 'myvisa1',
@@ -150,6 +150,14 @@ export default [
     account: 'myvisa1',
     amount: '100',
     description: 'Bear',
+  },
+  {
+    date: '2021-03-03',
+    type: 'expense',
+    category: 'home',
+    account: 'myvisa1',
+    amount: '2500',
+    description: '',
   },
   {
     date: '2021-07-12',

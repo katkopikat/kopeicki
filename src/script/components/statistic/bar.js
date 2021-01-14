@@ -30,10 +30,11 @@ function createYearsBtns() {
   yearsList.sort((a, b) => b - a)
     .forEach((year, i) => {
       const checkedParam = i === 0 ? 'checked' : '';
+      const activeParam = i === 0 ? 'active' : '';
       yearsBtnsContainer.insertAdjacentHTML(
         'beforeend',
         `
-    <label class="btn btn-secondary active">
+    <label class="btn btn-secondary ${activeParam}">
     <input type="radio" name="year" id="${year}" autocomplete="off" ${checkedParam}> ${year}
   </label>
   `,
