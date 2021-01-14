@@ -2,11 +2,12 @@ import mongoose from 'mongoose';
 
 const TransactionSchema = new mongoose.Schema(
   {
-    date: { type: Date, default: Date.now },
+    date: Date,
     user: String,
-    purse: String,
+    account: String, // wallet, bank, etc
     amount: Number,
-    category: String,
+    category: String, // transport, cafe, etc
+    type: String, // expense || income
     description: String,
   },
   { toJSON: { virtuals: true, useProjection: true } },

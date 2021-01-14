@@ -13,14 +13,7 @@ router.route('/').get(
 
 router.route('/').post(
   asyncHandler(async (req, res) => {
-    const tx = await Transaction.create({
-      date: req.body.date,
-      user: req.body.user,
-      purse: req.body.purse,
-      amount: req.body.amount,
-      category: req.body.category,
-      description: req.body.description,
-    });
+    const tx = await Transaction.create(req.body);
     res.json(tx);
   }),
 );
