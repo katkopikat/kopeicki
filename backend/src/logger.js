@@ -1,31 +1,39 @@
 import winston from 'winston';
 import morgan from 'morgan';
 
-winston.configure({
+const logger = winston.createLogger({
   format: winston.format.combine(
     winston.format.timestamp({ format: 'DD-MM-YYYY HH:mm:ss' }),
     winston.format.printf((log) => `[${log.timestamp}] ${log.level}: ${log.message}`),
   ),
   transports: [
-    new winston.transports.Console(),
-    new winston.transports.File({ filename: 'app.log' }),
+    new winston.transports.File({
+      filename: 'app.log',
+      maxsize: 1024,
+      maxFiles: 1,
+      tailable: true,
+    }),
   ],
   exitOnError: false,
 });
 
+if (process.env.NODE_ENV !== 'production') {
+  logger.add(new winston.transports.Console());
+}
+
 const requestLogger = morgan(
   (tokens, req) => {
-    const query = JSON.stringify(req.query);
-    const body = JSON.stringify(req.body);
-    return `URL: ${req.originalUrl} PARAMS: ${query} BODY: ${body}`;
+    const query = Object.keys(req.query).length ? `PARAMS: ${JSON.stringify(req.query)}` : '';
+    const body = Object.keys(req.body).length ? `BODY: ${JSON.stringify(req.body)}` : '';
+    return `${req.method}: ${req.originalUrl} ${query} ${body}`;
   },
   {
     stream: {
       write(message) {
-        winston.info(message);
+        logger.info(message);
       },
     },
   },
 );
 
-export { requestLogger, winston as logger };
+export { requestLogger, logger };
