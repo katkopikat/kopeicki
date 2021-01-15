@@ -4,7 +4,9 @@ import { insertAfter, createSelect } from '../utils/DOM';
 import ApiClient from '../api/api';
 
 const api = new ApiClient('https://rsclone-coinkeeper.herokuapp.com'); // http://localhost:8000
-api.login('user1@rsclone.com', 'test');
+api.login('user1@rsclone.com', 'test')
+  .catch((e) => console.error(e.message))
+  .then(() => console.log('login success'));
 
 function createModal() {
   function create() {

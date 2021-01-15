@@ -6,7 +6,7 @@ class ApiClient {
     this.refreshToken = localStorage.getItem('refreshToken');
   }
 
-  async request(method, route, body = false, auth = false) {
+  async request(method, route, body = false, auth = true) {
     const reqParams = {
       method: `${method}`,
       headers: {
@@ -26,22 +26,44 @@ class ApiClient {
   }
 
   async login(email, password) {
-    const result = await this.request('POST', '/users/login', { email, password });
+    const result = await this.request('POST', '/users/login', { email, password }, false);
     const { userId, token, refreshToken } = result;
     if (userId) {
       Object.assign(this, { userId, token, refreshToken });
       localStorage.setItem('userId', userId);
       localStorage.setItem('token', token);
       localStorage.setItem('refreshToken', refreshToken);
-      console.log('login success');
       return true;
     }
-    console.log(result.message);
-    return false;
+    throw new Error(result.message);
   }
 
-  async saveTransaction(tx) {
-    return this.request('POST', '/transactions', tx, true);
+  async registerUser(email, password) {
+    const result = await this.request('POST', '/users', { email, password }, false);
+    if (result.id) {
+      return true;
+    }
+    throw new Error(result.message);
+  }
+
+  async getTransactions(/* todo filter */) {
+    return this.request('GET', '/transactions');
+  }
+
+  async getTransaction(txId) {
+    return this.request('GET', `/transactions/${txId}`);
+  }
+
+  async saveTransaction(txData) {
+    return this.request('POST', '/transactions', txData);
+  }
+
+  async updateTransaction(txId, txData) {
+    return this.request('PUT', `/transactions/${txId}`, txData);
+  }
+
+  async deleteTransaction(txId) {
+    return this.request('DELETE', `/transactions/${txId}`);
   }
 }
 
