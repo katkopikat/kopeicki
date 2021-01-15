@@ -20,6 +20,17 @@
   }
 }
 
+.modal-content.accounts {
+  background: var(--accounts);
+
+  input,
+  select,
+  textarea,
+  textarea:focus {
+    background: var(--accounts);
+  }
+}
+
 .modal-content {
   line-height: 1;
 
@@ -104,6 +115,60 @@
     text-transform: lowercase;
     font-size: 1.2rem;
   }
+
+  .new-category {
+    @include flex-col;
+    row-gap: 2rem;
+    align-items: center;
+    padding-bottom: 2rem;
+
+    .title {
+      color: var(--light);
+      font-style: italic;
+    }
+
+    &__name {
+      text-align: center;
+      font-size: 2rem;
+      color: var(--light);
+      text-transform: uppercase;
+      border-bottom: 2px dashed var(--light);
+    }
+
+    &__icons {
+      width: 80%;
+      display: flex;
+      flex-wrap: wrap;
+      row-gap: 0.5rem;
+      column-gap: 0.5rem;
+
+      label {
+        height: 42px;
+        width: 42px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+
+        &:hover {
+          filter: invert(1);
+          cursor: pointer;
+        }
+
+        input[name='icon'] {
+          opacity: 0;
+        }
+      }
+    }
+
+    .btn {
+      text-transform: uppercase;
+    }
+
+    .selected {
+      border: 1px dashed var(--light);
+      border-radius: 3px;
+    }
+  }
 }
 
 .modal-footer {
@@ -125,6 +190,6 @@
   }
 }
 
-.btn-close{
-  opacity: 0.25 ;
+.btn-close {
+  opacity: 0.25;
 }
