@@ -1,15 +1,65 @@
 /* eslint-disable no-param-reassign */
 
 import { Chart } from 'chart.js';
+import createElement from '../../utils/create';
 import history from '../../helpers/history_transactions';
 
-const canvas = document.querySelector('.doughnut-container');
 const bgColor = document.documentElement.hasAttribute('theme') ? 'rgba(234, 237, 241, 1)' : 'rgba(37, 40, 54, 1)';
 const today = new Date();
 let typeTransaction = 'expense';
 let period = 'mounth';
 let summaryObj = null;
 let doughnut = null;
+
+function renderDoughnutHTML() {
+  const doughnutWrapperDiv = createElement('div', 'wrapper-doughnut');
+  const doughnutCanvas = createElement('canvas', 'doughnut-container');
+
+  const doughnutTypeBtnsWrapper = createElement(
+    'div',
+    'btn-group btn-group-toggle',
+    null,
+    ['toggle', 'buttons'],
+  );
+
+  const doughnutPeriodBtnsWrapper = createElement(
+    'div',
+    'btn-group btn-group-toggle bar-years',
+    null,
+    ['toggle', 'buttons'],
+  );
+
+  const doughnutPeriodBtns = `
+  <label class="btn btn-secondary active">
+  <input type="radio" name="period" id="month" autocomplete="off" checked> Month
+</label>
+<label class="btn btn-secondary">
+  <input type="radio" name="period" id="year" autocomplete="off"> Year
+  </label>`;
+
+  const doughnutTypeBtns = `
+<label class="btn btn-secondary active">
+<input type="radio" name="type" id="expense" autocomplete="off" checked> Expense
+</label>
+<label class="btn btn-secondary">
+<input type="radio" name="type" id="income" autocomplete="off"> Income
+  </label>`;
+
+  document.body.append(doughnutWrapperDiv);
+  doughnutWrapperDiv.append(doughnutCanvas);
+
+  doughnutWrapperDiv.append(doughnutTypeBtnsWrapper);
+  doughnutWrapperDiv.append(doughnutPeriodBtnsWrapper);
+
+  doughnutPeriodBtnsWrapper.insertAdjacentHTML(
+    'beforeend',
+    `${doughnutPeriodBtns}`,
+  );
+  doughnutTypeBtnsWrapper.insertAdjacentHTML(
+    'beforeend',
+    `${doughnutTypeBtns}`,
+  );
+}
 
 function filterTransaction() {
   const filtredHistory = history.filter((transaction) => {
@@ -36,6 +86,7 @@ function calculateTotalSum() {
 }
 
 function generateChart(type, time) {
+  const canvas = document.querySelector('.doughnut-container');
   doughnut = new Chart(canvas, {
     type: 'doughnut',
     data: {
@@ -69,6 +120,7 @@ function generateChart(type, time) {
       }],
     },
     options: {
+      responsive: true,
       cutoutPercentage: 70,
       // elements: {
       //   center: {
@@ -88,11 +140,6 @@ function generateChart(type, time) {
     },
 
   });
-}
-
-export default function generateDoughnutChart() {
-  filterTransaction();
-  generateChart(typeTransaction, period);
 }
 
 function buttonsListeners() {
@@ -117,7 +164,13 @@ function buttonsListeners() {
   });
 }
 
-setTimeout(buttonsListeners, 10);
+export default function generateDoughnutChart() {
+  filterTransaction();
+  renderDoughnutHTML();
+  buttonsListeners();
+  generateChart(typeTransaction, period);
+}
+
 Chart.pluginService.register({
   beforeDraw(chart) {
     if (chart.config.options.elements.center) {

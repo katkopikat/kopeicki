@@ -1,10 +1,9 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-param-reassign */
 import { Chart } from 'chart.js';
+import createElement from '../../utils/create';
 import history from '../../helpers/history_transactions';
 
-const barContainer = document.querySelector('.bar-container');
-const yearsBtnsContainer = document.querySelector('.bar-years');
 let barChart = null;
 let typeTransaction = 'expense';
 const monthRU = ['янв', 'фев', 'март', 'апр', 'май', 'июн', 'июл', 'авг', 'сент', 'окт', 'нояб', 'дек'];
@@ -12,6 +11,42 @@ const monthRU = ['янв', 'фев', 'март', 'апр', 'май', 'июн', '
 let choosenYear = new Date().getFullYear();
 const yearsList = [];
 let summaryObj = {};
+
+function renderBarHTML() {
+  const barWrapperDiv = createElement('div', 'bar-wrapper');
+  const barCanvas = createElement('canvas', 'bar-container');
+  const barTypeBtnsWrapper = createElement(
+    'div',
+    'btn-group btn-group-toggle',
+    null,
+    ['toggle', 'buttons'],
+  );
+
+  const barYearsBtnsWrapper = createElement(
+    'div',
+    'btn-group btn-group-toggle bar-years',
+    null,
+    ['toggle', 'buttons'],
+  );
+
+  const barTypeBtns = `
+  <label class="btn btn-secondary active">
+    <input type="radio" name="type-tr" id="expense" autocomplete="off" checked> Expense
+  </label>
+  <label class="btn btn-secondary">
+    <input type="radio" name="type-tr" id="income" autocomplete="off"> Income
+  </label>`;
+
+  document.body.append(barWrapperDiv);
+  barWrapperDiv.append(barCanvas);
+  barWrapperDiv.append(barYearsBtnsWrapper);
+  barWrapperDiv.append(barTypeBtnsWrapper);
+  barTypeBtnsWrapper.insertAdjacentHTML(
+    'beforeend',
+    `${barTypeBtns}
+  `,
+  );
+}
 
 function setBarColor() {
   return new Array(12).fill(typeTransaction === 'expense' ? 'rgba(50, 124, 235, 1)' : 'rgba(75, 192, 192, 1)');
@@ -27,6 +62,7 @@ function countYears() {
 }
 
 function createYearsBtns() {
+  const yearsBtnsContainer = document.querySelector('.bar-years');
   yearsList.sort((a, b) => b - a)
     .forEach((year, i) => {
       const checkedParam = i === 0 ? 'checked' : '';
@@ -106,11 +142,13 @@ function buttonsListeners() {
 }
 
 countYears();
+renderBarHTML();
 createYearsBtns();
 buttonsListeners();
 filterTransaction();
 
 export default function generateBarChart() {
+  const barContainer = document.querySelector('.bar-container');
   barChart = new Chart(barContainer, {
     type: 'bar',
     data: {

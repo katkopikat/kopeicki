@@ -1,7 +1,7 @@
 import generateBarChart from './bar';
 import generateDoughnutChart from './doughnut';
 
-export default function renderStatistic() {
-  generateDoughnutChart();
+export default function renderStatisticsPage() {
   generateBarChart();
+  generateDoughnutChart();
 }
