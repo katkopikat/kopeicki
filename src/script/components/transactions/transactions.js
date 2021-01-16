@@ -2,7 +2,7 @@ import createElement from '../../utils/create';
 import { dragStart, dragEnd, dragOver, dragEnter, dragLeave, dragDrop } from './dragnDrop';
 import createCategoryList from './categories';
 
-export default function displayTransactionsPage(/* options */) {
+export default function Transactions(/* options */) {
   const accountsDiv = createElement(
     'div',
     'transactions-dashboard__item accounts',
