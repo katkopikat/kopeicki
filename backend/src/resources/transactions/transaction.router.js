@@ -6,7 +6,12 @@ const router = Router({ mergeParams: true });
 
 router.route('/').get(
   asyncHandler(async (req, res) => {
-    const txs = await Transaction.find({}).exec();
+    const findParams = {
+      user: res.locals.userId,
+    };
+    const txs = await Transaction.find(findParams)
+      .sort({ date: -1 }) // desc
+      .exec();
     res.json(txs);
   }),
 );
@@ -33,14 +38,8 @@ router.route('/:id').put(
   asyncHandler(async (req, res) => {
     const tx = await Transaction.findByIdAndUpdate(
       req.params.id,
-      {
-        date: req.body.date,
-        user: req.body.user,
-        purse: req.body.purse,
-        amount: req.body.amount,
-        category: req.body.category,
-        description: req.body.description,
-      },
+      req.body,
+      { new: true }, // return updated document
     ).exec();
     res.json(tx);
   }),

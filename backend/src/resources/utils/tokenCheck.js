@@ -1,5 +1,4 @@
 import jsonWebToken from 'jsonwebtoken';
-import 'dotenv/config.js';
 
 const NO_AUTH_URLS = ['/', '/users/', '/users/login'];
 const REFRESH_URL = '/users/token';
@@ -20,7 +19,8 @@ const checkAuthentication = (req, res, next) => {
     if (REFRESH_URL.includes(req.path)) {
       jsonWebToken.verify(token, process.env.REFRESH_TOKEN_SECRET_KEY);
     } else {
-      jsonWebToken.verify(token, process.env.TOKEN_SECRET_KEY);
+      const { userId } = jsonWebToken.verify(token, process.env.TOKEN_SECRET_KEY);
+      res.locals.userId = userId;
     }
   } catch {
     return res.status(401).send('invalid token3');
