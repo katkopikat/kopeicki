@@ -4,16 +4,10 @@
 }
 ::-webkit-scrollbar-thumb {
     background-color: var(--expenses);
-    box-shadow: inset 0 0 2px #000;
     border-radius: 20px;
 }
 ::-webkit-scrollbar-corner {
     background: transparent;
-}
-   
-   .bar-wrapper, .wrapper-doughnut {
-   // height: 500px;
-    //width: 500px;
 }
 
 .btn {
@@ -47,11 +41,11 @@ thead, tbody, tfoot, tr, td, th {
         &__date{
            opacity: 0.6;
         }
-        &__category{
-            background-color: var(--income);
+        &__category-income{
+            background-color: var(--income-alpha);
         }
-        &__amount{
-            background-color: var(--expenses);
+        &__category-expense{
+            background-color: var(--expenses-alpha);
         }
         &__account{
             opacity: 0.6;

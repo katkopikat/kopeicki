@@ -2,15 +2,16 @@
 /* eslint-disable no-param-reassign */
 import { Chart } from 'chart.js';
 import createElement from '../../utils/create';
-import history from '../../helpers/history_transactions';
+import app from '../../app';
 
 let barChart = null;
-let typeTransaction = 'expense';
+let typeTransaction = 'expenses';
 const monthRU = ['янв', 'фев', 'март', 'апр', 'май', 'июн', 'июл', 'авг', 'сент', 'окт', 'нояб', 'дек'];
 
 let choosenYear = new Date().getFullYear();
 const yearsList = [];
 let summaryObj = {};
+let history;
 
 function renderBarHTML() {
   const barWrapperDiv = createElement('div', 'bar-wrapper');
@@ -31,16 +32,18 @@ function renderBarHTML() {
 
   const barTypeBtns = `
   <label class="btn btn-secondary active">
-    <input type="radio" name="type-tr" id="expense" autocomplete="off" checked> Expense
+    <input type="radio" name="type-tr" id="expenses" autocomplete="off" checked> Expense
   </label>
   <label class="btn btn-secondary">
     <input type="radio" name="type-tr" id="income" autocomplete="off"> Income
   </label>`;
 
   document.querySelector('.charts-wrapper').append(barWrapperDiv);
+
   barWrapperDiv.append(barCanvas);
-  barWrapperDiv.append(barYearsBtnsWrapper);
   barWrapperDiv.append(barTypeBtnsWrapper);
+  barWrapperDiv.append(barYearsBtnsWrapper);
+
   barTypeBtnsWrapper.insertAdjacentHTML(
     'beforeend',
     `${barTypeBtns}
@@ -76,6 +79,11 @@ function createYearsBtns() {
   `,
       );
     });
+}
+
+async function getHistory() {
+  const transactions = await app.api.getTransactions();
+  history = [...transactions];
 }
 
 function clearObject() {
@@ -173,11 +181,15 @@ function generateBar() {
   });
 }
 
-export default function generateBarChart() {
+function createBarContent() {
   countYears();
   renderBarHTML();
   createYearsBtns();
   buttonsListeners();
   filterTransaction();
   generateBar();
+}
+
+export default function renderBarChart() {
+  getHistory().then(() => createBarContent());
 }
