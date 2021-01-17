@@ -17,9 +17,9 @@ function formatDate(date) {
 }
 
 function filterTransaction() {
-  if (typeTransaction === 'all') return history;
-
-  return history.filter((transaction) => transaction.type === typeTransaction);
+  const historyByDate = history.sort((a, b) => new Date(b.date) - new Date(a.date));
+  if (typeTransaction === 'all') return historyByDate;
+  return historyByDate.filter((transaction) => transaction.type === typeTransaction);
 }
 
 function tableCreate() {
@@ -53,8 +53,8 @@ function tableCreate() {
     cell4.className = 'cell__account';
     cell5.className = 'cell__description';
 
-    cell1.innerHTML = formatDate(new Date(transaction.date)),
-    cell2.innerHTML = transaction.category,
+    cell1.innerHTML = formatDate(new Date(transaction.date));
+    cell2.innerHTML = transaction.category;
     cell3.innerHTML = transaction.amount;
     cell4.innerHTML = transaction.account;
     cell5.innerHTML = transaction.description;
@@ -86,6 +86,11 @@ function renderTableBtns() {
   document.querySelector('.table-wrapper').prepend(tableTypeBtns);
 }
 
+function rerenderTable() {
+  document.querySelector('.table').remove();
+  tableCreate();
+}
+
 function buttonsListeners() {
   document.querySelectorAll('[name="type-table"]').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -97,13 +102,7 @@ function buttonsListeners() {
   });
 }
 
-function rerenderTable() {
-  document.querySelector('.table').remove();
-  tableCreate();
-}
-
 export default function renderTable() {
-  // filtredHistoryArray = filterTransaction();
   filterTransaction();
   tableCreate();
   renderTableBtns();
