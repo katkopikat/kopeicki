@@ -1,6 +1,8 @@
 import { Modal } from 'bootstrap';
 import createElement from '../utils/create';
 import { insertAfter, createSelect } from '../utils/DOM';
+import api from '../api';
+import app from '../app';
 
 function createModal() {
   function create() {
@@ -110,8 +112,21 @@ export function transactionModal(options) {
       date: date.value,
       description: description.value,
     };
-
     console.log(transactionInfo);
+
+    const tx = {
+      date: date.value, // todo time?
+      user: api.userId,
+      account: selectFrom.value,
+      amount: moneyAmount.innerText,
+      category: selectTo.value,
+      type: `${options.type}`,
+      description: description.value,
+    };
+    api.saveTransaction(tx).then((result) => {
+      console.log(result);
+      app.renderHistory();
+    });
 
     modal.hide();
   });
