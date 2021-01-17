@@ -50,7 +50,7 @@ export function transactionModal(options) {
     income: 'Received!',
   };
 
-  document.querySelector('.modal-content').className = `modal-content ${options.type}`;
+  document.querySelector('.modal-content').className = `modal-content ${options.type || options}`;
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -59,7 +59,7 @@ export function transactionModal(options) {
   wrap.insertAdjacentHTML(
     'afterbegin',
     `
-    <h5 class="modal-body__title">${titleOptions[options.type]}</h5>
+    <h5 class="modal-body__title">${titleOptions[options.type] || options}</h5>
     <span>BYN</span>
     <span data-from>from</span>
     <span data-to>on</span>
@@ -147,7 +147,7 @@ export function newCategoryModal(type) {
     income: 14,
   };
 
-  document.querySelector('.modal-content').className = `modal-content ${type}`;
+  document.querySelector('.modal-content').className = `modal-content ${type} new-category`;
 
   const wrap = createElement('div', 'content new-category');
 

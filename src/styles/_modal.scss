@@ -32,6 +32,7 @@
 }
 
 .modal-content {
+  border-radius: 1rem;
   line-height: 1;
 
   .form-floating {
@@ -120,11 +121,14 @@
     @include flex-col;
     row-gap: 2rem;
     align-items: center;
-    padding-bottom: 2rem;
+    padding-bottom: 1.5rem;
 
     .title {
       color: var(--light);
       font-style: italic;
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: -24px;
     }
 
     &__name {
@@ -132,19 +136,20 @@
       font-size: 2rem;
       color: var(--light);
       text-transform: uppercase;
-      border-bottom: 2px dashed var(--light);
+      border-bottom: 1px dashed var(--light);
+      padding-bottom: 0;
     }
 
     &__icons {
-      width: 80%;
+      width: 95%;
       display: flex;
       flex-wrap: wrap;
-      row-gap: 0.5rem;
-      column-gap: 0.5rem;
+      row-gap: 1.2rem;
+      column-gap: 1.5rem;
 
       label {
-        height: 42px;
-        width: 42px;
+        height: 38px;
+        width: 38px;
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
@@ -193,3 +198,4 @@
 .btn-close {
   opacity: 0.25;
 }
+
