@@ -17,6 +17,9 @@
   --gray: #5c5c5c;
   --filter: invert(0);
   --shadow: 0 4px 7px -1px rgba(0, 0, 0, 0.4);
+
+  --expenses-alpha: rgba(243, 94, 110, 0.5);
+  --income-alpha: rgba(75, 192, 192, 0.5);
 }
 :root[theme='light'] {
   --accounts: #ecaf12;

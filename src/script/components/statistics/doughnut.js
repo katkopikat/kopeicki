@@ -2,13 +2,19 @@
 
 import { Chart } from 'chart.js';
 import createElement from '../../utils/create';
-import history from '../../helpers/history_transactions';
+import app from '../../app';
 
 const today = new Date();
-let typeTransaction = 'expense';
+let typeTransaction = 'expenses';
 let period = 'mounth';
 let summaryObj = null;
 let doughnut = null;
+let history;
+
+async function getHistory() {
+  const transactions = await app.api.getTransactions();
+  history = [...transactions];
+}
 
 function setBGColor() {
   return document.documentElement.hasAttribute('theme') ? 'rgba(234, 237, 241, 1)' : 'rgba(37, 40, 54, 1)';
@@ -27,7 +33,7 @@ function renderDoughnutHTML() {
 
   const doughnutPeriodBtnsWrapper = createElement(
     'div',
-    'btn-group btn-group-toggle bar-years',
+    'btn-group btn-group-toggle doughnut-years',
     null,
     ['toggle', 'buttons'],
   );
@@ -42,7 +48,7 @@ function renderDoughnutHTML() {
 
   const doughnutTypeBtns = `
 <label class="btn btn-secondary active">
-<input type="radio" name="type" id="expense" autocomplete="off" checked> Expense
+<input type="radio" name="type" id="expenses" autocomplete="off" checked> Expense
 </label>
 <label class="btn btn-secondary">
 <input type="radio" name="type" id="income" autocomplete="off"> Income
@@ -64,7 +70,7 @@ function renderDoughnutHTML() {
   );
 }
 
-function filterTransaction() {
+function filterTransactions() {
   const filtredHistory = history.filter((transaction) => {
     const trDate = new Date(transaction.date);
     if (period === 'year') {
@@ -141,7 +147,7 @@ function generateChart(type, time) {
         text: `Total ${type} for the ${time} ${calculateTotalSum()} rub.`,
       },
       legend: {
-        position: 'left',
+        position: 'right',
       },
     },
 
@@ -154,7 +160,7 @@ function buttonsListeners() {
       if (btnPer.checked === true) {
         period = btnPer.id;
         doughnut.destroy();
-        filterTransaction();
+        filterTransactions();
         generateChart(typeTransaction, period);
       }
     });
@@ -165,18 +171,22 @@ function buttonsListeners() {
       if (btn.checked === true) {
         typeTransaction = btn.id;
         doughnut.destroy();
-        filterTransaction();
+        filterTransactions();
         generateChart(typeTransaction, period);
       }
     });
   });
 }
 
-export default function generateDoughnutChart() {
-  filterTransaction();
+function createDoughnutContent() {
+  filterTransactions();
   renderDoughnutHTML();
   buttonsListeners();
   generateChart(typeTransaction, period);
+}
+
+export default function renderDoughnutChart() {
+  getHistory().then(() => createDoughnutContent());
 }
 
 Chart.pluginService.register({
