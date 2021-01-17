@@ -2,7 +2,7 @@ import createElement from '../../utils/create';
 import { dragStart, dragEnd, dragOver, dragEnter, dragLeave, dragDrop } from './dragnDrop';
 import createCategoryList from './categories';
 
-export default function Transactions(/* options */) {
+export default function renderTransactionsPage(/* options */) {
   const accountsDiv = createElement(
     'div',
     'transactions-dashboard__item accounts',
@@ -46,4 +46,6 @@ export default function Transactions(/* options */) {
     account.addEventListener('dragleave', dragLeave);
     account.addEventListener('drop', dragDrop);
   });
+
+  console.log('Отрисовались транзакции')
 }

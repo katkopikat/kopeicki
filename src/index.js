@@ -1,21 +1,20 @@
 import './styles/main.scss';
+import 'bootstrap';
 
-import Transactions from './script/components/transactions/transactions';
-import Settings from './script/components/settings/settings';
+import renderStatisticsPage from './script/components/statistics/statistics';
+import renderSettingsPage from './script/components/settings/settings';
+import renderTransactionsPage from './script/components/transactions/transactions';
 
-const Statistics = () => {
-  console.log('I am a statistics page!');
-};
 const Planning = () => {
-  console.log('I am a planning page!');
+    console.log('Отрисовалась планинг')
 };
 
 const router = () => {
   const routes = [
-    { path: '/statistics', component: Statistics },
+    { path: '/statistics', component: renderStatisticsPage },
     { path: '/planning', component: Planning },
-    { path: '/settings', component: Settings },
-    { path: '/', component: Transactions },
+    { path: '/settings', component: renderSettingsPage},
+    { path: '/', component: renderTransactionsPage },
   ];
 
   const path = window.location.href;
