@@ -120,6 +120,14 @@ export default [
     description: '',
   },
   {
+    date: '2021-11-01',
+    type: 'income',
+    category: 'casino',
+    account: 'myvisa1',
+    amount: '5000',
+    description: '',
+  },
+  {
     date: '2020-10-01',
     type: 'income',
     category: 'freelance',

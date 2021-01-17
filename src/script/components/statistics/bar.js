@@ -37,7 +37,7 @@ function renderBarHTML() {
     <input type="radio" name="type-tr" id="income" autocomplete="off"> Income
   </label>`;
 
-  document.body.append(barWrapperDiv);
+  document.querySelector('.charts-wrapper').append(barWrapperDiv);
   barWrapperDiv.append(barCanvas);
   barWrapperDiv.append(barYearsBtnsWrapper);
   barWrapperDiv.append(barTypeBtnsWrapper);
@@ -123,7 +123,7 @@ function buttonsListeners() {
         choosenYear = btn.id;
         barChart.destroy();
         filterTransaction();
-        generateBarChart();
+        generateBar();
       }
     });
   });
@@ -135,19 +135,14 @@ function buttonsListeners() {
         barChart.destroy();
         filterTransaction();
         setBarColor();
-        generateBarChart();
+        generateBar();
       }
     });
   });
 }
 
-countYears();
-renderBarHTML();
-createYearsBtns();
-buttonsListeners();
-filterTransaction();
 
-export default function generateBarChart() {
+function generateBar() {
   const barContainer = document.querySelector('.bar-container');
   barChart = new Chart(barContainer, {
     type: 'bar',
@@ -165,7 +160,7 @@ export default function generateBarChart() {
     options: {
       title: {
         display: true,
-        text: `${typeTransaction} for the last year`,
+        text: `${typeTransaction} for the ${choosenYear} year`,
       },
       scales: {
         yAxes: [{
@@ -177,4 +172,13 @@ export default function generateBarChart() {
 
     },
   });
+}
+
+export default function generateBarChart() {
+  countYears();
+  renderBarHTML();
+  createYearsBtns();
+  buttonsListeners();
+  filterTransaction();
+  generateBar();
 }

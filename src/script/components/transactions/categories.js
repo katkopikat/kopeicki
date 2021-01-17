@@ -2,7 +2,7 @@ import createElement from '../../utils/create';
 import allAccountsCategories from '../../data/accounts';
 import allExpensesCategories from '../../data/expenses';
 import allIncomeCategories from '../../data/income';
-import { modal, transactionModal } from '../modal';
+import { modal, transactionModal, newCategoryModal } from '../modal';
 
 export default function createCategoryList(group, container) {
   let list;
@@ -47,6 +47,7 @@ export default function createCategoryList(group, container) {
     'div',
     'flex-list__item add-category',
     '<div class="add"></div> <span>Add category</span>',
+    ['group', group],
   );
 
   listContainer.append(addCategoryBtn);
@@ -56,12 +57,20 @@ export default function createCategoryList(group, container) {
 
     if (!categoryItem) return;
 
-    const { category } = categoryItem.dataset;
     const type = categoryItem.dataset.group;
 
-    modal.setContent(transactionModal({ type, to: category }));
+    if (!categoryItem.classList.contains('add-category')) {
+      const { category } = categoryItem.dataset;
+
+      modal.setContent(transactionModal({ type, to: category }));
+    } else {
+      modal.setContent(newCategoryModal(type));
+    }
+
     modal.show();
   });
+
+  container.append(listContainer);
 
   /* ------------ HOT KEYS ---------------
       SHIFT + E --> New expense
@@ -87,29 +96,33 @@ export default function createCategoryList(group, container) {
   });
 
   window.addEventListener('keydown', (e) => {
-    e.preventDefault();
     if (shiftIsPressed && e.keyCode === 69) {
       console.log('Shift + E => Open new expense modal!');
+      e.preventDefault();
       modal.setContent(transactionModal('expenses', ''));
       modal.show();
     }
     if (shiftIsPressed && e.keyCode === 73) {
       console.log('Shift + I => Open mew income modal!');
+      e.preventDefault();
       modal.setContent(transactionModal('income', ''));
       modal.show();
     }
     if (shiftIsPressed && e.keyCode === 65) {
       console.log('Shift + A => Open mew account modal!');
+      e.preventDefault();
       modal.setContent(transactionModal('account', ''));
       modal.show();
     }
     if (shiftIsPressed && e.keyCode === 83) {
+      e.preventDefault();
       console.log('Shift + S => Open setings page!');
     }
     if (shiftIsPressed && e.keyCode === 82) {
+      e.preventDefault();
       console.log('Shift + R => Edit categories!');
     }
   });
 
-  container.append(listContainer);
+  
 }

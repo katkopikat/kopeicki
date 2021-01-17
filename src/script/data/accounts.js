@@ -11,5 +11,4 @@ export default [
     name: 'Bank account',
     icon: 'icons/accounts/bank.svg',
   },
-
 ];

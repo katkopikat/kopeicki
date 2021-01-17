@@ -4,12 +4,15 @@ import { Chart } from 'chart.js';
 import createElement from '../../utils/create';
 import history from '../../helpers/history_transactions';
 
-const bgColor = document.documentElement.hasAttribute('theme') ? 'rgba(234, 237, 241, 1)' : 'rgba(37, 40, 54, 1)';
 const today = new Date();
 let typeTransaction = 'expense';
 let period = 'mounth';
 let summaryObj = null;
 let doughnut = null;
+
+function setBGColor(){
+  return document.documentElement.hasAttribute('theme') ? 'rgba(234, 237, 241, 1)' : 'rgba(37, 40, 54, 1)';
+} 
 
 function renderDoughnutHTML() {
   const doughnutWrapperDiv = createElement('div', 'wrapper-doughnut');
@@ -45,7 +48,7 @@ function renderDoughnutHTML() {
 <input type="radio" name="type" id="income" autocomplete="off"> Income
   </label>`;
 
-  document.body.append(doughnutWrapperDiv);
+  document.querySelector('.charts-wrapper').append(doughnutWrapperDiv);
   doughnutWrapperDiv.append(doughnutCanvas);
 
   doughnutWrapperDiv.append(doughnutTypeBtnsWrapper);
@@ -115,7 +118,7 @@ function generateChart(type, time) {
           'rgba(47, 186, 147, 1)',
           'rgba(0, 93, 236, 1)',
         ],
-        borderColor: bgColor,
+        borderColor: setBGColor(),
         borderWidth: 1,
       }],
     },
@@ -137,6 +140,9 @@ function generateChart(type, time) {
         position: 'bottom',
         text: `Total ${type} for the ${time} ${calculateTotalSum()} rub.`,
       },
+      legend: {
+        position: 'left',
+      }
     },
 
   });
@@ -148,7 +154,8 @@ function buttonsListeners() {
       if (btnPer.checked === true) {
         period = btnPer.id;
         doughnut.destroy();
-        generateDoughnutChart();
+        filterTransaction();
+        generateChart(typeTransaction, period);
       }
     });
   });
@@ -158,7 +165,8 @@ function buttonsListeners() {
       if (btn.checked === true) {
         typeTransaction = btn.id;
         doughnut.destroy();
-        generateDoughnutChart();
+        filterTransaction();
+        generateChart(typeTransaction, period);
       }
     });
   });

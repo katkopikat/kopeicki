@@ -4,4 +4,5 @@ import displayCurrencyList from './currency';
 export default function renderSettingsPage() {
   switchTheme();
   displayCurrencyList();
+  console.log('Отрисовались настройки')
 }
