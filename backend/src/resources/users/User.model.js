@@ -12,7 +12,6 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
   },
-  // { toJSON: { virtuals: true, useProjection: true } },
 );
 
 export default mongoose.model('User', UserSchema);
