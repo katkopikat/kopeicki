@@ -1,8 +1,7 @@
-import history from '../../helpers/history_transactions';
 import createElement from '../../utils/create';
+import history from '../../helpers/history_transactions';
 
 let typeTransaction = 'all';
-const filtredHistory = history;
 
 function formatDate(date) {
   let dd = date.getDate();
@@ -17,58 +16,17 @@ function formatDate(date) {
   return `${dd}.${mm}.${yy}`;
 }
 
-function rendertableBtns() {
-  const tableTypeBtns = createElement(
-    'div',
-    'btn-group btn-group-toggle type-table',
-    null,
-    ['toggle', 'buttons'],
-  );
-  tableTypeBtns.insertAdjacentHTML(
-    'beforeend',
-    `
-    <label class="btn btn-secondary">
-    <input type="radio" name="type-table" id="all" autocomplete="on"> All
-    </label>
-    <label class="btn btn-secondary active">
-    <input type="radio" name="type-table" id="expense" autocomplete="off" checked> Expense
-    </label>
-    <label class="btn btn-secondary">
-    <input type="radio" name="type-table" id="income" autocomplete="off"> Income
-    </label>`,
-  );
-
-  // document.querySelector('.table-wrapper').append(tableTypeBtns);
-}
-
 function filterTransaction() {
   if (typeTransaction === 'all') return history;
 
   return history.filter((transaction) => transaction.type === typeTransaction);
 }
 
-function buttonsListeners() {
-  document.querySelectorAll('[name="type-table"]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      if (btn.checked === true) {
-        typeTransaction = btn.id;
-        rerenderTable(typeTransaction);
-      }
-    });
-  });
-}
-
-function rerenderTable() {
-  // document.querySelector('.table').remove();
-  tableCreate();
-}
-
-export default function tableCreate(filtredHistoryArray) {
-  filtredHistoryArray = filterTransaction();
+function tableCreate() {
+  const filtredHistory = filterTransaction();
 
   const table = document.createElement('table');
   table.className = 'table';
-
   table.innerHTML = `<thead>
       <tr>
         <th scope="col">Date</th>
@@ -81,7 +39,7 @@ export default function tableCreate(filtredHistoryArray) {
   const tbody = document.createElement('tbody');
   table.appendChild(tbody);
 
-  filtredHistoryArray.forEach((transaction, i) => {
+  filtredHistory.forEach((transaction, i) => {
     const row = tbody.insertRow(i);
     const cell1 = row.insertCell();
     const cell2 = row.insertCell();
@@ -105,6 +63,49 @@ export default function tableCreate(filtredHistoryArray) {
   document.querySelector('.table-wrapper').append(table);
 }
 
-filterTransaction();
-rendertableBtns();
-buttonsListeners();
+function renderTableBtns() {
+  const tableTypeBtns = createElement(
+    'div',
+    'btn-group btn-group-toggle type-table',
+    null,
+    ['toggle', 'buttons'],
+  );
+  tableTypeBtns.insertAdjacentHTML(
+    'beforeend',
+    `
+    <label class="btn btn-secondary">
+    <input type="radio" name="type-table" id="all" autocomplete="on"> All
+    </label>
+    <label class="btn btn-secondary active">
+    <input type="radio" name="type-table" id="expense" autocomplete="off" checked> Expense
+    </label>
+    <label class="btn btn-secondary">
+    <input type="radio" name="type-table" id="income" autocomplete="off"> Income
+    </label>`,
+  );
+  document.querySelector('.table-wrapper').prepend(tableTypeBtns);
+}
+
+function buttonsListeners() {
+  document.querySelectorAll('[name="type-table"]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (btn.checked === true) {
+        typeTransaction = btn.id;
+        rerenderTable(typeTransaction);
+      }
+    });
+  });
+}
+
+function rerenderTable() {
+  document.querySelector('.table').remove();
+  tableCreate();
+}
+
+export default function renderTable() {
+  // filtredHistoryArray = filterTransaction();
+  filterTransaction();
+  tableCreate();
+  renderTableBtns();
+  buttonsListeners();
+}
