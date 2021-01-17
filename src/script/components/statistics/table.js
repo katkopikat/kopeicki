@@ -1,7 +1,8 @@
 import createElement from '../../utils/create';
-import history from '../../helpers/history_transactions';
+import app from '../../app';
 
 let typeTransaction = 'all';
+let history;
 
 function formatDate(date) {
   let dd = date.getDate();
@@ -16,15 +17,19 @@ function formatDate(date) {
   return `${dd}.${mm}.${yy}`;
 }
 
-function filterTransaction() {
-  if (typeTransaction === 'all') return history;
+async function getHistory() {
+  const transactions = await app.api.getTransactions();
+  history = [...transactions];
+}
 
-  return history.filter((transaction) => transaction.type === typeTransaction);
+function filterTransaction() {
+  const historyByDate = history.sort((a, b) => b.date - a.date);
+  if (typeTransaction === 'all') return historyByDate;
+  return historyByDate.filter((transaction) => transaction.type === typeTransaction);
 }
 
 function tableCreate() {
   const filtredHistory = filterTransaction();
-
   const table = document.createElement('table');
   table.className = 'table';
   table.innerHTML = `<thead>
@@ -48,13 +53,13 @@ function tableCreate() {
     const cell5 = row.insertCell();
 
     cell1.className = 'cell__date';
-    cell2.className = 'cell__category';
+    cell2.className = transaction.type === 'expenses' ? 'cell__category-expense' : 'cell__category-income';
     cell3.className = 'cell__amount';
     cell4.className = 'cell__account';
     cell5.className = 'cell__description';
 
-    cell1.innerHTML = formatDate(new Date(transaction.date)),
-    cell2.innerHTML = transaction.category,
+    cell1.innerHTML = formatDate(new Date(transaction.date));
+    cell2.innerHTML = transaction.category;
     cell3.innerHTML = transaction.amount;
     cell4.innerHTML = transaction.account;
     cell5.innerHTML = transaction.description;
@@ -77,13 +82,18 @@ function renderTableBtns() {
     <input type="radio" name="type-table" id="all" autocomplete="on"> All
     </label>
     <label class="btn btn-secondary active">
-    <input type="radio" name="type-table" id="expense" autocomplete="off" checked> Expense
+    <input type="radio" name="type-table" id="expenses" autocomplete="off" checked> Expenses
     </label>
     <label class="btn btn-secondary">
     <input type="radio" name="type-table" id="income" autocomplete="off"> Income
     </label>`,
   );
   document.querySelector('.table-wrapper').prepend(tableTypeBtns);
+}
+
+function rerenderTable() {
+  document.querySelector('.table').remove();
+  tableCreate();
 }
 
 function buttonsListeners() {
@@ -97,15 +107,13 @@ function buttonsListeners() {
   });
 }
 
-function rerenderTable() {
-  document.querySelector('.table').remove();
-  tableCreate();
-}
-
-export default function renderTable() {
-  // filtredHistoryArray = filterTransaction();
+function createTableContent() {
   filterTransaction();
   tableCreate();
   renderTableBtns();
   buttonsListeners();
+}
+
+export default function renderTable() {
+  getHistory().then(() => createTableContent());
 }

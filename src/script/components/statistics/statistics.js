@@ -1,11 +1,11 @@
-import statisticsHtml from './statisticsHtml';
-import generateBarChart from './bar';
-import generateDoughnutChart from './doughnut';
+import renderStatisticsHtml from './statisticsHtml';
+import renderBarChart from './bar';
+import renderDoughnutChart from './doughnut';
 import renderTable from './table';
 
 export default function renderStatisticsPage() {
-  statisticsHtml();
-  generateBarChart();
-  generateDoughnutChart();
+  renderStatisticsHtml();
+  renderDoughnutChart();
+  renderBarChart();
   renderTable();
 }
