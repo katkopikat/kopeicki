@@ -1,0 +1,12 @@
+@import './variables';
+@import '../../node_modules/bootstrap/scss/bootstrap';
+@import './modal';
+@import './transactions';
+@import './history';
+@import './dragnDrop';
+@import './charts';
+@import './header';
+
+body {
+  background: var(--dark);
+}

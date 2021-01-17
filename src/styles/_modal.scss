@@ -1,0 +1,201 @@
+.modal-content.expenses {
+  background: var(--expenses);
+
+  input,
+  select,
+  textarea,
+  textarea:focus {
+    background: var(--expenses);
+  }
+}
+
+.modal-content.income {
+  background: var(--income);
+
+  input,
+  select,
+  textarea,
+  textarea:focus {
+    background: var(--income);
+  }
+}
+
+.modal-content.accounts {
+  background: var(--accounts);
+
+  input,
+  select,
+  textarea,
+  textarea:focus {
+    background: var(--accounts);
+  }
+}
+
+.modal-content {
+  border-radius: 1rem;
+  line-height: 1;
+
+  .form-floating {
+    padding-top: 0.25rem;
+  }
+}
+
+.modal-header {
+  color: var(--dark);
+  padding: 1rem 1rem 0 0;
+  border: 0;
+}
+
+.modal-body {
+  padding: 0 2rem;
+  color: var(--dark);
+
+  input,
+  select,
+  textarea {
+    font-size: 1.2rem;
+    color: var(--dark);
+    border: none;
+    outline: none;
+  }
+
+  textarea {
+    resize: none;
+
+    &:focus {
+      padding-left: 0;
+    }
+  }
+
+  .textarea-label {
+    padding-left: 0;
+    font-style: italic;
+    color: var(--light);
+  }
+
+  .form-control {
+    font-style: italic;
+    color: white;
+    overflow: hidden;
+
+    &:not(:placeholder-shown) {
+      padding-left: 0;
+    }
+  }
+
+  input[type='date'] {
+    position: relative;
+    overflow: visible;
+  }
+
+  input[type='date']::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    margin: 0;
+    padding: 0;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+
+  &__title {
+    text-transform: uppercase;
+  }
+
+  &__amount {
+    padding-right: 0.2em;
+    font-size: 4rem;
+    outline: none;
+
+    &:hover {
+      cursor: auto;
+    }
+  }
+
+  &__category-name {
+    text-transform: lowercase;
+    font-size: 1.2rem;
+  }
+
+  .new-category {
+    @include flex-col;
+    row-gap: 2rem;
+    align-items: center;
+    padding-bottom: 1.5rem;
+
+    .title {
+      color: var(--light);
+      font-style: italic;
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: -24px;
+    }
+
+    &__name {
+      text-align: center;
+      font-size: 2rem;
+      color: var(--light);
+      text-transform: uppercase;
+      border-bottom: 1px dashed var(--light);
+      padding-bottom: 0;
+    }
+
+    &__icons {
+      width: 95%;
+      display: flex;
+      flex-wrap: wrap;
+      row-gap: 1.2rem;
+      column-gap: 1.5rem;
+
+      label {
+        height: 38px;
+        width: 38px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+
+        &:hover {
+          filter: invert(1);
+          cursor: pointer;
+        }
+
+        input[name='icon'] {
+          opacity: 0;
+        }
+      }
+    }
+
+    .btn {
+      text-transform: uppercase;
+    }
+
+    .selected {
+      border: 1px dashed var(--light);
+      border-radius: 3px;
+    }
+  }
+}
+
+.modal-footer {
+  padding: 0.2rem 0 1rem 2rem;
+  justify-content: flex-start;
+  border: 0;
+
+  * {
+    margin: 0;
+  }
+
+  .btn {
+    background: var(--light);
+    text-transform: uppercase;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.btn-close {
+  opacity: 0.25;
+}
+

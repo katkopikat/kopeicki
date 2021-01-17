@@ -1,6 +1,7 @@
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
@@ -14,12 +15,21 @@ module.exports = {
   devServer: {
     open: true,
     port: 4200,
+    historyApiFallback: true,
   },
   plugins: [
     new HTMLWebpackPlugin({
       template: 'index.html',
     }),
     new CleanWebpackPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'src/assets'),
+          to: path.resolve(__dirname, 'dist'),
+        },
+      ],
+    }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),
@@ -36,6 +46,7 @@ module.exports = {
             },
           },
           'css-loader',
+          'postcss-loader',
           'sass-loader',
         ],
       },

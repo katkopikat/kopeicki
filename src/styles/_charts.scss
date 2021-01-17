@@ -1,0 +1,73 @@
+::-webkit-scrollbar {
+    background: transparent;
+    width: 6px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: var(--expenses);
+    box-shadow: inset 0 0 2px #000;
+    border-radius: 20px;
+}
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+   
+   .bar-wrapper, .wrapper-doughnut {
+   // height: 500px;
+    //width: 500px;
+}
+
+.btn {
+    font-size: 0.9rem;
+    padding: 0.2rem 0.6rem;
+    appearance: none;
+}
+
+input[type=radio] {
+    appearance: none;
+}
+
+thead, tbody, tfoot, tr, td, th {
+    color: var(--light);
+    font-size: 0.9rem;
+}
+
+.table {
+    background-color: rgba(161,161, 161, 0.1);
+
+    &-wrapper{
+        max-height: 85vh;
+        overflow: auto;
+    }
+
+    & > :not(caption){
+        border-bottom: 1px solid #383838;
+    }
+
+    .cell {
+        &__date{
+           opacity: 0.6;
+        }
+        &__category{
+            background-color: var(--income);
+        }
+        &__amount{
+            background-color: var(--expenses);
+        }
+        &__account{
+            opacity: 0.6;
+        }
+        &__description{
+            opacity: 0.6;
+            font-style: italic;
+        }
+    }
+ 
+
+
+    
+}
+
+
+.bar-container{
+    margin-bottom: 1rem;
+}
