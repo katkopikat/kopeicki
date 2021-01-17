@@ -4,8 +4,7 @@ import generateDoughnutChart from './doughnut';
 import tableCreate from './table';
 
 export default function renderStatisticsPage() {
-
-  const main = document.querySelector('main')
+  const main = document.querySelector('main');
 
   const row = createElement('div', 'row');
   const mainContainer = createElement('div', 'container-xxl transactions-container', row);
@@ -21,6 +20,4 @@ export default function renderStatisticsPage() {
   generateBarChart();
   generateDoughnutChart();
   tableCreate();
-
-  console.log('Отрисовалась статистика')
 }

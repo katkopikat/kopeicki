@@ -141,7 +141,6 @@ function buttonsListeners() {
   });
 }
 
-
 function generateBar() {
   const barContainer = document.querySelector('.bar-container');
   barChart = new Chart(barContainer, {

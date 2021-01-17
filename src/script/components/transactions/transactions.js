@@ -46,6 +46,4 @@ export default function renderTransactionsPage(/* options */) {
     account.addEventListener('dragleave', dragLeave);
     account.addEventListener('drop', dragDrop);
   });
-
-  console.log('Отрисовались транзакции')
 }

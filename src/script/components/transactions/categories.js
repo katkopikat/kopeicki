@@ -123,6 +123,4 @@ export default function createCategoryList(group, container) {
       console.log('Shift + R => Edit categories!');
     }
   });
-
-  
 }

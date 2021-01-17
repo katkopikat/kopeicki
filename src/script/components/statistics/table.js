@@ -2,7 +2,7 @@ import history from '../../helpers/history_transactions';
 import createElement from '../../utils/create';
 
 let typeTransaction = 'all';
-let filtredHistory = history;
+const filtredHistory = history;
 
 function formatDate(date) {
   let dd = date.getDate();
@@ -38,13 +38,13 @@ function rendertableBtns() {
     </label>`,
   );
 
-  //document.querySelector('.table-wrapper').append(tableTypeBtns);
+  // document.querySelector('.table-wrapper').append(tableTypeBtns);
 }
 
 function filterTransaction() {
-    if (typeTransaction === 'all') return history;
+  if (typeTransaction === 'all') return history;
 
-   return history.filter((transaction) => transaction.type === typeTransaction);
+  return history.filter((transaction) => transaction.type === typeTransaction);
 }
 
 function buttonsListeners() {
@@ -64,8 +64,7 @@ function rerenderTable() {
 }
 
 export default function tableCreate(filtredHistoryArray) {
-
-filtredHistoryArray = filterTransaction();
+  filtredHistoryArray = filterTransaction();
 
   const table = document.createElement('table');
   table.className = 'table';

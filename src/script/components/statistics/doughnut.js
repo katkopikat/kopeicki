@@ -10,9 +10,9 @@ let period = 'mounth';
 let summaryObj = null;
 let doughnut = null;
 
-function setBGColor(){
+function setBGColor() {
   return document.documentElement.hasAttribute('theme') ? 'rgba(234, 237, 241, 1)' : 'rgba(37, 40, 54, 1)';
-} 
+}
 
 function renderDoughnutHTML() {
   const doughnutWrapperDiv = createElement('div', 'wrapper-doughnut');
@@ -142,7 +142,7 @@ function generateChart(type, time) {
       },
       legend: {
         position: 'left',
-      }
+      },
     },
 
   });
