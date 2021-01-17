@@ -1,11 +1,11 @@
 .day-of-week {
-  font-size: 2rem;
+  font-size: 1.25rem;
   text-transform: uppercase;
   color: var(--light);
 }
 
 .date {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: var(--light);
 }
 
@@ -35,17 +35,17 @@
   }
 
   .account-name {
-    font-size: 1.125rem;
+    font-size: 0.9rem;
     color: var(--gray);
   }
 
   .category-name {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     color: var(--light);
   }
 
   .money-amount {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .money-amount.expenses {
