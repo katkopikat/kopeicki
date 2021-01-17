@@ -6,14 +6,14 @@ import renderSettingsPage from './script/components/settings/settings';
 import renderTransactionsPage from './script/components/transactions/transactions';
 
 const Planning = () => {
-    console.log('Отрисовалась планинг')
+  console.log('Отрисовалась планинг');
 };
 
 const router = () => {
   const routes = [
     { path: '/statistics', component: renderStatisticsPage },
     { path: '/planning', component: Planning },
-    { path: '/settings', component: renderSettingsPage},
+    { path: '/settings', component: renderSettingsPage },
     { path: '/', component: renderTransactionsPage },
   ];
 
