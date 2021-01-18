@@ -26,7 +26,7 @@ export default function createCategoryList(group, container) {
   const listContainer = createElement('div', 'flex-list');
 
   list.forEach((category) => {
-    const categoryName = createElement('span', '', category.name);
+    const categoryName = createElement('span', '', category.name, ['i18n', category.name]);
     const imgSrc = `background-image: url(${category.icon});`;
     const categoryIcon = createElement('div', 'icon-svg', null, ['style', imgSrc]);
     const categoryIconDiv = createElement('div', 'category-icon', categoryIcon);
@@ -46,7 +46,7 @@ export default function createCategoryList(group, container) {
   const addCategoryBtn = createElement(
     'div',
     'flex-list__item add-category',
-    '<div class="add"></div> <span>Add category</span>',
+    '<div class="add"></div><span data-i18n="new">New category</span>',
     ['group', group],
   );
 

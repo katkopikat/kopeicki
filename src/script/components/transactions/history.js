@@ -28,8 +28,6 @@ const formatDate = (date) => {
 };
 
 export default async function renderHistory() {
-  const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
-
   const transactions = await app.api.getTransactions();
   const last7transactions = transactions.slice(0, 7);
   const days = sortByDays(last7transactions);
@@ -43,7 +41,6 @@ export default async function renderHistory() {
     const today = formatDate(new Date());
     const yesterday = formatDate(new Date(new Date().setDate(new Date().getDate() - 1)));
     const date = new Date(day[0].date);
-    const formattedDate = new Intl.DateTimeFormat('en-GB', dateOptions).format(date);
 
     let dayOfWeek;
 
@@ -52,14 +49,15 @@ export default async function renderHistory() {
     } else if (yesterday === formatDate(date)) {
       dayOfWeek = 'yesterday';
     } else {
-      [dayOfWeek] = formattedDate.split(',');
+      dayOfWeek = new Intl.DateTimeFormat('en-GB', { weekday: 'long' }).format(date);
     }
 
     dateDiv.insertAdjacentHTML(
       'beforeend',
       `
-        <span class="day-of-week">${dayOfWeek},</span>
-        <span class="date">${formattedDate.split(',')[1]}</span>
+        <span class="day-of-week" data-i18n="${dayOfWeek}"></span>
+        <span class="date"> ${date.getDate()} </span>
+        <span class="date" data-i18n="${date.getMonth()}"></span>
       `,
     );
 
@@ -69,8 +67,8 @@ export default async function renderHistory() {
         `
         <div class="row">
         <div class="col">
-          <p class="account-name">${transaction.account}</p>
-          <p class="category-name">${transaction.category}</p>
+          <p class="account-name" data-i18n="${transaction.account}">${transaction.account}</p>
+          <p class="category-name" data-i18n="${transaction.category}">${transaction.category}</p>
         </div>
         <div class="col">
           <p class="money-amount ${transaction.type}">${transaction.amount}</p>
