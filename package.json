@@ -41,7 +41,9 @@
     "@popperjs/core": "^2.6.0",
     "bootstrap": "^5.0.0-beta1",
     "bootstrap-icons": "^1.2.2",
-    "popper.js": "^1.16.1",
-    "chart.js": "^2.9.4"
+    "chart.js": "^2.9.4",
+    "material-design-icons": "^3.0.1",
+    "moment": "^2.29.1",
+    "popper.js": "^1.16.1"
   }
 }

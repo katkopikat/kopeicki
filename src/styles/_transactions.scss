@@ -3,12 +3,13 @@
   .transactions-dashboard {
     @include flex-col;
     row-gap: 2rem;
-    padding: 1.5rem;
+    padding: 1.8rem 1.5rem;
 
     &__item {
       width: 100%;
       padding: 1.3rem;
       border-radius: 8px;
+      background-color: var(--catergory-bg);
       box-shadow: var(--shadow);
 
       h4 {

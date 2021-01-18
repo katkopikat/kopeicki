@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 
 import { Chart } from 'chart.js';
+import moment from 'moment';
 import createElement from '../../utils/create';
 import app from '../../app';
 
@@ -74,7 +75,9 @@ function filterTransactions() {
   const filtredHistory = history.filter((transaction) => {
     const trDate = new Date(transaction.date);
     if (period === 'year') {
-      return trDate.getFullYear() === today.getFullYear() && transaction.type === typeTransaction;
+      const oneYearAgo = new Date().setFullYear(new Date().getFullYear() - 1);
+      return moment(transaction.date).isBetween(oneYearAgo, moment.now())
+             && transaction.type === typeTransaction;
     }
     return trDate.getMonth() === today.getMonth() && transaction.type === typeTransaction;
   });

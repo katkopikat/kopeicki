@@ -1,6 +1,7 @@
 import './styles/main.scss';
 import 'bootstrap';
 
+// import renderAuthorizationPage from './script/components/authorization/authorization';
 import renderStatisticsPage from './script/components/statistics/statistics';
 import renderSettingsPage from './script/components/settings/settings';
 import renderTransactionsPage from './script/components/transactions/transactions';
