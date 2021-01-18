@@ -2,7 +2,7 @@ import { Modal } from 'bootstrap';
 import createElement from '../utils/create';
 import { insertAfter, createSelect } from '../utils/DOM';
 import api from '../api';
-import app from '../app';
+import renderHistory from './transactions/history';
 
 function createModal() {
   function create() {
@@ -78,21 +78,8 @@ export function transactionModal(options) {
   );
   const selectFrom = createSelect(options.from);
   const selectTo = createSelect(options.to, options.type);
-  const date = createElement(
-    'input',
-    'modal-body__date',
-    null,
-    ['type', 'date'],
-    ['value', today],
-    ['max', today],
-  );
-  const description = createElement(
-    'textarea',
-    'form-control',
-    null,
-    ['id', 'description'],
-    ['maxlength', 45],
-  );
+  const date = createElement('input', 'modal-body__date', null, ['type', 'date'], ['value', today], ['max', today]);
+  const description = createElement('textarea', 'form-control', null, ['id', 'description'], ['maxlength', 45]);
   // const currency = createElement('span', 'modal-body__currency', 'BYN');
 
   const saveBtn = createElement('button', 'btn', saveBtnOptions[options.type]);
@@ -125,7 +112,7 @@ export function transactionModal(options) {
     };
     api.saveTransaction(tx).then((result) => {
       console.log(result);
-      app.renderHistory();
+      renderHistory();
     });
 
     modal.hide();
