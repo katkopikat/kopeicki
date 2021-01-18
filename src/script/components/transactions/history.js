@@ -31,8 +31,10 @@ export default async function renderHistory() {
   const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
 
   const transactions = await app.api.getTransactions();
-  const last5transactions = transactions.slice(0, 5);
-  const days = sortByDays(last5transactions);
+  const last7transactions = transactions.slice(0, 7);
+  const days = sortByDays(last7transactions);
+
+  document.querySelector('.transactions-history').innerHTML = '';
 
   days.forEach((day) => {
     const dateDiv = createElement('div');
@@ -80,6 +82,6 @@ export default async function renderHistory() {
     });
 
     const container = createElement('div', '', [dateDiv, dayDiv]);
-    document.querySelector('.transactions-history').append(container);
+    document.querySelector('.transactions-history').prepend(container);
   });
 }
