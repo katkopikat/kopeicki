@@ -2,8 +2,8 @@ import './styles/main.scss';
 import 'bootstrap';
 
 // import renderAuthorizationPage from './script/components/authorization/authorization';
+import toggleSettings from './script/components/settings/settings';
 import renderStatisticsPage from './script/components/statistics/statistics';
-import renderSettingsPage from './script/components/settings/settings';
 import renderTransactionsPage from './script/components/transactions/transactions';
 
 const Planning = () => {
@@ -14,7 +14,6 @@ const router = () => {
   const routes = [
     { path: '/statistics', component: renderStatisticsPage },
     { path: '/planning', component: Planning },
-    { path: '/settings', component: renderSettingsPage },
     { path: '/', component: renderTransactionsPage },
   ];
 
@@ -31,6 +30,8 @@ const navigateTo = (url) => {
   window.history.pushState(null, null, url);
   router();
 };
+
+toggleSettings();
 
 window.addEventListener('popstate', router);
 

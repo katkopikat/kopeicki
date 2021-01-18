@@ -1,9 +1,7 @@
 import switchTheme from './theme';
-import displayCurrencyList from './currency';
 import { switchLanguage } from './language';
 
-export default function renderSettingsPage() {
+export default function toggleSettings() {
   switchTheme();
-  displayCurrencyList();
   switchLanguage();
 }

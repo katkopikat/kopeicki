@@ -1,0 +1,43 @@
+$scale: 80px;
+
+.theme-toggle {
+  .checkbox {
+    opacity: 0;
+    position: absolute;
+  }
+
+  .label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: $scale;
+    height: $scale/2;
+    padding: 3px;
+    border-radius: $scale/4;
+    background: var(--dark);
+    transition: all 0.4s ease-in-out;
+    cursor: pointer;
+
+    svg {
+      width: $scale/2 - 6px;
+      height: $scale/2 - 14px;
+      color: var(--light);
+      transition: all 0.4s ease-in-out;
+    }
+
+    svg:last-child {
+      padding-bottom: 4px;
+    }
+  }
+
+  .ball {
+    position: absolute;
+    width: $scale/2 - 6px;
+    height: $scale/2 - 6px;
+    border-radius: 50%;
+    background: var(--accounts);
+    transition: all 0.4s ease-in-out;
+    cursor: pointer;
+  }
+}
