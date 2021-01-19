@@ -150,7 +150,7 @@ function generateChart(type, time) {
         text: `Total ${type} for the ${time} ${calculateTotalSum()} rub.`,
       },
       legend: {
-        position: 'right',
+        position: 'bottom',
       },
     },
 

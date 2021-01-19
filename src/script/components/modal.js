@@ -70,12 +70,14 @@ export function transactionModal(options) {
   );
 
   const moneyAmount = createElement(
-    'span',
+    'input',
     'modal-body__amount',
     '0.00',
+    ['type', 'number'],
     ['role', 'textbox'],
-    ['contenteditable', true],
+    ['placeholder', '0.00'],
   );
+
   const selectFrom = createSelect(options.from);
   const selectTo = createSelect(options.to, options.type);
   const date = createElement('input', 'modal-body__date', null, ['type', 'date'], ['value', today], ['max', today]);
@@ -172,12 +174,13 @@ export function newCategoryModal(type) {
 
   if (type === 'accounts') {
     const moneyAmount = createElement(
-      'span',
+      'input',
       'modal-body__amount',
       '0.00',
-      ['role', 'textbox'],
-      ['contenteditable', true],
+      ['type', 'number'],
+      ['placeholder', '0.00'],
     );
+
     const currency = createElement('span', 'modal-body__currency', 'rub');
 
     [moneyAmount, currency].forEach((el) => wrap.insertBefore(el, iconsContainer));
