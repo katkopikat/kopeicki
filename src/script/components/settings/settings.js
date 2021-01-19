@@ -1,9 +1,14 @@
 import switchTheme from './theme';
-import displayCurrencyList from './currency';
-import { switchLanguage } from './language';
+import createSelect from '../../utils/select';
+import { getLanguage, setLanguage } from '../../utils/localStorage';
 
-export default function renderSettingsPage() {
+export default function toggleSettings() {
+  const themeToggleEl = document.querySelector('.theme-toggle');
   switchTheme();
-  displayCurrencyList();
-  switchLanguage();
+  createSelect(themeToggleEl, {
+    class: 'select__language',
+    placeholder: getLanguage(),
+    list: ['en', 'ru', 'be'],
+    onSelect: setLanguage,
+  });
 }
