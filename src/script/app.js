@@ -1,5 +1,6 @@
 import api from './api';
 import createElement from './utils/create';
+// import renderAuthorizationPage from './components/authorization/authorization';
 
 class App {
   constructor(apiInstance) {
@@ -8,14 +9,28 @@ class App {
     this.transactions = [];
   }
 
-  async init() {
-    // dev mode autologin
-    await this.login();
-  }
+  // async init() {
+  //   // dev mode autologin
+  //   await this.login();
+  // }
 
-  async login() {
+  // async checkAuth() {
+  //   const userId = localStorage.getItem('userId');
+  //   const token = localStorage.getItem('token');
+  //   const refreshToken = localStorage.getItem('refreshToken');
+  //   if (userId === null
+  //     || token === null
+  //     || refreshToken === null) {
+  //     this.loggedIn = false;
+  //     // redirect to login-register page
+  //     window.history.pushState(null, null, '/users/login');
+  //   }
+  // }
+
+  async login(email, password) {
     try {
-      await this.api.login('user1@rsclone.com', 'test');
+      // await this.api.login('user1@rsclone.com', 'test');
+      await this.api.login(email, password);
       this.loggedIn = true;
       console.log('login success');
     } catch (e) {
@@ -49,6 +64,6 @@ class App {
 
 const app = new App(api);
 
-app.init();
+// app.init();
 
 export default app;

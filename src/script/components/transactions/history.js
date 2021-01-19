@@ -31,57 +31,60 @@ export default async function renderHistory() {
   const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
 
   const transactions = await app.api.getTransactions();
-  const last7transactions = transactions.slice(0, 7);
-  const days = sortByDays(last7transactions);
+  console.log(transactions);
+  if (transactions) {
+    const last7transactions = transactions.slice(0, 7);
+    const days = sortByDays(last7transactions);
 
-  document.querySelector('.transactions-history').innerHTML = '';
+    document.querySelector('.transactions-history').innerHTML = '';
 
-  days.forEach((day) => {
-    const dateDiv = createElement('div');
-    const dayDiv = createElement('div', 'day');
+    days.forEach((day) => {
+      const dateDiv = createElement('div');
+      const dayDiv = createElement('div', 'day');
 
-    const today = formatDate(new Date());
-    const yesterday = formatDate(new Date(new Date().setDate(new Date().getDate() - 1)));
-    const date = new Date(day[0].date);
-    const formattedDate = new Intl.DateTimeFormat('en-GB', dateOptions).format(date);
+      const today = formatDate(new Date());
+      const yesterday = formatDate(new Date(new Date().setDate(new Date().getDate() - 1)));
+      const date = new Date(day[0].date);
+      const formattedDate = new Intl.DateTimeFormat('en-GB', dateOptions).format(date);
 
-    let dayOfWeek;
+      let dayOfWeek;
 
-    if (today === formatDate(date)) {
-      dayOfWeek = 'today';
-    } else if (yesterday === formatDate(date)) {
-      dayOfWeek = 'yesterday';
-    } else {
-      [dayOfWeek] = formattedDate.split(',');
-    }
+      if (today === formatDate(date)) {
+        dayOfWeek = 'today';
+      } else if (yesterday === formatDate(date)) {
+        dayOfWeek = 'yesterday';
+      } else {
+        [dayOfWeek] = formattedDate.split(',');
+      }
 
-    dateDiv.insertAdjacentHTML(
-      'beforeend',
-      `
-        <span class="day-of-week">${dayOfWeek},</span>
-        <span class="date">${formattedDate.split(',')[1]}</span>
-      `,
-    );
-
-    day.forEach((transaction) => {
-      dayDiv.insertAdjacentHTML(
+      dateDiv.insertAdjacentHTML(
         'beforeend',
         `
-        <div class="row">
-        <div class="col">
-          <p class="account-name">${transaction.account}</p>
-          <p class="category-name">${transaction.category}</p>
-        </div>
-        <div class="col">
-          <p class="money-amount ${transaction.type}">${transaction.amount}</p>
-          <p class="description">${transaction.description}</p>
-        </div>
-      </div>
+          <span class="day-of-week">${dayOfWeek},</span>
+          <span class="date">${formattedDate.split(',')[1]}</span>
         `,
       );
-    });
 
-    const container = createElement('div', '', [dateDiv, dayDiv]);
-    document.querySelector('.transactions-history').prepend(container);
-  });
+      day.forEach((transaction) => {
+        dayDiv.insertAdjacentHTML(
+          'beforeend',
+          `
+          <div class="row">
+          <div class="col">
+            <p class="account-name">${transaction.account}</p>
+            <p class="category-name">${transaction.category}</p>
+          </div>
+          <div class="col">
+            <p class="money-amount ${transaction.type}">${transaction.amount}</p>
+            <p class="description">${transaction.description}</p>
+          </div>
+        </div>
+          `,
+        );
+      });
+
+      const container = createElement('div', '', [dateDiv, dayDiv]);
+      document.querySelector('.transactions-history').prepend(container);
+    });
+  }
 }

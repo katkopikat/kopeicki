@@ -1,7 +1,7 @@
 import './styles/main.scss';
 import 'bootstrap';
 
-// import renderAuthorizationPage from './script/components/authorization/authorization';
+import renderAuthorizationPage from './script/components/authorization/authorization';
 import renderStatisticsPage from './script/components/statistics/statistics';
 import renderSettingsPage from './script/components/settings/settings';
 import renderTransactionsPage from './script/components/transactions/transactions';
@@ -15,6 +15,7 @@ const router = () => {
     { path: '/statistics', component: renderStatisticsPage },
     { path: '/planning', component: Planning },
     { path: '/settings', component: renderSettingsPage },
+    { path: '/login', component: renderAuthorizationPage },
     { path: '/', component: renderTransactionsPage },
   ];
 
