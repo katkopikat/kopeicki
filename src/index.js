@@ -5,6 +5,9 @@ import 'bootstrap';
 import renderStatisticsPage from './script/components/statistics/statistics';
 import renderSettingsPage from './script/components/settings/settings';
 import renderTransactionsPage from './script/components/transactions/transactions';
+import app from './script/app';
+
+app.renderTransactionsPage = renderTransactionsPage;
 
 const Planning = () => {
   console.log('Отрисовалась планинг');
@@ -47,5 +50,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  router();
+  app.init().then(router);
+  // router();
 });

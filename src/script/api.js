@@ -65,8 +65,16 @@ class ApiClient {
   async deleteTransaction(txId) {
     return this.request('DELETE', `/transactions/${txId}`);
   }
+
+  async getUser() {
+    return this.request('GET', '/users/current');
+  }
+
+  async updateUser(userData) {
+    return this.request('PUT', '/users/current', userData);
+  }
 }
 
-const api = new ApiClient('https://rsclone-coinkeeper.herokuapp.com'); // 'http://localhost:8000'
+const api = new ApiClient('http://localhost:8000'); //  'https://rsclone-coinkeeper.herokuapp.com'
 
 export default api;
