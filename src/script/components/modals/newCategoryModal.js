@@ -1,5 +1,6 @@
 import createElement from '../../utils/create';
 import modal from './modal';
+import app from '../../app';
 
 export default function newCategoryModal(type) {
   const titleOptions = {
@@ -63,7 +64,7 @@ export default function newCategoryModal(type) {
     [moneyAmount, currency].forEach((el) => wrap.insertBefore(el, iconsContainer));
   }
 
-  saveBtn.addEventListener('click', () => {
+  saveBtn.addEventListener('click', async () => {
     const icon = wrap.querySelector('input[name="icon"]:checked').value;
 
     const newCategoryItem = {
@@ -72,8 +73,20 @@ export default function newCategoryModal(type) {
     };
 
     if (type === 'accounts') {
-      newCategoryItem.moneyAmount = wrap.querySelector('.modal-body__amount').innerText;
+      newCategoryItem.amount = wrap.querySelector('.modal-body__amount').innerText;
       newCategoryItem.currency = wrap.querySelector('.modal-body__currency').innerText;
+
+      await app.addUserAccount(newCategoryItem);
+      document.querySelector('main').innerHTML = '';
+      app.renderTransactionsPage();
+    } else if (type === 'expenses') {
+      await app.addUserExpense(newCategoryItem);
+      document.querySelector('main').innerHTML = '';
+      app.renderTransactionsPage();
+    } else {
+      await app.addUserIncome(newCategoryItem);
+      document.querySelector('main').innerHTML = '';
+      app.renderTransactionsPage();
     }
 
     console.log(newCategoryItem);

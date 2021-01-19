@@ -1,11 +1,9 @@
 import api from './api';
-import createElement from './utils/create';
 
 class App {
   constructor(apiInstance) {
     this.api = apiInstance;
-    this.loggedIn = false;
-    this.transactions = [];
+    this.user = null;
   }
 
   async init() {
@@ -15,40 +13,59 @@ class App {
 
   async login() {
     try {
-      await this.api.login('user1@rsclone.com', 'test');
-      this.loggedIn = true;
+      await this.api.login('user5@rsclone.com', 'test');
+      this.user = await this.api.getUser();
       console.log('login success');
     } catch (e) {
       console.error(e.message);
     }
   }
 
-  async renderHistory() {
-    const history = document.querySelector('.transactions-history');
-    this.transactions = await this.api.getTransactions();
-    console.log(`totalTxs: ${Object.keys(this.transactions).length}`);
-    this.transactions.forEach((tx) => {
-      const delBtn = createElement('a', '', 'x');
-      // eslint-disable-next-line no-script-url
-      delBtn.setAttribute('href', 'javascript:');
-      delBtn.addEventListener('click', async () => {
-        console.log(`delete tx: ${tx.id}`);
-        await this.api.deleteTransaction(tx.id);
-        this.renderHistory();
-      });
-      let txEl;
-      if (tx.type === 'expenses') {
-        txEl = createElement('div', '', [`${tx.account} > ${tx.category} : ${tx.amount}р `, delBtn]);
-      } else {
-        txEl = createElement('div', '', [`${tx.category} > ${tx.account} : ${tx.amount}р `, delBtn]);
-      }
-      history.append(txEl);
-    });
+  getUserAccounts() {
+    return this.user.accounts;
+  }
+
+  getUserExpenses() {
+    return this.user.expenses;
+  }
+
+  getUserIncome() {
+    return this.user.income;
+  }
+
+  async addUserAccount(acc) {
+    this.user.accounts.push(acc);
+    this.user = await this.api.updateUser(this.user);
+  }
+
+  async addUserExpense(exp) {
+    this.user.expenses.push(exp);
+    this.user = await this.api.updateUser(this.user);
+  }
+
+  async addUserIncome(inc) {
+    this.user.income.push(inc);
+    this.user = await this.api.updateUser(this.user);
+  }
+
+  async removeUserAccount(account) {
+    this.user.accounts = this.user.accounts.filter((item) => item.name !== account.name);
+    this.user = await this.api.updateUser(this.user);
+  }
+
+  async removeUserExpense(expense) {
+    this.user.expenses = this.user.expenses.filter((item) => item.name !== expense.name);
+    this.user = await this.api.updateUser(this.user);
+  }
+
+  async removeUserIncome(income) {
+    this.user.income = this.user.income.filter((item) => item.name !== income.name);
+    this.user = await this.api.updateUser(this.user);
   }
 }
 
 const app = new App(api);
 
-app.init();
+// app.init();
 
 export default app;
