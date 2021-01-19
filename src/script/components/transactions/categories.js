@@ -1,21 +1,24 @@
 import createElement from '../../utils/create';
-import allAccountsCategories from '../../data/accounts';
-import allExpensesCategories from '../../data/expenses';
-import allIncomeCategories from '../../data/income';
-import { modal, transactionModal, newCategoryModal } from '../modal';
+// import allAccountsCategories from '../../data/accounts';
+// import allExpensesCategories from '../../data/expenses';
+// import allIncomeCategories from '../../data/income';
+import modal from '../modals/modal';
+import transactionModal from '../modals/transactionModal';
+import newCategoryModal from '../modals/newCategoryModal';
+import app from '../../app';
 
 export default function createCategoryList(group, container) {
   let list;
 
   switch (group) {
     case 'accounts':
-      list = [...allAccountsCategories];
+      list = [...app.user.accounts]; // [...allAccountsCategories];
       break;
     case 'expenses':
-      list = [...allExpensesCategories];
+      list = [...app.user.expenses]; // [...allExpensesCategories];
       break;
     case 'income':
-      list = [...allIncomeCategories];
+      list = [...app.user.income]; // [...allIncomeCategories];
       break;
     default:
       break;
