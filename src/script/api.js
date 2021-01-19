@@ -75,6 +75,6 @@ class ApiClient {
   }
 }
 
-const api = new ApiClient('http://localhost:8000'); //  'https://rsclone-coinkeeper.herokuapp.com'
+const api = new ApiClient('https://rsclone-coinkeeper.herokuapp.com'); // 'http://localhost:8000'
 
 export default api;
