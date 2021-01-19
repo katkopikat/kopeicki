@@ -41,3 +41,11 @@ $scale: 80px;
     cursor: pointer;
   }
 }
+
+html.transition,
+html.transition *,
+html.transition *:before,
+html.transition *:after {
+  transition: all 0.75s !important;
+  transition-delay: 0 !important;
+}
