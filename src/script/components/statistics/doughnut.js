@@ -94,7 +94,7 @@ function filterTransactions() {
 }
 
 function calculateTotalSum() {
-  return Object.values(summaryObj).reduce((sum, it) => sum + it);
+  return Object.values(summaryObj).length !== 0 ? Object.values(summaryObj).reduce((sum, it) => sum + it) : 0;
 }
 
 function generateChart(type, time) {
@@ -102,9 +102,9 @@ function generateChart(type, time) {
   doughnut = new Chart(canvas, {
     type: 'doughnut',
     data: {
-      labels: Object.keys(summaryObj),
+      labels: Object.keys(summaryObj).length !== 0 ? Object.keys(summaryObj) : ['You`re haven`t any transactions'],
       datasets: [{
-        data: Object.values(summaryObj),
+        data: Object.values(summaryObj).length !== 0 ? Object.values(summaryObj) : [100],
         backgroundColor: [
           'rgba(243, 94, 110, 1)',
           'rgba(54, 162, 235, 1)',
@@ -133,7 +133,7 @@ function generateChart(type, time) {
     },
     options: {
       responsive: true,
-      cutoutPercentage: 70,
+      cutoutPercentage: 60,
       // elements: {
       //   center: {
       //     text: `Total ${type} for the ${time} ${calculateTotalSum()} rub. `,
