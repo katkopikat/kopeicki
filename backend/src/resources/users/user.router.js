@@ -22,8 +22,16 @@ router.get('/token', async (req, res) => {
   if (!tokens) {
     res.status(403).json({ message });
   } else {
+    const { token, refreshToken } = tokens;
     console.log(tokens);
-    res.status(200).json({ userId, email, ...tokens });
+    res.status(200).json(
+      {
+        userId,
+        email,
+        token: `Bearer ${token}`,
+        refreshToken: `Bearer ${refreshToken}`,
+      },
+    );
   }
 });
 
