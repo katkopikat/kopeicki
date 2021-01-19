@@ -42,6 +42,91 @@ $scale: 80px;
   }
 }
 
+.select {
+  position: relative;
+  width: $scale;
+
+  &.open {
+    .select__dropdown {
+      display: block;
+    }
+
+    .select__input {
+      border-bottom: none;
+    }
+
+    .select__backdrop {
+      display: block;
+      z-index: 9;
+    }
+
+    svg {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+    background: transparent;
+  }
+
+  &__input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: $scale;
+    height: $scale/2;
+    padding: 0 0.5em;
+    border: 1px solid var(--gray);
+    border-radius: 5px;
+    cursor: pointer;
+
+    svg {
+      transition: transform 0.15s ease-in;
+    }
+  }
+
+  &__dropdown {
+    display: none;
+    position: absolute;
+    top: $scale/2;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    max-height: 14rem;
+    border-radius: 5px;
+    background: var(--light);
+    overflow-y: auto;
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--gray);
+
+    &:hover {
+      background-color: var(--gray);
+      cursor: pointer;
+      transition: background-color 0.15s ease-in;
+    }
+
+    &.selected {
+      color: var(--accounts);
+    }
+  }
+}
+
 html.transition,
 html.transition *,
 html.transition *:before,
