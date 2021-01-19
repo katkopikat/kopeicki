@@ -2,7 +2,9 @@ import createElement from '../../utils/create';
 import allAccountsCategories from '../../data/accounts';
 import allExpensesCategories from '../../data/expenses';
 import allIncomeCategories from '../../data/income';
-import { modal, transactionModal, newCategoryModal } from '../modal';
+import modal from '../modals/modal';
+import transactionModal from '../modals/transactionModal';
+import newCategoryModal from '../modals/newCategoryModal';
 
 export default function createCategoryList(group, container) {
   let list;

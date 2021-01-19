@@ -1,4 +1,5 @@
-import { modal, transactionModal } from '../modal';
+import modal from '../modals/modal';
+import transactionModal from '../modals/transactionModal';
 
 export function dragStart() {
   this.classList.add('dragging');
