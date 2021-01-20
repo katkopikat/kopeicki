@@ -18,7 +18,8 @@
   --catergory-bg: #1d202b;
   --filter: invert(0);
   --shadow: 0 4px 7px -1px rgba(0, 0, 0, 0.4);
-
+  --font-light: white;
+  --font-dark: black;
   --expenses-alpha: rgba(243, 94, 110, 0.5);
   --income-alpha: rgba(75, 192, 192, 0.5);
 }
@@ -32,6 +33,8 @@
   --gray: #5c5c5c;
   --filter: invert(1);
   --catergory-bg: #eaf0f7;
+  --font-light: black;
+  --font-dark: light;
   --shadow: 8px 10px 14px -7px rgba(0, 0, 0, 0.1);
 }
 
