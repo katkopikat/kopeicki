@@ -11,7 +11,7 @@ export default function translatePage() {
     } else if (el.classList.contains('date')) {
       el.textContent = translations[language].months[+el.dataset.i18n];
     } else {
-      el.textContent = translations[language][el.dataset.i18n];
+      el.textContent = translations[language][el.dataset.i18n] || el.textContent;
     }
   });
 }
