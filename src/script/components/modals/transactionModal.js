@@ -4,6 +4,7 @@ import modal from './modal';
 import api from '../../api';
 import app from '../../app';
 import renderHistory from '../transactions/history';
+import { getLanguage } from '../../utils/localStorage';
 
 /* options = {
  *    type: 'expenses',
@@ -27,23 +28,54 @@ function preCreateSelect(options) {
 
   return {
     class: options.class,
-    placeholder: isFromSelect ? options.from || 'Choose an account' : options.to,
+    placeholder: isFromSelect ? options.from || 'account' : options.to,
     list: names,
   };
 }
 
 export default function transactionModal(options) {
+  const lang = getLanguage();
+
   const titleOptions = {
-    accounts: 'I dont know what to do with the money',
-    expenses: 'Spent',
-    income: 'Earned',
+    accounts: {
+      en: '',
+      ru: '',
+      be: '',
+    },
+    expenses: {
+      en: 'Spent',
+      ru: 'Потратил',
+      be: 'Патраціў',
+    },
+    income: {
+      en: 'Earned',
+      ru: 'Заработал',
+      be: 'Зарабіў',
+    },
   };
 
   const saveBtnOptions = {
     accounts: 'Done!',
-    expenses: 'Spent it!',
-    income: 'Received!',
+    expenses: {
+      en: 'Spent it!',
+      ru: 'Потрачено!',
+      be: 'Патрачано!',
+    },
+    income: {
+      en: 'Received!',
+      ru: 'Получено!',
+      be: 'Атрымаў!',
+    },
   };
+
+  const descriptionLabels = {
+    en: 'Do you have anything to say?',
+    ru: 'Как-то прокомментируем?',
+    be: 'Неяк пракамэнтуем?',
+  };
+
+  const from = { en: 'from', ru: 'из', be: 'з' };
+  const on = { en: 'on', ru: 'на', be: 'на' };
 
   const isExpense = options.type === 'expenses';
 
@@ -56,19 +88,21 @@ export default function transactionModal(options) {
   wrap.insertAdjacentHTML(
     'afterbegin',
     `
-      <h5 class="modal-body__title">${titleOptions[options.type] || options}</h5>
+      <h5 class="modal-body__title">${titleOptions[options.type][lang] || options[lang]}</h5>
       <input class="modal-body__amount" placeholder="0.00" type="number">
-      <span data-from>from</span>
       <br>
-      <span data-to>on</span>
+      <span data-from>${from[lang]}</span>
+      <br>
+      <span data-to>${on[lang]}</span>
       <br>
       <input class="modal-body__date" type="date" value="${today}" max="${today}">
       <div class="form-floating">
         <textarea class="form-control" id="description" maxlength="45"></textarea>
-        <label for="description" class="textarea-label">Do you have anything to say?</label>
+        <label for="description" class="textarea-label">${descriptionLabels[lang]}</label>
       </div>
     `,
   );
+
 
   createSelect(wrap.querySelector('.modal-body__title'), {
     class: 'currency-list',
@@ -91,7 +125,8 @@ export default function transactionModal(options) {
   const dateEl = wrap.querySelector('.modal-body__date');
   const descriptionEl = wrap.querySelector('.form-control');
 
-  const saveBtn = createElement('button', 'btn btn-light', saveBtnOptions[options.type]);
+
+  const saveBtn = createElement('button', 'btn btn-light', saveBtnOptions[options.type][lang]);
   wrap.append(saveBtn);
 
   setTimeout((() => {
