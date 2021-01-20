@@ -1,6 +1,7 @@
 import Router from 'express';
 import { login, register } from './user.service.js';
 import { refreshTokens } from '../utils/token.js';
+import { User } from './User.model.js';
 
 const router = Router({ mergeParams: true });
 
@@ -21,9 +22,27 @@ router.get('/token', async (req, res) => {
   if (!tokens) {
     res.status(403).json({ message });
   } else {
+    const { token, refreshToken } = tokens;
     console.log(tokens);
-    res.status(200).json({ userId, email, ...tokens });
+    res.status(200).json(
+      {
+        userId,
+        email,
+        token: `Bearer ${token}`,
+        refreshToken: `Bearer ${refreshToken}`,
+      },
+    );
   }
 });
+
+router.route('/current')
+  .get(async (req, res) => {
+    const user = await User.findById(res.locals.userId, '-password');
+    res.json(user);
+  })
+  .put(async (req, res) => {
+    const user = await User.findByIdAndUpdate(res.locals.userId, req.body, { new: true });
+    res.json(user);
+  });
 
 export default router;

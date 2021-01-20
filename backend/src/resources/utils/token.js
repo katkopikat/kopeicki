@@ -3,8 +3,6 @@ import 'dotenv/config.js';
 
 import TokenSchema from './Token.model.js';
 
-const expTimeRefresh = 5 * 60 * 60;
-
 export const saveLastToken = async (tokenData) => {
   const savedToken = await TokenSchema.findOneAndUpdate(
     { userId: tokenData.userId },
@@ -33,9 +31,17 @@ export const getTokens = async (email, userId) => {
   await saveLastToken({
     refreshToken,
     userId,
-    expire: Date.now() + expTimeRefresh,
+    expire: Date.now() + process.env.REFRESH_TOKEN_TIME_MS,
   });
   return { token, refreshToken };
+};
+
+export const deleteToken = async (email, userId) => {
+  const token = await TokenSchema.findOneAndDelete({ userId });
+  if (token) {
+    return true;
+  }
+  return undefined;
 };
 
 export const refreshTokens = async (email, userId) => {
@@ -43,12 +49,14 @@ export const refreshTokens = async (email, userId) => {
   const token = await TokenSchema.findOne({ userId });
   console.log('find token', token);
   if (!token) {
-    return [null, 'wrong token'];
+    deleteToken(email, userId);
+    return [null, 'invalid token'];
   }
   console.log('actualData', Date.now());
   if (Date.now() > token.expire) {
-    return [null, 'expired token'];
+    deleteToken(email, userId);
+    return [null, 'invalid token'];
   }
-
-  return getTokens(email, userId);
+  const tokens = await getTokens(email, userId);
+  return [tokens, 'accept'];
 };
