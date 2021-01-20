@@ -52,7 +52,7 @@ function renderBarHTML() {
 }
 
 function setBarColor() {
-  return new Array(12).fill(typeTransaction === 'expense' ? 'rgba(50, 124, 235, 1)' : 'rgba(75, 192, 192, 1)');
+  return new Array(12).fill(typeTransaction === 'expenses' ? 'rgba(50, 124, 235, 1)' : 'rgba(75, 192, 192, 1)');
 }
 
 function countYears() {

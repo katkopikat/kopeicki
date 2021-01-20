@@ -71,11 +71,11 @@ export default function transactionModal(options) {
   createSelect(wrap.querySelector('[data-to]'), preCreateSelect({ ...options, class: 'select__to' }));
 
   const moneyAmount = createElement(
-    'span',
+    'input',
     'modal-body__amount',
     '0.00',
-    ['role', 'textbox'],
-    ['contenteditable', true],
+    ['placeholder', '0.00'],
+    ['type', 'number'],
   );
 
   const date = createElement('input', 'modal-body__date', null, ['type', 'date'], ['value', today], ['max', today]);
@@ -92,9 +92,17 @@ export default function transactionModal(options) {
   wrap.querySelector('.form-floating').prepend(description);
   wrap.append(saveBtn);
 
+  const audioExpenses = new Audio();
+  const audioIncome = new Audio();
+  const audioAccounts = new Audio();
+
+  audioIncome.src = '/src/assets/sounds/income.mp3';
+  audioExpenses.src = '/src/assets/sounds/expenses.mp3';
+  audioAccounts.src = '/src/assets/sounds/category.mp3';
+
   saveBtn.addEventListener('click', () => {
     const transactionInfo = {
-      moneyAmount: moneyAmount.innerText,
+      moneyAmount: moneyAmount.value,
       fromAccount: selectFrom.textContent,
       to: selectTo.textContent,
       date: date.value,
@@ -106,7 +114,7 @@ export default function transactionModal(options) {
       date: date.value, // todo time?
       user: api.userId,
       account: selectFrom.textContent,
-      amount: moneyAmount.innerText,
+      amount: moneyAmount.value,
       category: selectTo.textContent,
       type: `${options.type}`,
       description: description.value,
@@ -117,6 +125,10 @@ export default function transactionModal(options) {
     });
 
     modal.hide();
+
+    if (options.type === 'expenses') audioExpenses.play();
+    else if (options.type === 'income') audioIncome.play();
+    else audioAccounts.play();
   });
 
   return wrap;

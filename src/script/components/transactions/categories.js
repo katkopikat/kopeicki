@@ -76,54 +76,54 @@ export default function createCategoryList(group, container) {
   container.append(listContainer);
 
   /* ------------ HOT KEYS ---------------
-      SHIFT + E --> New expense
-      SHIFT + I --> New income
-      SHIFT + A --> New account
-      SHIFT + S --> Open settings page
-      SHIFT + R --> Edit categories (remove catrgories)
+      Alt + E --> New expense
+      Alt + I --> New income
+      Alt + A --> New account
+      Alt + S --> Open settings page
+      Alt + R --> Edit categories (remove catrgories)
   */
 
-  let shiftIsPressed = false;
+  let altIsPressed = false;
   window.addEventListener('keydown', (e) => {
-    if (e.keyCode === 16) {
-      shiftIsPressed = true;
+    if (e.keyCode === 18) {
+      altIsPressed = true;
       e.preventDefault();
     }
   });
 
   window.addEventListener('keyup', (e) => {
-    if (e.keyCode === 16) {
-      shiftIsPressed = false;
+    if (e.keyCode === 18) {
+      altIsPressed = false;
       e.preventDefault();
     }
   });
 
   window.addEventListener('keydown', (e) => {
-    if (shiftIsPressed && e.keyCode === 69) {
-      console.log('Shift + E => Open new expense modal!');
+    if (altIsPressed && e.keyCode === 69) {
+      console.log('Alt + E => Open new expense modal!');
       e.preventDefault();
       modal.setContent(transactionModal('expenses', ''));
       modal.show();
     }
-    if (shiftIsPressed && e.keyCode === 73) {
-      console.log('Shift + I => Open mew income modal!');
+    if (altIsPressed && e.keyCode === 73) {
+      console.log('Alt + I => Open mew income modal!');
       e.preventDefault();
       modal.setContent(transactionModal('income', ''));
       modal.show();
     }
-    if (shiftIsPressed && e.keyCode === 65) {
-      console.log('Shift + A => Open mew account modal!');
+    if (altIsPressed && e.keyCode === 65) {
+      console.log('Alt + A => Open mew account modal!');
       e.preventDefault();
       modal.setContent(transactionModal('account', ''));
       modal.show();
     }
-    if (shiftIsPressed && e.keyCode === 83) {
+    if (altIsPressed && e.keyCode === 83) {
       e.preventDefault();
-      console.log('Shift + S => Open setings page!');
+      console.log('Alt + S => Open setings page!');
     }
-    if (shiftIsPressed && e.keyCode === 82) {
+    if (altIsPressed && e.keyCode === 82) {
       e.preventDefault();
-      console.log('Shift + R => Edit categories!');
+      console.log('Alt + R => Edit categories!');
     }
   });
 }
