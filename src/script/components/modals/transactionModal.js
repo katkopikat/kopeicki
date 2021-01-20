@@ -81,8 +81,8 @@ export default function transactionModal(options) {
   const date = createElement('input', 'modal-body__date', null, ['type', 'date'], ['value', today], ['max', today]);
   const description = createElement('textarea', 'form-control', null, ['id', 'description'], ['maxlength', 45]);
 
-  const selectFrom = wrap.querySelector('.select__from');
-  const selectTo = wrap.querySelector('.select__to');
+  const selectFrom = wrap.querySelector('.select__from .select__value');
+  const selectTo = wrap.querySelector('.select__to .select__value');
   // const currency = createElement('span', 'modal-body__currency', 'BYN');
 
   const saveBtn = createElement('button', 'btn', saveBtnOptions[options.type]);
@@ -95,8 +95,8 @@ export default function transactionModal(options) {
   saveBtn.addEventListener('click', () => {
     const transactionInfo = {
       moneyAmount: moneyAmount.innerText,
-      fromAccount: selectFrom.value,
-      to: selectTo.value,
+      fromAccount: selectFrom.textContent,
+      to: selectTo.textContent,
       date: date.value,
       description: description.value,
     };
@@ -105,9 +105,9 @@ export default function transactionModal(options) {
     const tx = {
       date: date.value, // todo time?
       user: api.userId,
-      account: selectFrom.value,
+      account: selectFrom.textContent,
       amount: moneyAmount.innerText,
-      category: selectTo.value,
+      category: selectTo.textContent,
       type: `${options.type}`,
       description: description.value,
     };
