@@ -1,9 +1,17 @@
+import getCurrencylist from './components/settings/currency_list';
+
 class ApiClient {
   constructor(apiUrl) {
     this.apiUrl = apiUrl;
     this.userId = localStorage.getItem('userId');
     this.token = localStorage.getItem('token');
     this.refreshToken = localStorage.getItem('refreshToken');
+    this.currencyList = this.getCurrencylist();
+  }
+
+  async getCurrencylist() {
+    this.currencyList = await getCurrencylist();
+    this.currencyList = this.currencyList.sort();
   }
 
   async request(method, route, body = false, auth = true) {

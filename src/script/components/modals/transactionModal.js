@@ -4,7 +4,6 @@ import modal from './modal';
 import api from '../../api';
 import app from '../../app';
 import renderHistory from '../transactions/history';
-// import getCurrencylist from '../settings/currency_list';
 
 /* options = {
  *    type: 'expenses',
@@ -72,11 +71,11 @@ export default function transactionModal(options) {
     `,
   );
 
-  // createSelect(document.body, {
-  //   class: 'currency-list',
-  //   placeholder: 'Choose currency',
-  //   list: await getCurrencylist(),
-  // });
+  createSelect(wrap.querySelector('.modal-body__amount'), {
+    class: 'currency-list',
+    placeholder: app.user.currency.toUpperCase(),
+    list: api.currencyList,
+  });
 
   createSelect(
     wrap.querySelector(isExpense ? '[data-from]' : '[data-to]'),
@@ -93,7 +92,7 @@ export default function transactionModal(options) {
   const dateEl = wrap.querySelector('.modal-body__date');
   const descriptionEl = wrap.querySelector('.form-control');
 
-  const saveBtn = createElement('button', 'btn', saveBtnOptions[options.type]);
+  const saveBtn = createElement('button', 'btn btn-light', saveBtnOptions[options.type]);
   wrap.append(saveBtn);
 
   const audioExpenses = new Audio();
