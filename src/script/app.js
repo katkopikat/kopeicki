@@ -8,13 +8,25 @@ class App {
 
   async init() {
     // dev mode autologin
-    await this.login();
+    // await this.login();
+    await this.checkAuth();
+    console.log(this.user);
   }
 
-  async login() {
+  async checkAuth() {
+    try {
+      this.user = await this.api.getUser();
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
+
+  async login(/* email, password */) {
     try {
       await this.api.login('user2@rsclone.com', 'test');
+      // await this.api.login(email, password);
       this.user = await this.api.getUser();
+      console.log(this.user);
       console.log('login success');
     } catch (e) {
       console.error(e.message);
