@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
   res.status(statusCode).json(response);
 });
 
-router.get('/token', async (req, res) => {
+router.post('/token', async (req, res) => {
   const { email, userId } = req.body;
   const [tokens, message] = await refreshTokens(email, userId);
   if (!tokens) {

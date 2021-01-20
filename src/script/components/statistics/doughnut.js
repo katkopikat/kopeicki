@@ -18,7 +18,8 @@ async function getHistory() {
 }
 
 function setBGColor() {
-  return document.documentElement.hasAttribute('theme') ? 'rgba(234, 237, 241, 1)' : 'rgba(37, 40, 54, 1)';
+  return document.documentElement.hasAttribute('theme')
+    ? 'rgba(234, 237, 241, 1)' : 'rgba(37, 40, 54, 1)';
 }
 
 function renderDoughnutHTML() {
@@ -94,7 +95,8 @@ function filterTransactions() {
 }
 
 function calculateTotalSum() {
-  return Object.values(summaryObj).length !== 0 ? Object.values(summaryObj).reduce((sum, it) => sum + it) : 0;
+  return Object.values(summaryObj).length !== 0
+    ? Object.values(summaryObj).reduce((sum, it) => sum + it) : 0;
 }
 
 function generateChart(type, time) {

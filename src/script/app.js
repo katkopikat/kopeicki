@@ -6,10 +6,12 @@ class App {
     this.user = null;
   }
 
-  // async init() {
-  //   // dev mode autologin
-  //   await this.login();
-  // }
+  async init() {
+    // dev mode autologin
+    // await this.login();
+    await this.checkAuth();
+    console.log(this.user);
+  }
 
   // async checkAuth() {
   //   const userId = localStorage.getItem('userId');
@@ -23,16 +25,25 @@ class App {
   //     window.history.pushState(null, null, '/users/login');
   //   }
   // }
-
-  async login(email, password) {
+  async checkAuth() {
     try {
-      // await this.api.login('user1@rsclone.com', 'test');
-      await this.api.login(email, password);
-      this.loggedIn = true;
       this.user = await this.api.getUser();
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
+
+  async login(/* email, password */) {
+    try {
+      await this.api.login('user2@rsclone.com', 'test');
+      // await this.api.login(email, password);
+      // this.loggedIn = true;
+      this.user = await this.api.getUser();
+      console.log(this.user);
       console.log('login success');
     } catch (e) {
-      console.error(e.message);
+      // console.error(e.message);
+      console.error(e);
     }
   }
 

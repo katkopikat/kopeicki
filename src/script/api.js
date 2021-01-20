@@ -2,6 +2,7 @@ class ApiClient {
   constructor(apiUrl) {
     this.apiUrl = apiUrl;
     this.userId = localStorage.getItem('userId');
+    // this.email = localStorage.getItem('email');
     this.token = localStorage.getItem('token');
     this.refreshToken = localStorage.getItem('refreshToken');
   }
@@ -12,6 +13,14 @@ class ApiClient {
   //   }
   //   return res;
   // }
+  setLocalStorage(userId, email, token, refreshToken) {
+    Object.assign(this, { userId, email, token, refreshToken });
+    localStorage.setItem('userId', userId);
+    localStorage.setItem('email', email);
+    localStorage.setItem('token', token);
+    localStorage.setItem('refreshToken', refreshToken);
+    return true;
+  }
 
   checkAuthorization() {
     console.log(this.apiUrl);
@@ -24,7 +33,7 @@ class ApiClient {
     return true;
   }
 
-  async getNewTokens(method = 'GET', route = '/users/token', body = false, auth = true) {
+  async getNewTokens(method = 'POST', route = '/users/token', body = false, auth = true) {
     const reqParams = {
       method,
       headers: {
@@ -40,7 +49,12 @@ class ApiClient {
       reqParams.headers.Authorization = `${this.refreshToken}`;
     }
     const response = await fetch(`${this.apiUrl}${route}`, reqParams);
-    return response;
+    if (response.ok) {
+      console.log(response);
+      return response.json();
+    }
+    console.log(response);
+    return undefined;
   }
 
   // async request(method, route, body = false, auth = true) {
@@ -120,8 +134,6 @@ class ApiClient {
   // }
 
   async request(method, route, body = false, auth = true) {
-    const isAuth = this.checkAuthorization();
-    if (!isAuth) return undefined;
     const reqParams = {
       method: `${method}`,
       headers: {
@@ -136,8 +148,22 @@ class ApiClient {
       reqParams.withCredentials = true;
       reqParams.headers.Authorization = `${this.token}`; // `Bearer ${this.token}`
     }
-    // const response = await fetch(`${this.apiUrl}${route}`, reqParams);
     const response = await fetch(`${this.apiUrl}${route}`, reqParams);
+    console.log(response);
+    if (!response.ok) {
+      const result = await this.getNewTokens('POST', '/users/token', { email: this.email, userId: this.userId });
+      console.log(result);
+      if (!result) {
+        console.log('Authorization error, change route to login');
+        window.history.pushState(null, null, '/login');
+        return undefined;
+      }
+      this.setLocalStorage(result.userId, result.email, result.token, result.refreshToken);
+      const responseAfterRefresh = await this.request(method, route, body, auth);
+      console.log('after refresh', responseAfterRefresh);
+      return responseAfterRefresh;
+    }
+    // console.log(response.json());
     // .then((res) => (res.ok ? res : Promise.reject(res)))
     // .then((data) => console.log('+', data))
     // .catch(() => console.log('some error'));
@@ -166,11 +192,14 @@ class ApiClient {
     const result = await this.request('POST', '/users/login', { email, password }, false);
     const { userId, token, refreshToken } = result;
     if (userId) {
-      Object.assign(this, { userId, token, refreshToken });
-      localStorage.setItem('userId', userId);
-      localStorage.setItem('token', token);
-      localStorage.setItem('refreshToken', refreshToken);
+      this.setLocalStorage(userId, email, token, refreshToken);
       return true;
+      // Object.assign(this, { userId, token, refreshToken });
+      // localStorage.setItem('userId', userId);
+      // localStorage.setItem('email', email);
+      // localStorage.setItem('token', token);
+      // localStorage.setItem('refreshToken', refreshToken);
+      // return true;
     }
     throw new Error(result.message);
   }
