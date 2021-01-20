@@ -55,4 +55,9 @@
     animation: shake 0.5s;
     animation-iteration-count: infinite;
   }
+
+  .icon-svg{
+    transition: all ease-in 0.15s;
+    background-position-y: 50px !important;
+  }
 }

@@ -1,32 +1,32 @@
 import createElement from '../../utils/create';
-import allAccountsCategories from '../../data/accounts';
-import allExpensesCategories from '../../data/expenses';
-import allIncomeCategories from '../../data/income';
-import { modal, transactionModal, newCategoryModal } from '../modal';
+import modal from '../modals/modal';
+import transactionModal from '../modals/transactionModal';
+import newCategoryModal from '../modals/newCategoryModal';
+import app from '../../app';
 
 export default function createCategoryList(group, container) {
   let list;
 
   switch (group) {
     case 'accounts':
-      list = [...allAccountsCategories];
+      list = [...app.user.accounts];
       break;
     case 'expenses':
-      list = [...allExpensesCategories];
+      list = [...app.user.expenses];
       break;
     case 'income':
-      list = [...allIncomeCategories];
+      list = [...app.user.income];
       break;
     default:
       break;
   }
 
-  const isDraggable = !!(group !== 'accounts');
+  const isDraggable = group !== 'accounts';
 
   const listContainer = createElement('div', 'flex-list');
 
   list.forEach((category) => {
-    const categoryName = createElement('span', '', category.name);
+    const categoryName = createElement('span', '', category.name, ['i18n', category.name]);
     const imgSrc = `background-image: url(${category.icon});`;
     const categoryIcon = createElement('div', 'icon-svg', null, ['style', imgSrc]);
     const categoryIconDiv = createElement('div', 'category-icon', categoryIcon);
@@ -46,7 +46,7 @@ export default function createCategoryList(group, container) {
   const addCategoryBtn = createElement(
     'div',
     'flex-list__item add-category',
-    '<div class="add"></div> <span>Add category</span>',
+    '<div class="add"></div><span data-i18n="new">New category</span>',
     ['group', group],
   );
 
@@ -73,54 +73,54 @@ export default function createCategoryList(group, container) {
   container.append(listContainer);
 
   /* ------------ HOT KEYS ---------------
-      SHIFT + E --> New expense
-      SHIFT + I --> New income
-      SHIFT + A --> New account
-      SHIFT + S --> Open settings page
-      SHIFT + R --> Edit categories (remove catrgories)
+      Alt + E --> New expense
+      Alt + I --> New income
+      Alt + A --> New account
+      Alt + S --> Open settings page
+      Alt + R --> Edit categories (remove catrgories)
   */
 
-  let shiftIsPressed = false;
+  let altIsPressed = false;
   window.addEventListener('keydown', (e) => {
-    if (e.keyCode === 16) {
-      shiftIsPressed = true;
+    if (e.keyCode === 18) {
+      altIsPressed = true;
       e.preventDefault();
     }
   });
 
   window.addEventListener('keyup', (e) => {
-    if (e.keyCode === 16) {
-      shiftIsPressed = false;
+    if (e.keyCode === 18) {
+      altIsPressed = false;
       e.preventDefault();
     }
   });
 
   window.addEventListener('keydown', (e) => {
-    if (shiftIsPressed && e.keyCode === 69) {
-      console.log('Shift + E => Open new expense modal!');
+    if (altIsPressed && e.keyCode === 69) {
+      console.log('Alt + E => Open new expense modal!');
       e.preventDefault();
       modal.setContent(transactionModal('expenses', ''));
       modal.show();
     }
-    if (shiftIsPressed && e.keyCode === 73) {
-      console.log('Shift + I => Open mew income modal!');
-      e.preventDefault();
-      modal.setContent(transactionModal('income', ''));
-      modal.show();
-    }
-    if (shiftIsPressed && e.keyCode === 65) {
-      console.log('Shift + A => Open mew account modal!');
+    // if (altIsPressed && e.keyCode === 73) {
+    //   console.log('Alt + I => Open mew income modal!');
+    //   e.preventDefault();
+    //   modal.setContent(transactionModal('income', ''));
+    //   modal.show();
+    // }
+    if (altIsPressed && e.keyCode === 65) {
+      console.log('Alt + A => Open mew account modal!');
       e.preventDefault();
       modal.setContent(transactionModal('account', ''));
       modal.show();
     }
-    if (shiftIsPressed && e.keyCode === 83) {
+    if (altIsPressed && e.keyCode === 83) {
       e.preventDefault();
-      console.log('Shift + S => Open setings page!');
+      console.log('Alt + S => Open setings page!');
     }
-    if (shiftIsPressed && e.keyCode === 82) {
+    if (altIsPressed && e.keyCode === 82) {
       e.preventDefault();
-      console.log('Shift + R => Edit categories!');
+      console.log('Alt + R => Edit categories!');
     }
   });
 }

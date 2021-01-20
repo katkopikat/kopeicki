@@ -42,6 +42,8 @@
               height: 42px;
               width: 42px;
               filter: var(--filter);
+              transition: all linear 0.25s;
+        
             }
           }
 
@@ -58,7 +60,6 @@
           &:hover .icon-svg {
             filter: invert(1);
           }
-
           // &:hover .icon-svg {
           //   transition: all 0.15s;
           //   transform: scale(1.1);
@@ -68,6 +69,12 @@
     }
   }
 }
+//div[data-group="accounts"] 
+// input[type='date']
+//  .flex-list__item[data-group='accounts']:hover .icon-svg{
+//   transition: all linear 0.15s;
+//   background-position-y: -40px !important;
+// }
 
 .accounts {
   h4 {
@@ -89,6 +96,8 @@
     pointer-events: all;
   }
 }
+
+
 
 .expenses {
   h4 {

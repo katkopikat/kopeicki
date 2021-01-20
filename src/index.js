@@ -2,9 +2,12 @@ import './styles/main.scss';
 import 'bootstrap';
 
 import renderAuthorizationPage from './script/components/authorization/authorization';
+import toggleSettings from './script/components/settings/settings';
 import renderStatisticsPage from './script/components/statistics/statistics';
-import renderSettingsPage from './script/components/settings/settings';
 import renderTransactionsPage from './script/components/transactions/transactions';
+import app from './script/app';
+
+app.renderTransactionsPage = renderTransactionsPage;
 
 const Planning = () => {
   console.log('Отрисовалась планинг');
@@ -14,7 +17,6 @@ const router = () => {
   const routes = [
     { path: '/statistics', component: renderStatisticsPage },
     { path: '/planning', component: Planning },
-    { path: '/settings', component: renderSettingsPage },
     { path: '/login', component: renderAuthorizationPage },
     { path: '/', component: renderTransactionsPage },
   ];
@@ -33,6 +35,8 @@ const navigateTo = (url) => {
   router();
 };
 
+toggleSettings();
+
 window.addEventListener('popstate', router);
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -48,5 +52,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  router();
+  app.init().then(router);
+  // router();
 });

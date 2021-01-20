@@ -34,11 +34,11 @@ function tableCreate() {
   table.className = 'table';
   table.innerHTML = `<thead>
       <tr>
-        <th scope="col">Date</th>
-        <th scope="col">Category</th>
-        <th scope="col">Amount</th>
-        <th scope="col">Account</th>
-        <th scope="col">Description</th>
+        <th scope="col" data-i18n="Date">Date</th>
+        <th scope="col" data-i18n="Category">Category</th>
+        <th scope="col" data-i18n="Amount">Amount</th>
+        <th scope="col" data-i18n="Account">Account</th>
+        <th scope="col" data-i18n="Description">Description</th>
       </tr>
     </thead>`;
   const tbody = document.createElement('tbody');

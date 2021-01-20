@@ -1,5 +1,24 @@
 import mongoose from 'mongoose';
 
+const UserProfile = new mongoose.Schema({
+  accounts: [{
+    name: String,
+    amount: Number,
+    currency: String,
+    icon: String,
+  }],
+  expenses: [{
+    name: String,
+    icon: String,
+  }],
+  income: [{
+    name: String,
+    icon: String,
+  }],
+  currency: String,
+  lang: String,
+});
+
 const UserSchema = new mongoose.Schema(
   {
     email: {
@@ -12,7 +31,10 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
   },
-  // { toJSON: { virtuals: true, useProjection: true } },
 );
+UserSchema.add(UserProfile);
 
-export default mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
+const UserTemplate = mongoose.model('UserTemplate', UserProfile);
+
+export { User, UserTemplate };
