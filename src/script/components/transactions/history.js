@@ -1,5 +1,7 @@
+import moment from 'moment';
 import app from '../../app';
 import createElement from '../../utils/create';
+import translatePage from '../settings/language';
 
 const sortByDays = (list) => {
   const newList = [];
@@ -8,46 +10,39 @@ const sortByDays = (list) => {
     if (!newList.length) {
       newList.push([list[i]]);
     } else {
+      let isElPushed = false;
       newList.forEach((item) => {
         if (item[0].date === list[i].date) {
           item.push(list[i]);
-        } else {
-          newList.push([list[i]]);
+          isElPushed = true;
         }
       });
+      if (!isElPushed) {
+        newList.push([list[i]]);
+      }
     }
   }
   return newList;
 };
 
-const formatDate = (date) => {
-  const d = date.getDate();
-  const m = date.getMonth() + 1;
-  const y = date.getFullYear();
-  return `${y}-${m <= 9 ? `0${m}` : m}-${d <= 9 ? `0${d}` : d}`;
-};
-
 export default async function renderHistory() {
   const transactions = await app.api.getTransactions();
-  const last7transactions = transactions.slice(0, 8);
-  const days = sortByDays(last7transactions);
-  console.log(days);
+  const lastTransactions = transactions.slice(0, 8);
+  const sortedByDays = sortByDays(lastTransactions);
 
   document.querySelector('.transactions-history').innerHTML = '';
 
-  days.forEach((day) => {
+  sortedByDays.reverse().forEach((day) => {
     const dateDiv = createElement('div');
     const dayDiv = createElement('div', 'day');
 
-    const today = formatDate(new Date());
-    const yesterday = formatDate(new Date(new Date().setDate(new Date().getDate() - 1)));
     const date = new Date(day[0].date);
 
     let dayOfWeek;
 
-    if (today === formatDate(date)) {
+    if (moment(new Date()).isSame(date, 'day')) {
       dayOfWeek = 'today';
-    } else if (yesterday === formatDate(date)) {
+    } else if (moment().subtract(1, 'days').isSame(date, 'day')) {
       dayOfWeek = 'yesterday';
     } else {
       dayOfWeek = new Intl.DateTimeFormat('en-GB', { weekday: 'long' }).format(date);
@@ -64,7 +59,7 @@ export default async function renderHistory() {
 
     day.forEach((transaction) => {
       dayDiv.insertAdjacentHTML(
-        'beforeend',
+        'afterbegin',
         `
         <div class="row">
         <div class="col">
@@ -72,7 +67,9 @@ export default async function renderHistory() {
           <p class="category-name" data-i18n="${transaction.category}">${transaction.category}</p>
         </div>
         <div class="col">
-          <p class="money-amount ${transaction.type}">${transaction.type === 'expenses' ? '-' : '+'}${transaction.amount}</p>
+          <p class="money-amount ${transaction.type}">
+            ${transaction.type === 'expenses' ? '-' : '+'}${transaction.amount}
+          </p>
           <p class="description">${transaction.description}</p>
         </div>
       </div>
@@ -82,5 +79,7 @@ export default async function renderHistory() {
 
     const container = createElement('div', '', [dateDiv, dayDiv]);
     document.querySelector('.transactions-history').prepend(container);
+
+    translatePage();
   });
 }
