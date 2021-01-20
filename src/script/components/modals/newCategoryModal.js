@@ -3,6 +3,9 @@ import modal from './modal';
 import app from '../../app';
 
 export default function newCategoryModal(type) {
+  const audioCategory = new Audio();
+  audioCategory.src = '/src/assets/sounds/category.mp3';
+
   const titleOptions = {
     accounts: 'Do you have a new account?',
     expenses: 'What else will you spend money on?',
@@ -92,6 +95,7 @@ export default function newCategoryModal(type) {
     console.log(newCategoryItem);
 
     modal.hide();
+    audioCategory.play();
   });
 
   return wrap;

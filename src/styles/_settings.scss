@@ -77,17 +77,22 @@ $scale: 80px;
   }
 
   &__input {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    font-weight: 600;
     display: flex;
     align-items: center;
     column-gap: 1rem;
     height: $scale/2;
-    padding: 0 0.5em;
-    border: 1px solid var(--gray);
+    //padding: 0 0.5em;
+    //border: 1px solid var(--gray);
     border-radius: 5px;
     cursor: pointer;
 
     svg {
       transition: transform 0.15s ease-in;
+      opacity: 0.3;
+      color: white;
     }
   }
 

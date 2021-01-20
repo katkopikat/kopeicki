@@ -29,8 +29,9 @@ const formatDate = (date) => {
 
 export default async function renderHistory() {
   const transactions = await app.api.getTransactions();
-  const last7transactions = transactions.slice(0, 7);
+  const last7transactions = transactions.slice(0, 8);
   const days = sortByDays(last7transactions);
+  console.log(days);
 
   document.querySelector('.transactions-history').innerHTML = '';
 
@@ -71,7 +72,7 @@ export default async function renderHistory() {
           <p class="category-name" data-i18n="${transaction.category}">${transaction.category}</p>
         </div>
         <div class="col">
-          <p class="money-amount ${transaction.type}">${transaction.amount}</p>
+          <p class="money-amount ${transaction.type}">${transaction.type === 'expenses' ? '-' : '+'}${transaction.amount}</p>
           <p class="description">${transaction.description}</p>
         </div>
       </div>
