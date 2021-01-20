@@ -13,18 +13,6 @@ class App {
     console.log(this.user);
   }
 
-  // async checkAuth() {
-  //   const userId = localStorage.getItem('userId');
-  //   const token = localStorage.getItem('token');
-  //   const refreshToken = localStorage.getItem('refreshToken');
-  //   if (userId === null
-  //     || token === null
-  //     || refreshToken === null) {
-  //     this.loggedIn = false;
-  //     // redirect to login-register page
-  //     window.history.pushState(null, null, '/users/login');
-  //   }
-  // }
   async checkAuth() {
     try {
       this.user = await this.api.getUser();
@@ -37,13 +25,11 @@ class App {
     try {
       await this.api.login('user2@rsclone.com', 'test');
       // await this.api.login(email, password);
-      // this.loggedIn = true;
       this.user = await this.api.getUser();
       console.log(this.user);
       console.log('login success');
     } catch (e) {
-      // console.error(e.message);
-      console.error(e);
+      console.error(e.message);
     }
   }
 
