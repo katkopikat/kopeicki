@@ -1,12 +1,10 @@
 import createElement from '../../utils/create';
-import { insertAfter } from '../../utils/DOM';
 import createSelect from '../../utils/select';
 import modal from './modal';
 import api from '../../api';
+import app from '../../app';
 import renderHistory from '../transactions/history';
-import allAccountsCategories from '../../data/accounts';
-import allExpensesCategories from '../../data/expenses';
-import allIncomeCategories from '../../data/income';
+// import getCurrencylist from '../settings/currency_list';
 
 /* options = {
  *    type: 'expenses',
@@ -21,9 +19,9 @@ function preCreateSelect(options) {
   let list;
 
   if (isFromSelect) {
-    list = [...allAccountsCategories];
+    list = [...app.user.accounts];
   } else {
-    list = options.type === 'expenses' ? [...allExpensesCategories] : [...allIncomeCategories];
+    list = options.type === 'expenses' ? [...app.user.expenses] : [...app.user.income];
   }
 
   const names = list.map(({ name }) => name);
@@ -48,6 +46,8 @@ export default function transactionModal(options) {
     income: 'Received!',
   };
 
+  const isExpense = options.type === 'expenses';
+
   document.querySelector('.modal-content').className = `modal-content ${options.type || options}`;
 
   const today = new Date().toISOString().split('T')[0];
@@ -58,38 +58,42 @@ export default function transactionModal(options) {
     'afterbegin',
     `
       <h5 class="modal-body__title">${titleOptions[options.type] || options}</h5>
-      <span>BYN</span>
+      <input class="modal-body__amount" placeholder="0.00" type="number">
+      <br>
       <span data-from>from</span>
+      <br>
       <span data-to>on</span>
+      <br>
+      <input class="modal-body__date" type="date" value="${today}" max="${today}">
       <div class="form-floating">
+        <textarea class="form-control" id="description" maxlength="45"></textarea>
         <label for="description" class="textarea-label">Do you have anything to say?</label>
       </div>
     `,
   );
 
-  createSelect(wrap.querySelector('[data-from]'), preCreateSelect({ ...options, class: 'select__from' }));
-  createSelect(wrap.querySelector('[data-to]'), preCreateSelect({ ...options, class: 'select__to' }));
+  // createSelect(document.body, {
+  //   class: 'currency-list',
+  //   placeholder: 'Choose currency',
+  //   list: await getCurrencylist(),
+  // });
 
-  const moneyAmount = createElement(
-    'input',
-    'modal-body__amount',
-    '0.00',
-    ['placeholder', '0.00'],
-    ['type', 'number'],
+  createSelect(
+    wrap.querySelector(isExpense ? '[data-from]' : '[data-to]'),
+    preCreateSelect({ ...options, class: 'select__from' }),
+  );
+  createSelect(
+    wrap.querySelector(isExpense ? '[data-to]' : '[data-from]'),
+    preCreateSelect({ ...options, class: 'select__to' }),
   );
 
-  const date = createElement('input', 'modal-body__date', null, ['type', 'date'], ['value', today], ['max', today]);
-  const description = createElement('textarea', 'form-control', null, ['id', 'description'], ['maxlength', 45]);
-
-  const selectFrom = wrap.querySelector('.select__from .select__value');
-  const selectTo = wrap.querySelector('.select__to .select__value');
-  // const currency = createElement('span', 'modal-body__currency', 'BYN');
+  const moneyAmountEl = wrap.querySelector('.modal-body__amount');
+  const selectFromEl = wrap.querySelector('.select__from .select__value');
+  const selectToEl = wrap.querySelector('.select__to .select__value');
+  const dateEl = wrap.querySelector('.modal-body__date');
+  const descriptionEl = wrap.querySelector('.form-control');
 
   const saveBtn = createElement('button', 'btn', saveBtnOptions[options.type]);
-
-  insertAfter(moneyAmount, wrap.querySelector('.modal-body__title'));
-  wrap.insertBefore(date, wrap.querySelector('.form-floating'));
-  wrap.querySelector('.form-floating').prepend(description);
   wrap.append(saveBtn);
 
   const audioExpenses = new Audio();
@@ -102,22 +106,22 @@ export default function transactionModal(options) {
 
   saveBtn.addEventListener('click', () => {
     const transactionInfo = {
-      moneyAmount: moneyAmount.value,
-      fromAccount: selectFrom.textContent,
-      to: selectTo.textContent,
-      date: date.value,
-      description: description.value,
+      moneyAmount: moneyAmountEl.value,
+      fromAccount: selectFromEl.textContent,
+      to: selectToEl.textContent,
+      date: dateEl.value,
+      description: descriptionEl.value,
     };
     console.log(transactionInfo);
 
     const tx = {
-      date: date.value, // todo time?
+      date: dateEl.value,
       user: api.userId,
-      account: selectFrom.textContent,
-      amount: moneyAmount.value,
-      category: selectTo.textContent,
+      account: selectFromEl.textContent,
+      amount: moneyAmountEl.value,
+      category: selectToEl.textContent,
       type: `${options.type}`,
-      description: description.value,
+      description: descriptionEl.value,
     };
     api.saveTransaction(tx).then((result) => {
       console.log(result);

@@ -1,7 +1,4 @@
 import createElement from '../../utils/create';
-// import allAccountsCategories from '../../data/accounts';
-// import allExpensesCategories from '../../data/expenses';
-// import allIncomeCategories from '../../data/income';
 import modal from '../modals/modal';
 import transactionModal from '../modals/transactionModal';
 import newCategoryModal from '../modals/newCategoryModal';
@@ -12,19 +9,19 @@ export default function createCategoryList(group, container) {
 
   switch (group) {
     case 'accounts':
-      list = [...app.user.accounts]; // [...allAccountsCategories];
+      list = [...app.user.accounts];
       break;
     case 'expenses':
-      list = [...app.user.expenses]; // [...allExpensesCategories];
+      list = [...app.user.expenses];
       break;
     case 'income':
-      list = [...app.user.income]; // [...allIncomeCategories];
+      list = [...app.user.income];
       break;
     default:
       break;
   }
 
-  const isDraggable = !!(group !== 'accounts');
+  const isDraggable = group !== 'accounts';
 
   const listContainer = createElement('div', 'flex-list');
 
@@ -105,12 +102,12 @@ export default function createCategoryList(group, container) {
       modal.setContent(transactionModal('expenses', ''));
       modal.show();
     }
-    if (altIsPressed && e.keyCode === 73) {
-      console.log('Alt + I => Open mew income modal!');
-      e.preventDefault();
-      modal.setContent(transactionModal('income', ''));
-      modal.show();
-    }
+    // if (altIsPressed && e.keyCode === 73) {
+    //   console.log('Alt + I => Open mew income modal!');
+    //   e.preventDefault();
+    //   modal.setContent(transactionModal('income', ''));
+    //   modal.show();
+    // }
     if (altIsPressed && e.keyCode === 65) {
       console.log('Alt + A => Open mew account modal!');
       e.preventDefault();

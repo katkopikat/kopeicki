@@ -49,7 +49,7 @@ export default async function renderHistory() {
     }
 
     dateDiv.insertAdjacentHTML(
-      'beforeend',
+      'afterbegin',
       `
         <span class="day-of-week" data-i18n="${dayOfWeek}"></span>
         <span class="date"> ${date.getDate()} </span>
@@ -59,7 +59,7 @@ export default async function renderHistory() {
 
     day.forEach((transaction) => {
       dayDiv.insertAdjacentHTML(
-        'afterbegin',
+        'beforeend',
         `
         <div class="row">
         <div class="col">

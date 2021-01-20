@@ -44,6 +44,7 @@ $scale: 80px;
 
 .select {
   position: relative;
+  display: inline-block;
   // width: $scale; // ИЗМЕНИТЬ!!!!
 
   &.open {
