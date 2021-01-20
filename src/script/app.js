@@ -13,7 +13,7 @@ class App {
 
   async login() {
     try {
-      await this.api.login('user5@rsclone.com', 'test');
+      await this.api.login('user2@rsclone.com', 'test');
       this.user = await this.api.getUser();
       console.log('login success');
     } catch (e) {

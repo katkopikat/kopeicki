@@ -71,11 +71,11 @@ export default function transactionModal(options) {
   createSelect(wrap.querySelector('[data-to]'), preCreateSelect({ ...options, class: 'select__to' }));
 
   const moneyAmount = createElement(
-    'span',
+    'input',
     'modal-body__amount',
     '0.00',
-    ['role', 'textbox'],
-    ['contenteditable', true],
+    ['placeholder', '0.00'],
+    ['type', 'number'],
   );
 
   const date = createElement('input', 'modal-body__date', null, ['type', 'date'], ['value', today], ['max', today]);

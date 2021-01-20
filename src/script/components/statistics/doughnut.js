@@ -104,7 +104,7 @@ function generateChart(type, time) {
     data: {
       labels: Object.keys(summaryObj).length !== 0 ? Object.keys(summaryObj) : ['You`re haven`t any transactions'],
       datasets: [{
-        data: Object.values(summaryObj).length !== 0 ? Object.values(summaryObj) : [100],
+        data: Object.values(summaryObj).length !== 0 ? Object.values(summaryObj) : [1],
         backgroundColor: [
           'rgba(243, 94, 110, 1)',
           'rgba(54, 162, 235, 1)',
