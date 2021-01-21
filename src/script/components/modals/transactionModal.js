@@ -5,6 +5,7 @@ import api from '../../api';
 import app from '../../app';
 import renderHistory from '../transactions/history';
 import { getLanguage } from '../../utils/localStorage';
+import getExchangeData from '../settings/currencyConverter';
 
 /* options = {
  *    type: 'expenses',
@@ -82,7 +83,6 @@ export default function transactionModal(options) {
   document.querySelector('.modal-content').className = `modal-content ${options.type || options}`;
 
   const today = new Date().toISOString().split('T')[0];
-  console.log(today)
 
   const wrap = createElement('div', 'content');
 
@@ -162,10 +162,26 @@ export default function transactionModal(options) {
       type: `${options.type}`,
       description: descriptionEl.value,
     };
-    api.saveTransaction(tx).then((result) => {
-      console.log(result);
-      renderHistory();
-    });
+
+    const currencyFrom = document.querySelector('.currency-list .select__value').innerText;
+
+    getExchangeData(moneyAmountEl.value, currencyFrom)
+      .then((exchange) => {
+        tx.amount = exchange;
+
+        const toCurrency = (localStorage.getItem('currency')).toUpperCase();
+        if (toCurrency !== currencyFrom) {
+          tx.description = `${moneyAmountEl.value} ${currencyFrom} //
+          ${descriptionEl.value}`;
+        }
+      })
+      .then(() => {
+        api.saveTransaction(tx)
+          .then((result) => {
+            console.log(result);
+            renderHistory();
+          });
+      });
 
     modal.hide();
 

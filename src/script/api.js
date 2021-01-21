@@ -1,4 +1,4 @@
-import getCurrencylist from './components/settings/currency_list';
+import getCurrencylist from './components/settings/currencyList';
 
 class ApiClient {
   constructor(apiUrl) {
