@@ -70,6 +70,7 @@ export default async function renderHistory() {
           <div class="col">
             <p class="money-amount ${transaction.type}">
               ${transaction.type === 'expenses' ? '-' : '+'}${transaction.amount}
+              <span class="history_currency">${app.user.currency}</span>
             </p>
             <p class="description">${transaction.description}</p>
           </div>

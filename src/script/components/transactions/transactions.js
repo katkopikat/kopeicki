@@ -3,8 +3,11 @@ import { dragStart, dragEnd, dragOver, dragEnter, dragLeave, dragDrop } from './
 import createCategoryList from './categories';
 import renderHistory from './history';
 import translatePage from '../settings/language';
+import app from '../../app';
 
 export default function renderTransactionsPage() {
+  localStorage.setItem('currency', app.user.currency);
+
   const accountsDiv = createElement(
     'div',
     'transactions-dashboard__item accounts',
