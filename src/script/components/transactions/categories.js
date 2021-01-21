@@ -26,15 +26,18 @@ export default function createCategoryList(group, container) {
   const listContainer = createElement('div', 'flex-list');
 
   list.forEach((category) => {
+    const categoryAmmount = createElement('span', 'category-ammount', null, ['category', category.name]);
     const categoryName = createElement('span', '', category.name, ['i18n', category.name]);
     const imgSrc = `background-image: url(${category.icon});`;
     const categoryIcon = createElement('div', 'icon-svg', null, ['style', imgSrc]);
     const categoryIconDiv = createElement('div', 'category-icon', categoryIcon);
 
+    categoryAmmount.innerHTML = '1000';
+
     const categoryElem = createElement(
       'div',
       'flex-list__item',
-      [categoryIconDiv, categoryName],
+      [categoryIconDiv, categoryName, categoryAmmount],
       ['category', category.name],
       ['group', group],
       ['draggable', isDraggable],

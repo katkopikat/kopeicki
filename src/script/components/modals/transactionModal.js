@@ -6,6 +6,7 @@ import api from '../../api';
 import app from '../../app';
 import renderHistory from '../transactions/history';
 import { getLanguage } from '../../utils/localStorage';
+import getExchangeData from '../settings/currencyConverter';
 
 /* options = {
  *    type: 'expenses',
@@ -104,7 +105,7 @@ export default function transactionModal(options) {
     `,
   );
 
-  createSelect(wrap.querySelector('.modal-body__amount'), {
+  createSelect(wrap.querySelector('.modal-body__title'), {
     class: 'currency-list',
     placeholder: app.user.currency.toUpperCase(),
     list: api.currencyList,
@@ -127,6 +128,13 @@ export default function transactionModal(options) {
 
   const saveBtn = createElement('button', 'btn btn-light', saveBtnOptions[options.type][lang]);
   wrap.append(saveBtn);
+
+  setTimeout((() => {
+    const currencyInput = document.querySelector('.modal-body__amount');
+    currencyInput.onblur = () => {
+      currencyInput.value = parseFloat(currencyInput.value).toFixed(2);
+    };
+  }), 0);
 
   const audioExpenses = new Audio();
   const audioIncome = new Audio();
@@ -155,10 +163,26 @@ export default function transactionModal(options) {
       type: `${options.type}`,
       description: descriptionEl.value,
     };
-    api.saveTransaction(tx).then((result) => {
-      console.log(result);
-      renderHistory();
-    });
+
+    const currencyFrom = document.querySelector('.currency-list .select__value').innerText;
+
+    getExchangeData(moneyAmountEl.value, currencyFrom)
+      .then((exchange) => {
+        tx.amount = exchange;
+
+        const toCurrency = (localStorage.getItem('currency')).toUpperCase();
+        if (toCurrency !== currencyFrom) {
+          tx.description = `${moneyAmountEl.value} ${currencyFrom} //
+          ${descriptionEl.value}`;
+        }
+      })
+      .then(() => {
+        api.saveTransaction(tx)
+          .then((result) => {
+            console.log(result);
+            renderHistory();
+          });
+      });
 
     modal.hide();
 
