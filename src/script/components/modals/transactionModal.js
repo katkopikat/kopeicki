@@ -1,3 +1,4 @@
+import moment from 'moment';
 import createElement from '../../utils/create';
 import createSelect from '../../utils/select';
 import modal from './modal';
@@ -81,7 +82,7 @@ export default function transactionModal(options) {
 
   document.querySelector('.modal-content').className = `modal-content ${options.type || options}`;
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = moment().format('YYYY-MM-DD');
 
   const wrap = createElement('div', 'content');
 
