@@ -82,6 +82,7 @@ export default function transactionModal(options) {
   document.querySelector('.modal-content').className = `modal-content ${options.type || options}`;
 
   const today = new Date().toISOString().split('T')[0];
+  console.log(today)
 
   const wrap = createElement('div', 'content');
 
@@ -103,7 +104,6 @@ export default function transactionModal(options) {
     `,
   );
 
-
   createSelect(wrap.querySelector('.modal-body__title'), {
     class: 'currency-list',
     placeholder: app.user.currency.toUpperCase(),
@@ -124,7 +124,6 @@ export default function transactionModal(options) {
   const selectToEl = wrap.querySelector('.select__to .select__value');
   const dateEl = wrap.querySelector('.modal-body__date');
   const descriptionEl = wrap.querySelector('.form-control');
-
 
   const saveBtn = createElement('button', 'btn btn-light', saveBtnOptions[options.type][lang]);
   wrap.append(saveBtn);

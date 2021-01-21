@@ -31,6 +31,13 @@
           align-items: center;
           row-gap: 0.2em;
 
+          .category-sum {
+            color: var(--category-sum);
+            font-size: 0.7rem;
+            margin-top: -0.4rem;
+            //opacity: 0.5;
+          }
+
           .category-icon {
             padding: 0.8em;
             border-radius: 50%;
