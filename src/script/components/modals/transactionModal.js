@@ -18,20 +18,20 @@ import getExchangeData from '../settings/currencyConverter';
 function preCreateSelect(options) {
   const isFromSelect = options.class.includes('from');
 
-  let list;
+  let categoryList;
 
   if (isFromSelect) {
-    list = [...app.user.accounts];
+    categoryList = [...app.user.accounts];
   } else {
-    list = options.type === 'expenses' ? [...app.user.expenses] : [...app.user.income];
+    categoryList = options.type === 'expenses' ? [...app.user.expenses] : [...app.user.income];
   }
 
-  const names = list.map(({ name }) => name);
+  const list = categoryList.map(({ name }) => name);
 
   return {
     class: options.class,
-    placeholder: isFromSelect ? options.from || 'account' : options.to,
-    list: names,
+    placeholder: isFromSelect ? options.from || 'account' : options.to || options.type,
+    list,
   };
 }
 
@@ -39,11 +39,6 @@ export default function transactionModal(options) {
   const lang = getLanguage();
 
   const titleOptions = {
-    accounts: {
-      en: '',
-      ru: '',
-      be: '',
-    },
     expenses: {
       en: 'Spent',
       ru: 'Потратил',
@@ -57,7 +52,6 @@ export default function transactionModal(options) {
   };
 
   const saveBtnOptions = {
-    accounts: 'Done!',
     expenses: {
       en: 'Spent it!',
       ru: 'Потрачено!',
@@ -81,7 +75,7 @@ export default function transactionModal(options) {
 
   const isExpense = options.type === 'expenses';
 
-  document.querySelector('.modal-content').className = `modal-content ${options.type || options}`;
+  document.querySelector('.modal-content').className = `modal-content ${options.type}`;
 
   const today = moment().format('YYYY-MM-DD');
 
@@ -90,7 +84,7 @@ export default function transactionModal(options) {
   wrap.insertAdjacentHTML(
     'afterbegin',
     `
-      <h5 class="modal-body__title">${titleOptions[options.type][lang] || options[lang]}</h5>
+      <h5 class="modal-body__title">${titleOptions[options.type][lang]}</h5>
       <input class="modal-body__amount" placeholder="0.00" type="number">
       <br>
       <span data-from>${from[lang]}</span>
@@ -129,12 +123,12 @@ export default function transactionModal(options) {
   const saveBtn = createElement('button', 'btn btn-light', saveBtnOptions[options.type][lang]);
   wrap.append(saveBtn);
 
-  setTimeout((() => {
+  setTimeout(() => {
     const currencyInput = document.querySelector('.modal-body__amount');
     currencyInput.onblur = () => {
       currencyInput.value = parseFloat(currencyInput.value).toFixed(2);
     };
-  }), 0);
+  }, 0);
 
   const audioExpenses = new Audio();
   const audioIncome = new Audio();
@@ -170,18 +164,17 @@ export default function transactionModal(options) {
       .then((exchange) => {
         tx.amount = exchange;
 
-        const toCurrency = (localStorage.getItem('currency')).toUpperCase();
+        const toCurrency = localStorage.getItem('currency').toUpperCase();
         if (toCurrency !== currencyFrom) {
           tx.description = `${moneyAmountEl.value} ${currencyFrom} //
           ${descriptionEl.value}`;
         }
       })
       .then(() => {
-        api.saveTransaction(tx)
-          .then((result) => {
-            console.log(result);
-            renderHistory();
-          });
+        api.saveTransaction(tx).then((result) => {
+          console.log(result);
+          renderHistory();
+        });
       });
 
     modal.hide();

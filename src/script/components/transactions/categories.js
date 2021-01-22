@@ -1,6 +1,7 @@
 import createElement from '../../utils/create';
 import modal from '../modals/modal';
 import transactionModal from '../modals/transactionModal';
+import accountModal from '../modals/accountModal';
 import newCategoryModal from '../modals/newCategoryModal';
 import app from '../../app';
 
@@ -62,12 +63,16 @@ export default function createCategoryList(group, container) {
 
     const type = categoryItem.dataset.group;
 
-    if (!categoryItem.classList.contains('add-category')) {
+    if (categoryItem.classList.contains('add-category')) {
+      modal.setContent(newCategoryModal(type));
+    } else {
       const { category } = categoryItem.dataset;
 
-      modal.setContent(transactionModal({ type, to: category }));
-    } else {
-      modal.setContent(newCategoryModal(type));
+      if (categoryItem.dataset.group === 'accounts') {
+        modal.setContent(accountModal({ type, from: category }));
+      } else {
+        modal.setContent(transactionModal({ type, to: category }));
+      }
     }
 
     modal.show();
