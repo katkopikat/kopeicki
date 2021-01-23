@@ -139,15 +139,6 @@ export default function transactionModal(options) {
   audioAccounts.src = '/src/assets/sounds/category.mp3';
 
   saveBtn.addEventListener('click', () => {
-    const transactionInfo = {
-      moneyAmount: moneyAmountEl.value,
-      fromAccount: selectFromEl.textContent,
-      to: selectToEl.textContent,
-      date: dateEl.value,
-      description: descriptionEl.value,
-    };
-    console.log(transactionInfo);
-
     const tx = {
       date: dateEl.value,
       user: api.userId,
@@ -164,7 +155,7 @@ export default function transactionModal(options) {
       .then((exchange) => {
         tx.amount = exchange;
 
-        const toCurrency = localStorage.getItem('currency').toUpperCase();
+        const toCurrency = app.user.currency.toUpperCase();
         if (toCurrency !== currencyFrom) {
           tx.description = `${moneyAmountEl.value} ${currencyFrom} //
           ${descriptionEl.value}`;

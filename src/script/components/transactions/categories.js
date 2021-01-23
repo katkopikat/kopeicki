@@ -84,51 +84,31 @@ export default function createCategoryList(group, container) {
       Alt + E --> New expense
       Alt + I --> New income
       Alt + A --> New account
-      Alt + S --> Open settings page
-      Alt + R --> Edit categories (remove catrgories)
   */
-
-  let altIsPressed = false;
-  window.addEventListener('keydown', (e) => {
-    if (e.keyCode === 18) {
-      altIsPressed = true;
-      e.preventDefault();
-    }
-  });
-
-  window.addEventListener('keyup', (e) => {
-    if (e.keyCode === 18) {
-      altIsPressed = false;
-      e.preventDefault();
-    }
-  });
+  let keysPushead = [];
 
   window.addEventListener('keydown', (e) => {
-    if (altIsPressed && e.keyCode === 69) {
-      console.log('Alt + E => Open new expense modal!');
-      e.preventDefault();
-      modal.setContent(transactionModal('expenses', ''));
-      modal.show();
-    }
-    // if (altIsPressed && e.keyCode === 73) {
-    //   console.log('Alt + I => Open mew income modal!');
-    //   e.preventDefault();
-    //   modal.setContent(transactionModal('income', ''));
-    //   modal.show();
-    // }
-    if (altIsPressed && e.keyCode === 65) {
-      console.log('Alt + A => Open mew account modal!');
-      e.preventDefault();
-      modal.setContent(transactionModal('account', ''));
-      modal.show();
-    }
-    if (altIsPressed && e.keyCode === 83) {
-      e.preventDefault();
-      console.log('Alt + S => Open setings page!');
-    }
-    if (altIsPressed && e.keyCode === 82) {
-      e.preventDefault();
-      console.log('Alt + R => Edit categories!');
+    keysPushead.push(e.target);
+    if (keysPushead.length === 2) {
+      if (e.altKey && e.keyCode === 69) {
+        console.log('Alt + E => Open new expense modal!');
+        e.preventDefault();
+        // modal.setContent(transactionModal('expenses',''));
+        // modal.show();
+      }
+      if (e.altKey && e.keyCode === 73) {
+        console.log('Alt + I => Open new income modal!');
+        e.preventDefault();
+        // modal.setContent(transactionModal('income', ''));
+        // modal.show();
+      }
+      if (e.altKey && e.keyCode === 65) {
+        console.log('Alt + A => Create new account!');
+        e.preventDefault();
+        // modal.setContent(newCategoryModal('account'));
+        // modal.show();
+      }
+      keysPushead = [];
     }
   });
 }

@@ -7,6 +7,7 @@ import renderHistoryPage from './script/components/history/history';
 import renderStatisticsPage from './script/components/statistics/statistics';
 import renderTransactionsPage from './script/components/transactions/transactions';
 import app from './script/app';
+// import hotKeys from './script/utils/hotkeys';
 
 app.renderTransactionsPage = renderTransactionsPage;
 
@@ -52,3 +53,35 @@ window.addEventListener('DOMContentLoaded', () => {
   app.init().then(router);
   // router();
 });
+
+/* ------------ HOT KEYS ---------------
+      Alt + T --> Open transactions page
+      Alt + S --> Open settings page
+      Alt + H --> Open history page
+  */
+
+function hotKeys() {
+  let keysPushead = [];
+
+  window.addEventListener('keydown', (e) => {
+    keysPushead.push(e.target);
+
+    if (keysPushead.length === 2) {
+      if (e.altKey && e.keyCode === 84) {
+        e.preventDefault();
+        navigateTo('/');
+      }
+      if (e.altKey && e.keyCode === 83) {
+        e.preventDefault();
+        navigateTo('/statistics');
+      }
+      if (e.altKey && e.keyCode === 72) {
+        e.preventDefault();
+        navigateTo('/history');
+      }
+      keysPushead = [];
+    }
+  });
+}
+
+hotKeys();
