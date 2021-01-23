@@ -23,7 +23,8 @@ export default function accountModal(options) {
     be: 'Атрымліваць грошы!',
   };
 
-  document.querySelector('.modal-content').className = `modal-content ${options.type}`;
+  const modal = document.querySelector('.modal-content');
+  modal.className = `modal-content ${options.type}`;
 
   const wrap = createElement('div', 'content');
 
@@ -37,6 +38,18 @@ export default function accountModal(options) {
   );
 
   const buttons = wrap.querySelector('.btns-container');
+
+  buttons.addEventListener('mouseover', (e) => {
+    if (e.target.classList.contains('expenses')) {
+      modal.classList.remove('income-btn');
+      modal.classList.add('expenses-btn');
+    } else if (e.target.classList.contains('income')) {
+      modal.classList.remove('expenses-btn');
+      modal.classList.add('income-btn');
+    } else {
+      modal.classList.remove('expenses-btn', 'income-btn');
+    }
+  });
 
   buttons.addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON') {

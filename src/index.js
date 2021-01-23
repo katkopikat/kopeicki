@@ -3,20 +3,17 @@ import 'bootstrap';
 
 import renderAuthorizationPage from './script/components/authorization/authorization';
 import toggleSettings from './script/components/settings/settings';
+import renderHistoryPage from './script/components/history/history';
 import renderStatisticsPage from './script/components/statistics/statistics';
 import renderTransactionsPage from './script/components/transactions/transactions';
 import app from './script/app';
 
 app.renderTransactionsPage = renderTransactionsPage;
 
-const Planning = () => {
-  console.log('Отрисовалась планинг');
-};
-
 const router = () => {
   const routes = [
     { path: '/statistics', component: renderStatisticsPage },
-    { path: '/planning', component: Planning },
+    { path: '/history', component: renderHistoryPage },
     { path: '/login', component: renderAuthorizationPage },
     { path: '/', component: renderTransactionsPage },
   ];

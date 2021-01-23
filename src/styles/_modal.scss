@@ -43,10 +43,12 @@
     flex-wrap: wrap;
     justify-content: center;
     column-gap: 7%;
+
   }
 }
 
 .modal-content {
+  transition: all 1s;
   border-radius: 1rem;
   line-height: 1;
 
@@ -55,6 +57,20 @@
   }
 }
 
+.modal-dialog {
+  transition: all 0.4s;
+}
+
+.modal-content.expenses-btn {
+  transition: all 0.3s;
+  background: var(--expenses);
+} 
+
+.modal-content.income-btn {
+  transition: all 0.3s;
+  background: var(--income);
+} 
+
 .modal-header {
   color: var(--dark);
   padding: 1rem 1rem 0 0;
@@ -62,6 +78,7 @@
 }
 
 .modal-body {
+  transition: all 0.4s;
   padding: 0 2rem;
   color: var(--dark);
 
@@ -182,16 +199,10 @@
     background: white;
     text-transform: uppercase;
     outline: none;
-
-    &.expenses {
-      background: var(--expenses);
-    }
-
-    &.income {
-      background: var(--income);
-    }
+    font-weight: 500;
+    background-color: white;
   }
-
+  
   .new-category {
     @include flex-col;
     row-gap: 2rem;

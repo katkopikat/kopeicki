@@ -85,7 +85,7 @@ export default function transactionModal(options) {
     'afterbegin',
     `
       <h5 class="modal-body__title">${titleOptions[options.type][lang]}</h5>
-      <input class="modal-body__amount" placeholder="0.00" type="number">
+      <input class="modal-body__amount" placeholder="0.00" type="number" value="0.00">
       <br>
       <span data-from>${from[lang]}</span>
       <br>
