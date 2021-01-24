@@ -3,12 +3,14 @@ import createSelect from '../../utils/select';
 import { getLanguage, setLanguage } from '../../utils/localStorage';
 
 export default function toggleSettings() {
-  const themeToggleEl = document.querySelector('.theme-toggle');
-  switchTheme();
-  createSelect(themeToggleEl, {
+  const selectEl = document.querySelector('.lang-select');
+
+  createSelect(selectEl, {
     class: 'select__language',
     placeholder: getLanguage(),
     list: ['en', 'ru', 'be'],
     onSelect: setLanguage,
   });
+
+  switchTheme();
 }
