@@ -7,7 +7,7 @@ import renderStatisticsPage from './script/components/statistics/statistics';
 import renderTransactionsPage from './script/components/transactions/transactions';
 import app from './script/app';
 
-app.renderTransactionsPage = renderTransactionsPage;
+// app.renderTransactionsPage = renderTransactionsPage;
 
 const Planning = () => {
   console.log('Отрисовалась планинг');
@@ -27,12 +27,20 @@ const router = () => {
 
   document.querySelector('main').innerHTML = '';
 
+  // try {
+  //   match.component();
+  // } catch (e) {
+  //   console.log(e.message);
+  //   app.checkAuth();
+  // }
   match.component();
 };
 
 const navigateTo = (url) => {
-  window.history.pushState(null, null, url);
-  router();
+  if (app.user) {
+    window.history.pushState(null, null, url);
+    router();
+  }
 };
 
 toggleSettings();

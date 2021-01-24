@@ -1,16 +1,17 @@
 import api from './api';
+import renderAuthorizationPage from './components/authorization/authorization';
 
 class App {
   constructor(apiInstance) {
     this.api = apiInstance;
-    this.user = null;
+    this.user = undefined;
   }
 
   async init() {
     // dev mode autologin
     // await this.login();
     await this.checkAuth();
-    console.log(this.user);
+    console.log('from init: ', this.user);
   }
 
   async checkAuth() {
@@ -18,6 +19,8 @@ class App {
       this.user = await this.api.getUser();
     } catch (e) {
       console.log(e.message);
+      window.history.pushState(null, null, '/login');
+      renderAuthorizationPage();
     }
   }
 

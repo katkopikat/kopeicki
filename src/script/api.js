@@ -1,3 +1,5 @@
+// import renderAuthorizationPage from './components/authorization/authorization';
+
 class ApiClient {
   constructor(apiUrl) {
     this.apiUrl = apiUrl;
@@ -16,17 +18,6 @@ class ApiClient {
     return true;
   }
 
-  checkAuthorization() {
-    console.log(this.apiUrl);
-    if (this.userId === null || this.token === null || this.refreshToken === null) {
-      console.log('Authorization error, change route to login');
-      window.history.pushState(null, null, '/login');
-      return undefined;
-      // return { message: 'invalid autorization' };
-    }
-    return true;
-  }
-
   async getNewTokens(method = 'POST', route = '/users/token', body = false, auth = true) {
     const reqParams = {
       method,
@@ -38,17 +29,17 @@ class ApiClient {
     if (body) {
       reqParams.body = JSON.stringify(body);
     }
-    if (auth && this.refreshToken) {
+    if (auth && (this.refreshToken)) {
       reqParams.withCredentials = true;
       reqParams.headers.Authorization = `${this.refreshToken}`;
     }
     const response = await fetch(`${this.apiUrl}${route}`, reqParams);
     if (response.ok) {
-      console.log(response);
+      console.log('refresh token ok: ', response);
       return response.json();
     }
-    console.log(response);
-    return undefined;
+    console.log('refresh token !ok: ', response);
+    return response;
   }
 
   async request(method, route, body = false, auth = true) {
@@ -62,20 +53,22 @@ class ApiClient {
     if (body) {
       reqParams.body = JSON.stringify(body);
     }
-    if (auth && this.token) {
+    if (auth && (this.token)) {
       reqParams.withCredentials = true;
       reqParams.headers.Authorization = `${this.token}`; // `Bearer ${this.token}`
     }
     const response = await fetch(`${this.apiUrl}${route}`, reqParams);
-    console.log(response);
+    console.log('first response', response);
     if (!response.ok) {
       const result = await this.getNewTokens('POST', '/users/token', { email: this.email, userId: this.userId });
-      console.log(result);
-      if (!result) {
+      console.log('second response', result);
+      if (!result.ok) {
         console.log('Authorization error, change route to login');
-        window.history.pushState(null, null, '/login');
-        return undefined;
+        const content = await result.json();
+        console.log('message from content', content);
+        throw new Error(content.message);
       }
+      console.log(result);
       this.setLocalStorage(result.userId, result.email, result.token, result.refreshToken);
       const responseAfterRefresh = await this.request(method, route, body, auth);
       console.log('after refresh', responseAfterRefresh);
