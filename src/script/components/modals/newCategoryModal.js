@@ -108,15 +108,12 @@ export default function newCategoryModal(type) {
       newCategoryItem.currency = wrap.querySelector('.modal-body__currency').innerText;
 
       await app.addUserAccount(newCategoryItem);
-      document.querySelector('main').innerHTML = '';
       app.renderTransactionsPage();
     } else if (type === 'expenses') {
       await app.addUserExpense(newCategoryItem);
-      document.querySelector('main').innerHTML = '';
       app.renderTransactionsPage();
     } else {
       await app.addUserIncome(newCategoryItem);
-      document.querySelector('main').innerHTML = '';
       app.renderTransactionsPage();
     }
 

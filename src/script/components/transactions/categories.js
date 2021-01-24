@@ -5,6 +5,7 @@ import newCategoryModal from '../modals/newCategoryModal';
 import app from '../../app';
 
 export default function createCategoryList(group, container) {
+  const txsSummary = app.transactionsSummary;
   let list;
 
   switch (group) {
@@ -32,7 +33,8 @@ export default function createCategoryList(group, container) {
     const categoryIcon = createElement('div', 'icon-svg', null, ['style', imgSrc]);
     const categoryIconDiv = createElement('div', 'category-icon', categoryIcon);
 
-    categoryAmmount.innerHTML = '1000';
+    // categoryAmmount.innerHTML = '1000';
+    categoryAmmount.textContent = Math.round(txsSummary[group]?.get(category.name) || 0);
 
     const categoryElem = createElement(
       'div',

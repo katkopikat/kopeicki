@@ -4,7 +4,7 @@ import createSelect from '../../utils/select';
 import modal from './modal';
 import api from '../../api';
 import app from '../../app';
-import renderHistory from '../transactions/history';
+// import renderHistory from '../transactions/history';
 import { getLanguage } from '../../utils/localStorage';
 import getExchangeData from '../settings/currencyConverter';
 
@@ -177,10 +177,11 @@ export default function transactionModal(options) {
         }
       })
       .then(() => {
-        api.saveTransaction(tx)
+        app.saveTransaction(tx)
           .then((result) => {
             console.log(result);
-            renderHistory();
+            app.renderTransactionsPage();
+            // renderHistory();
           });
       });
 
