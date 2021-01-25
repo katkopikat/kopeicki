@@ -3,6 +3,7 @@ import 'bootstrap';
 
 import renderAuthorizationPage from './script/components/authorization/authorization';
 import toggleSettings from './script/components/settings/settings';
+import renderHistoryPage from './script/components/history/history';
 import renderStatisticsPage from './script/components/statistics/statistics';
 import renderTransactionsPage from './script/components/transactions/transactions';
 import navSlideIn from './script/components/navbar';
@@ -10,14 +11,10 @@ import app from './script/app';
 
 // app.renderTransactionsPage = renderTransactionsPage;
 
-const Planning = () => {
-  console.log('Отрисовалась планинг');
-};
-
 const router = () => {
   const routes = [
     { path: '/statistics', component: renderStatisticsPage },
-    { path: '/planning', component: Planning },
+    { path: '/history', component: renderHistoryPage },
     { path: '/login', component: renderAuthorizationPage },
     { path: '/', component: renderTransactionsPage },
   ];
@@ -64,4 +61,35 @@ window.addEventListener('DOMContentLoaded', () => {
   router();
 });
 
+/* ------------ HOT KEYS ---------------
+      Alt + T --> Open transactions page
+      Alt + S --> Open settings page
+      Alt + H --> Open history page
+  */
+
+function hotKeys() {
+  let keysPushead = [];
+
+  window.addEventListener('keydown', (e) => {
+    keysPushead.push(e.target);
+
+    if (keysPushead.length === 2) {
+      if (e.altKey && e.keyCode === 84) {
+        e.preventDefault();
+        navigateTo('/');
+      }
+      if (e.altKey && e.keyCode === 83) {
+        e.preventDefault();
+        navigateTo('/statistics');
+      }
+      if (e.altKey && e.keyCode === 72) {
+        e.preventDefault();
+        navigateTo('/history');
+      }
+      keysPushead = [];
+    }
+  });
+}
+
+hotKeys();
 navSlideIn();

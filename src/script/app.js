@@ -23,7 +23,7 @@ class App {
 
   async login(/* email, password */) {
     try {
-      await this.api.login('user2@rsclone.com', 'test');
+      await this.api.login('user1@rsclone.com', 'test');
       // await this.api.login(email, password);
       this.user = await this.api.getUser();
       console.log(this.user);

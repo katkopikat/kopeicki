@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 export default function navSlideIn() {
   const burger = document.querySelector('.burger');
   const nav = document.querySelector('.nav');
