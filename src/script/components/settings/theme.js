@@ -1,8 +1,9 @@
 export default function switchTheme() {
+  const themeToggleDiv = document.querySelector('.toggle.theme');
   const themeToggle = document.getElementById('theme');
 
   themeToggle.addEventListener('change', () => {
-    const ball = document.querySelector('.ball');
+    const ball = themeToggleDiv.querySelector('.ball');
 
     const transition = () => {
       document.documentElement.classList.add('transition');
