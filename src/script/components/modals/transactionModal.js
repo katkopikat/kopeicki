@@ -2,11 +2,13 @@ import moment from 'moment';
 import createElement from '../../utils/create';
 import createSelect from '../../utils/select';
 import modal from './modal';
+import showPopover from '../popover';
 import api from '../../api';
 import app from '../../app';
 import renderHistory from '../transactions/history';
 import { getLanguage } from '../../utils/localStorage';
 import getExchangeData from '../settings/currencyConverter';
+import translations from '../../data/translations';
 
 /* options = {
  *    type: 'expenses',
@@ -149,30 +151,39 @@ export default function transactionModal(options) {
       description: descriptionEl.value,
     };
 
+    const isAmountInvalid = +tx.amount === 0;
+    const isAccountInvalid = tx.account === translations[lang]['account'];
+    const isCategoryInvalid =
+      tx.category === translations[lang]['income'] || tx.category === translations[lang]['expenses'];
+
     const currencyFrom = document.querySelector('.currency-list .select__value').innerText;
 
-    getExchangeData(moneyAmountEl.value, currencyFrom)
-      .then((exchange) => {
-        tx.amount = exchange;
+    if (isAmountInvalid || isAccountInvalid || isCategoryInvalid) {
+      showPopover(saveBtn);
+    } else {
+      getExchangeData(moneyAmountEl.value, currencyFrom)
+        .then((exchange) => {
+          tx.amount = exchange;
 
-        const toCurrency = app.user.currency.toUpperCase();
-        if (toCurrency !== currencyFrom) {
-          tx.description = `${moneyAmountEl.value} ${currencyFrom} //
+          const toCurrency = app.user.currency.toUpperCase();
+          if (toCurrency !== currencyFrom) {
+            tx.description = `${moneyAmountEl.value} ${currencyFrom} //
           ${descriptionEl.value}`;
-        }
-      })
-      .then(() => {
-        api.saveTransaction(tx).then((result) => {
-          console.log(result);
-          renderHistory();
+          }
+        })
+        .then(() => {
+          api.saveTransaction(tx).then((result) => {
+            console.log(result);
+            renderHistory();
+          });
         });
-      });
 
-    modal.hide();
+      modal.hide();
 
-    if (options.type === 'expenses') audioExpenses.play();
-    else if (options.type === 'income') audioIncome.play();
-    else audioAccounts.play();
+      if (options.type === 'expenses') audioExpenses.play();
+      else if (options.type === 'income') audioIncome.play();
+      else audioAccounts.play();
+    }
   });
 
   return wrap;
