@@ -26,6 +26,7 @@
     height: 1px;
     margin: 0.5rem auto;
     background: var(--gray);
+    opacity: 0.5;
   }
 
   .row:last-child::after {
@@ -47,7 +48,12 @@
   }
 
   .money-amount {
-    font-size: 1.8rem;
+    font-size: 1.7rem;
+
+    .history_currency{
+      font-size: 1.2rem;
+      margin-left: -0.3rem;
+    }
   }
 
   .money-amount.expenses {

@@ -1,10 +1,12 @@
+import moment from 'moment';
 import createElement from '../../utils/create';
 import createSelect from '../../utils/select';
 import modal from './modal';
 import api from '../../api';
 import app from '../../app';
 import renderHistory from '../transactions/history';
-// import getCurrencylist from '../settings/currency_list';
+import { getLanguage } from '../../utils/localStorage';
+import getExchangeData from '../settings/currencyConverter';
 
 /* options = {
  *    type: 'expenses',
@@ -28,55 +30,86 @@ function preCreateSelect(options) {
 
   return {
     class: options.class,
-    placeholder: isFromSelect ? options.from || 'Choose an account' : options.to,
+    placeholder: isFromSelect ? options.from || 'account' : options.to,
     list: names,
   };
 }
 
 export default function transactionModal(options) {
+  const lang = getLanguage();
+
   const titleOptions = {
-    accounts: 'I dont know what to do with the money',
-    expenses: 'Spent',
-    income: 'Earned',
+    accounts: {
+      en: '',
+      ru: '',
+      be: '',
+    },
+    expenses: {
+      en: 'Spent',
+      ru: 'Потратил',
+      be: 'Патраціў',
+    },
+    income: {
+      en: 'Earned',
+      ru: 'Заработал',
+      be: 'Зарабіў',
+    },
   };
 
   const saveBtnOptions = {
     accounts: 'Done!',
-    expenses: 'Spent it!',
-    income: 'Received!',
+    expenses: {
+      en: 'Spent it!',
+      ru: 'Потрачено!',
+      be: 'Патрачано!',
+    },
+    income: {
+      en: 'Received!',
+      ru: 'Получено!',
+      be: 'Атрымаў!',
+    },
   };
+
+  const descriptionLabels = {
+    en: 'Do you have anything to say?',
+    ru: 'Как-то прокомментируем?',
+    be: 'Неяк пракамэнтуем?',
+  };
+
+  const from = { en: 'from', ru: 'из', be: 'з' };
+  const on = { en: 'on', ru: 'на', be: 'на' };
 
   const isExpense = options.type === 'expenses';
 
   document.querySelector('.modal-content').className = `modal-content ${options.type || options}`;
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = moment().format('YYYY-MM-DD');
 
   const wrap = createElement('div', 'content');
 
   wrap.insertAdjacentHTML(
     'afterbegin',
     `
-      <h5 class="modal-body__title">${titleOptions[options.type] || options}</h5>
+      <h5 class="modal-body__title">${titleOptions[options.type][lang] || options[lang]}</h5>
       <input class="modal-body__amount" placeholder="0.00" type="number">
       <br>
-      <span data-from>from</span>
+      <span data-from>${from[lang]}</span>
       <br>
-      <span data-to>on</span>
+      <span data-to>${on[lang]}</span>
       <br>
       <input class="modal-body__date" type="date" value="${today}" max="${today}">
       <div class="form-floating">
         <textarea class="form-control" id="description" maxlength="45"></textarea>
-        <label for="description" class="textarea-label">Do you have anything to say?</label>
+        <label for="description" class="textarea-label">${descriptionLabels[lang]}</label>
       </div>
     `,
   );
 
-  // createSelect(document.body, {
-  //   class: 'currency-list',
-  //   placeholder: 'Choose currency',
-  //   list: await getCurrencylist(),
-  // });
+  createSelect(wrap.querySelector('.modal-body__title'), {
+    class: 'currency-list',
+    placeholder: app.user.currency.toUpperCase(),
+    list: api.currencyList,
+  });
 
   createSelect(
     wrap.querySelector(isExpense ? '[data-from]' : '[data-to]'),
@@ -93,8 +126,15 @@ export default function transactionModal(options) {
   const dateEl = wrap.querySelector('.modal-body__date');
   const descriptionEl = wrap.querySelector('.form-control');
 
-  const saveBtn = createElement('button', 'btn', saveBtnOptions[options.type]);
+  const saveBtn = createElement('button', 'btn btn-light', saveBtnOptions[options.type][lang]);
   wrap.append(saveBtn);
+
+  setTimeout((() => {
+    const currencyInput = document.querySelector('.modal-body__amount');
+    currencyInput.onblur = () => {
+      currencyInput.value = parseFloat(currencyInput.value).toFixed(2);
+    };
+  }), 0);
 
   const audioExpenses = new Audio();
   const audioIncome = new Audio();
@@ -123,10 +163,26 @@ export default function transactionModal(options) {
       type: `${options.type}`,
       description: descriptionEl.value,
     };
-    api.saveTransaction(tx).then((result) => {
-      console.log(result);
-      renderHistory();
-    });
+
+    const currencyFrom = document.querySelector('.currency-list .select__value').innerText;
+
+    getExchangeData(moneyAmountEl.value, currencyFrom)
+      .then((exchange) => {
+        tx.amount = exchange;
+
+        const toCurrency = (localStorage.getItem('currency')).toUpperCase();
+        if (toCurrency !== currencyFrom) {
+          tx.description = `${moneyAmountEl.value} ${currencyFrom} //
+          ${descriptionEl.value}`;
+        }
+      })
+      .then(() => {
+        api.saveTransaction(tx)
+          .then((result) => {
+            console.log(result);
+            renderHistory();
+          });
+      });
 
     modal.hide();
 

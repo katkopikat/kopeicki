@@ -1,4 +1,5 @@
 import renderAuthorizationPage from './components/authorization/authorization';
+import getCurrencylist from './components/settings/currencyList';
 
 class ApiClient {
   constructor(apiUrl) {
@@ -7,6 +8,12 @@ class ApiClient {
     this.email = localStorage.getItem('email');
     this.token = localStorage.getItem('token');
     this.refreshToken = localStorage.getItem('refreshToken');
+    this.currencyList = this.getCurrencylist();
+  }
+
+  async getCurrencylist() {
+    this.currencyList = await getCurrencylist();
+    this.currencyList = this.currencyList.sort();
   }
 
   setLocalStorage(userId, email, token, refreshToken) {

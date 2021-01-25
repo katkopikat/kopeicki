@@ -1,15 +1,38 @@
 import createElement from '../../utils/create';
 import modal from './modal';
+import api from '../../api';
 import app from '../../app';
+import createSelect from '../../utils/select';
+import { getLanguage } from '../../utils/localStorage';
 
 export default function newCategoryModal(type) {
+  const lang = getLanguage();
+
   const audioCategory = new Audio();
   audioCategory.src = '/src/assets/sounds/category.mp3';
 
   const titleOptions = {
-    accounts: 'Do you have a new account?',
-    expenses: 'What else will you spend money on?',
-    income: 'Where else will you get money from?',
+    accounts: {
+      en: 'Do you have a new account?',
+      ru: 'Хотите завести новый счет?',
+      be: 'Хочаце завесці новы рахунак?',
+    },
+    expenses: {
+      en: 'What else will you spend money on?',
+      ru: 'На что еще будем тратить деньги?',
+      be: 'На што яшчэ будзем траціць грошы?',
+    },
+    income: {
+      en: 'Where else will you get money from?',
+      ru: 'Где еще будем брать деньги?',
+      be: 'Адкуль яшчэ будзем браць грошы?',
+    },
+  };
+
+  const saveBtnOptions = {
+    en: 'Create!',
+    ru: 'Создать!',
+    be: 'Стварыць!',
   };
 
   const numOfItems = {
@@ -22,7 +45,7 @@ export default function newCategoryModal(type) {
 
   const wrap = createElement('div', 'content new-category');
 
-  const title = createElement('h5', 'title', titleOptions[type]);
+  const title = createElement('h5', 'title', titleOptions[type][lang]);
   const newCategoryName = createElement('input', 'new-category__name', null, ['type', 'text']);
   const iconsContainer = createElement('div', 'new-category__icons');
 
@@ -50,7 +73,7 @@ export default function newCategoryModal(type) {
     }
   });
 
-  const saveBtn = createElement('button', 'btn btn-light', 'Create!');
+  const saveBtn = createElement('button', 'btn btn-light', saveBtnOptions[lang]);
 
   [title, newCategoryName, iconsContainer, saveBtn].forEach((el) => wrap.append(el));
 
@@ -62,9 +85,14 @@ export default function newCategoryModal(type) {
       ['role', 'textbox'],
       ['contenteditable', true],
     );
-    const currency = createElement('span', 'modal-body__currency', 'rub');
 
-    [moneyAmount, currency].forEach((el) => wrap.insertBefore(el, iconsContainer));
+    wrap.insertBefore(moneyAmount, iconsContainer);
+
+    createSelect(wrap.querySelector('.modal-body__amount'), {
+      class: 'currency-list',
+      placeholder: app.user.currency.toUpperCase(),
+      list: api.currencyList,
+    });
   }
 
   saveBtn.addEventListener('click', async () => {
