@@ -46,6 +46,7 @@ class App {
   async saveTransaction(txData) {
     const tx = await this.api.saveTransaction(txData);
     await this.getTransactions(true);
+    this.user = await this.api.getUser();
     return tx;
   }
 

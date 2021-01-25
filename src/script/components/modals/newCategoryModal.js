@@ -105,7 +105,7 @@ export default function newCategoryModal(type) {
 
     if (type === 'accounts') {
       newCategoryItem.amount = wrap.querySelector('.modal-body__amount').innerText;
-      newCategoryItem.currency = wrap.querySelector('.modal-body__currency').innerText;
+      newCategoryItem.currency = wrap.querySelector('.currency-list .select__value').innerText;
 
       await app.addUserAccount(newCategoryItem);
       app.renderTransactionsPage();

@@ -34,7 +34,9 @@ export default function createCategoryList(group, container) {
     const categoryIconDiv = createElement('div', 'category-icon', categoryIcon);
 
     // categoryAmmount.innerHTML = '1000';
-    categoryAmmount.textContent = Math.round(txsSummary[group]?.get(category.name) || 0);
+    categoryAmmount.textContent = Math.round(
+      txsSummary[group]?.get(category.name) || category.amount || 0,
+    );
 
     const categoryElem = createElement(
       'div',
