@@ -4,22 +4,20 @@ class App {
   constructor(apiInstance) {
     this.api = apiInstance;
     this.user = null;
-    this.transactions = null;
-    this.transactionsSummary = null;
   }
 
   async init() {
     // dev mode autologin
     // await this.login();
     await this.checkAuth();
-    console.log(this.user);
+    console.log('from init: ', this.user);
   }
 
   async checkAuth() {
     try {
       this.user = await this.api.getUser();
     } catch (e) {
-      console.log(e.message);
+      console.error(e.message);
     }
   }
 

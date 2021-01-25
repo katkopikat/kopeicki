@@ -9,7 +9,7 @@ import renderTransactionsPage from './script/components/transactions/transaction
 import navSlideIn from './script/components/navbar';
 import app from './script/app';
 
-app.renderTransactionsPage = renderTransactionsPage;
+// app.renderTransactionsPage = renderTransactionsPage;
 
 const router = () => {
   const routes = [
@@ -25,12 +25,19 @@ const router = () => {
 
   document.querySelector('main').innerHTML = '';
 
-  match.component();
+  try {
+    match.component();
+  } catch (e) {
+    console.log(e.message);
+  }
+  // match.component();
 };
 
 const navigateTo = (url) => {
-  window.history.pushState(null, null, url);
-  router();
+  if (app.user) {
+    window.history.pushState(null, null, url);
+    router();
+  }
 };
 
 toggleSettings();
