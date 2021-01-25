@@ -91,7 +91,7 @@ export default function transactionModal(options) {
     'afterbegin',
     `
       <h5 class="modal-body__title">${titleOptions[options.type][lang] || options[lang]}</h5>
-      <input class="modal-body__amount" placeholder="0.00" type="number">
+      <input class="modal-body__amount" placeholder="0.00" type="number" value="0.00">
       <br>
       <span data-from>${from[lang]}</span>
       <br>
@@ -138,11 +138,11 @@ export default function transactionModal(options) {
 
   const audioExpenses = new Audio();
   const audioIncome = new Audio();
-  // const audioAccounts = new Audio();
+  const audioAccounts = new Audio();
 
   audioIncome.src = '/src/assets/sounds/income.mp3';
   audioExpenses.src = '/src/assets/sounds/expenses.mp3';
-  // audioAccounts.src = '/src/assets/sounds/category.mp3';
+  audioAccounts.src = '/src/assets/sounds/category.mp3';
 
   saveBtn.addEventListener('click', () => {
     const transactionInfo = {
@@ -185,9 +185,14 @@ export default function transactionModal(options) {
 
     modal.hide();
 
-    if (getSound()) {
-      (isExpense ? audioExpenses : audioIncome).play();
-    }
+    // if (getSound()) {
+    //   (isExpense ? audioExpenses : audioIncome).play();
+    // }
+
+    if (options.type === 'expenses') audioExpenses.play();
+    else if (options.type === 'income') audioIncome.play();
+    else audioAccounts.play();
+
   });
 
   return wrap;

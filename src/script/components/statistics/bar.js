@@ -66,6 +66,7 @@ function countYears() {
 
 function createYearsBtns() {
   const yearsBtnsContainer = document.querySelector('.bar-years');
+  console.log(yearsList);
   yearsList.sort((a, b) => b - a)
     .forEach((year, i) => {
       const checkedParam = i === 0 ? 'checked' : '';

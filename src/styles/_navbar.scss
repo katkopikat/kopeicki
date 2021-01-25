@@ -82,13 +82,19 @@ $navWidth: 15rem;
   &_open {
     left: 0;
   }
+
+  .bi-moon{
+    fill: none;
+    stroke: white;
+    stroke-width: 1.5;
+  }
 }
 
 .burger {
   position: absolute;
   top: 2rem;
   left: 3rem;
-  width: 32px;
+  width: 28px;
   height: 24px;
   padding: 0;
   border: none;

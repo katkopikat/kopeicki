@@ -29,6 +29,28 @@
   textarea:focus {
     background: var(--accounts);
   }
+
+  .content {
+      row-gap: 0.5rem;
+
+      .title {
+        margin-bottom: -2px;
+      }
+
+      .modal-body__amount{
+        text-align: center;
+      }
+  
+    .new-category__icons {
+      width: 81%;
+      margin-bottom: 1rem;
+    }
+    .new-account_currency{
+      color: white;
+      margin: -0.5rem 0 1rem;
+    }
+  }
+
 }
 
 .modal-content {

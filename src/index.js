@@ -46,7 +46,7 @@ window.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       navigateTo(e.target.href);
 
-      document.querySelectorAll('.nav__item').forEach((el) => {
+      document.querySelectorAll('.nav__link').forEach((el) => {
         el.classList.remove('active');
       });
       e.target.classList.add('active');
