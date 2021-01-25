@@ -40,3 +40,12 @@ export async function register(email, password) {
   console.log(user);
   return [201, { user }];
 }
+
+export async function updateAccount(transaction) {
+  const amount = transaction.type === 'expenses' ? -transaction.amount : transaction.amount;
+  return User.findByIdAndUpdate(
+    transaction.user,
+    { $inc: { 'accounts.$[acc].amount': amount } },
+    { arrayFilters: [{ 'acc.name': transaction.account }] },
+  ).exec();
+}

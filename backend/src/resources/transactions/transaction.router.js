@@ -1,6 +1,7 @@
 import Router from 'express';
 import asyncHandler from 'express-async-handler';
 import Transaction from './transaction.model.js';
+import { updateAccount } from '../users/user.service.js';
 
 const router = Router({ mergeParams: true });
 
@@ -19,6 +20,7 @@ router.route('/').get(
 router.route('/').post(
   asyncHandler(async (req, res) => {
     const tx = await Transaction.create(req.body);
+    await updateAccount(tx);
     res.json(tx);
   }),
 );
