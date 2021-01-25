@@ -31,21 +31,21 @@
   }
 
 
-  // .modal-body {
-  //   padding: 0;
+  .modal-body {
+    padding: 0;
 
-  //   &__title {
-  //     margin-bottom: 2rem;
-  //     text-align: center;
-  //   }
-  // }
-  // .btns-container {
-  //   display: flex;
-  //   flex-wrap: wrap;
-  //   justify-content: center;
-  //   column-gap: 7%;
+    &__title {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+  }
+  .btns-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 7%;
 
-  // }
+  }
 
   .content {
       row-gap: 0.5rem;
@@ -57,7 +57,7 @@
       .modal-body__amount{
         text-align: center;
       }
-  
+
     .new-category__icons {
       width: 81%;
       margin-bottom: 1rem;
@@ -86,12 +86,12 @@
 .modal-content.expenses-btn {
   transition: all 0.3s;
   background: var(--expenses);
-} 
+}
 
 .modal-content.income-btn {
   transition: all 0.3s;
   background: var(--income);
-} 
+}
 
 .modal-header {
   color: var(--dark);
@@ -224,7 +224,7 @@
     font-weight: 500;
     background-color: white;
   }
-  
+
   .new-category {
     @include flex-col;
     row-gap: 2rem;

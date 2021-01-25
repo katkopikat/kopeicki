@@ -5,7 +5,6 @@ import modal from './modal';
 import showPopover from '../popover';
 import api from '../../api';
 import app from '../../app';
-import renderHistory from '../transactions/history';
 import { getLanguage, getSound } from '../../utils/localStorage';
 import getExchangeData from '../settings/currencyConverter';
 import translations from '../../data/translations';
@@ -172,9 +171,9 @@ export default function transactionModal(options) {
           }
         })
         .then(() => {
-          api.saveTransaction(tx).then((result) => {
+          app.saveTransaction(tx).then((result) => {
             console.log(result);
-            renderHistory();
+            app.renderTransactionsPage();
           });
         });
 

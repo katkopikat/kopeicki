@@ -9,7 +9,7 @@ import renderTransactionsPage from './script/components/transactions/transaction
 import navSlideIn from './script/components/navbar';
 import app from './script/app';
 
-// app.renderTransactionsPage = renderTransactionsPage;
+app.renderTransactionsPage = renderTransactionsPage;
 
 const router = () => {
   const routes = [
@@ -58,7 +58,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   app.init().then(router);
-  router();
+  // router();
 });
 
 /* ------------ HOT KEYS ---------------
