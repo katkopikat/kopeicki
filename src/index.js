@@ -27,13 +27,12 @@ const router = () => {
 
   document.querySelector('main').innerHTML = '';
 
-  // try {
-  //   match.component();
-  // } catch (e) {
-  //   console.log(e.message);
-  //   app.checkAuth();
-  // }
-  match.component();
+  try {
+    match.component();
+  } catch (e) {
+    console.log(e.message);
+  }
+  // match.component();
 };
 
 const navigateTo = (url) => {

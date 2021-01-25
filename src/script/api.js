@@ -1,4 +1,4 @@
-// import renderAuthorizationPage from './components/authorization/authorization';
+import renderAuthorizationPage from './components/authorization/authorization';
 
 class ApiClient {
   constructor(apiUrl) {
@@ -36,7 +36,7 @@ class ApiClient {
     const response = await fetch(`${this.apiUrl}${route}`, reqParams);
     if (response.ok) {
       console.log('refresh token ok: ', response);
-      return response.json();
+      return response;
     }
     console.log('refresh token !ok: ', response);
     return response;
@@ -63,13 +63,15 @@ class ApiClient {
       const result = await this.getNewTokens('POST', '/users/token', { email: this.email, userId: this.userId });
       console.log('second response', result);
       if (!result.ok) {
-        console.log('Authorization error, change route to login');
         const content = await result.json();
         console.log('message from content', content);
-        throw new Error(content.message);
+        window.history.pushState(null, null, '/login');
+        renderAuthorizationPage();
+        return undefined;
       }
       console.log(result);
-      this.setLocalStorage(result.userId, result.email, result.token, result.refreshToken);
+      const content = await result.json();
+      this.setLocalStorage(content.userId, content.email, content.token, content.refreshToken);
       const responseAfterRefresh = await this.request(method, route, body, auth);
       console.log('after refresh', responseAfterRefresh);
       return responseAfterRefresh;

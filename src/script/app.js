@@ -1,5 +1,4 @@
 import api from './api';
-import renderAuthorizationPage from './components/authorization/authorization';
 
 class App {
   constructor(apiInstance) {
@@ -18,9 +17,7 @@ class App {
     try {
       this.user = await this.api.getUser();
     } catch (e) {
-      console.log(e.message);
-      window.history.pushState(null, null, '/login');
-      renderAuthorizationPage();
+      console.error(e.message);
     }
   }
 
