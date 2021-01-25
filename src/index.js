@@ -71,8 +71,10 @@ const navSlideIn = () => {
     } else {
       burger.classList.add('burger_open');
       burger.classList.remove('burger_close');
-      main.style.left = '200px';
-      main.style.width = 'calc(100% - 200px)';
+      if (document.documentElement.clientWidth > 540) {
+        main.style.left = '240px';
+        main.style.width = 'calc(100% - 240px)';
+      }
     }
 
     nav.classList.toggle('nav_open');

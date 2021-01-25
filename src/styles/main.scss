@@ -18,15 +18,15 @@ body {
 }
 
 header {
+  position: relative;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 2rem 3rem 1rem;
+  height: 5.5rem;
   background: var(--dark);
 
   .navbar-brand {
     padding: 0;
-    margin-right: 20%;
 
     .logo {
       height: 2.5rem;
