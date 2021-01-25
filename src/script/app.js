@@ -3,7 +3,7 @@ import api from './api';
 class App {
   constructor(apiInstance) {
     this.api = apiInstance;
-    this.user = undefined;
+    this.user = null;
   }
 
   async init() {
