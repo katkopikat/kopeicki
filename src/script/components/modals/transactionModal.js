@@ -6,7 +6,7 @@ import showPopover from '../popover';
 import api from '../../api';
 import app from '../../app';
 import renderHistory from '../transactions/history';
-import { getLanguage } from '../../utils/localStorage';
+import { getLanguage, getSound } from '../../utils/localStorage';
 import getExchangeData from '../settings/currencyConverter';
 import translations from '../../data/translations';
 
@@ -178,12 +178,15 @@ export default function transactionModal(options) {
           });
         });
 
+
       modal.hide();
 
-      if (options.type === 'expenses') audioExpenses.play();
-      else if (options.type === 'income') audioIncome.play();
-      else audioAccounts.play();
-    }
+     if (getSound()) {
+       //(isExpense ? audioExpenses : audioIncome).play();
+       if (options.type === 'expenses') audioExpenses.play();
+       else if (options.type === 'income') audioIncome.play();
+       else audioAccounts.play();
+     }
   });
 
   return wrap;

@@ -1,5 +1,15 @@
 .transactions-container {
-  // background-color: $middle;
+  @media (max-width: 768px) {
+    .row {
+      flex-direction: column;
+    }
+
+    .col-8,
+    .col-4 {
+      width: 100%;
+    }
+  }
+
   .transactions-dashboard {
     @include flex-col;
     row-gap: 2rem;
@@ -50,7 +60,6 @@
               width: 42px;
               filter: var(--filter);
               transition: all linear 0.25s;
-        
             }
           }
 
@@ -76,7 +85,7 @@
     }
   }
 }
-//div[data-group="accounts"] 
+//div[data-group="accounts"]
 // input[type='date']
 //  .flex-list__item[data-group='accounts']:hover .icon-svg{
 //   transition: all linear 0.15s;
@@ -103,8 +112,6 @@
     pointer-events: all;
   }
 }
-
-
 
 .expenses {
   h4 {

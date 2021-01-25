@@ -6,8 +6,8 @@ import toggleSettings from './script/components/settings/settings';
 import renderHistoryPage from './script/components/history/history';
 import renderStatisticsPage from './script/components/statistics/statistics';
 import renderTransactionsPage from './script/components/transactions/transactions';
+import navSlideIn from './script/components/navbar';
 import app from './script/app';
-// import hotKeys from './script/utils/hotkeys';
 
 app.renderTransactionsPage = renderTransactionsPage;
 
@@ -38,12 +38,12 @@ toggleSettings();
 window.addEventListener('popstate', router);
 
 window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('navbar').addEventListener('click', (e) => {
+  document.querySelector('.nav__list').addEventListener('click', (e) => {
     if (e.target.matches('[data-link]')) {
       e.preventDefault();
       navigateTo(e.target.href);
 
-      document.querySelectorAll('.nav-item').forEach((el) => {
+      document.querySelectorAll('.nav__link').forEach((el) => {
         el.classList.remove('active');
       });
       e.target.classList.add('active');
@@ -51,7 +51,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   app.init().then(router);
-  // router();
+  router();
 });
 
 /* ------------ HOT KEYS ---------------
@@ -85,3 +85,4 @@ function hotKeys() {
 }
 
 hotKeys();
+navSlideIn();

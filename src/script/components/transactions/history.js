@@ -26,7 +26,7 @@ const sortByDays = (list) => {
 };
 
 export default async function renderHistory() {
-  const transactions = await app.api.getTransactions();
+  const transactions = await app.getTransactions();
   if (transactions) {
     const lastTransactions = transactions.slice(0, 8);
     const sortedByDays = sortByDays(lastTransactions);

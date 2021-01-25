@@ -30,20 +30,42 @@
     background: var(--accounts);
   }
 
-  .modal-body {
-    padding: 0;
 
-    &__title {
-      margin-bottom: 2rem;
-      text-align: center;
+  // .modal-body {
+  //   padding: 0;
+
+  //   &__title {
+  //     margin-bottom: 2rem;
+  //     text-align: center;
+  //   }
+  // }
+  // .btns-container {
+  //   display: flex;
+  //   flex-wrap: wrap;
+  //   justify-content: center;
+  //   column-gap: 7%;
+
+  // }
+
+  .content {
+      row-gap: 0.5rem;
+
+      .title {
+        margin-bottom: -2px;
+      }
+
+      .modal-body__amount{
+        text-align: center;
+      }
+  
+    .new-category__icons {
+      width: 81%;
+      margin-bottom: 1rem;
     }
-  }
-  .btns-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    column-gap: 7%;
-
+    .new-account_currency{
+      color: white;
+      margin: -0.5rem 0 1rem;
+    }
   }
 }
 

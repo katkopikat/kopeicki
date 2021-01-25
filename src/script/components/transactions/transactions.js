@@ -5,8 +5,11 @@ import renderHistory from './history';
 import translatePage from '../settings/language';
 import app from '../../app';
 
-export default function renderTransactionsPage() {
+export default async function renderTransactionsPage() {
+  document.querySelector('main').innerHTML = '';
+
   localStorage.setItem('currency', app.user.currency);
+  await app.getTransactions();
 
   const accountsDiv = createElement(
     'div',
@@ -20,7 +23,7 @@ export default function renderTransactionsPage() {
   );
   const incomeDiv = createElement('div', 'transactions-dashboard__item income', "<h4 data-i18n='income'>Income</h4>");
 
-  const dashboard = createElement('div', 'col-7 transactions-dashboard', [accountsDiv, expensesDiv, incomeDiv]);
+  const dashboard = createElement('div', 'col-8 transactions-dashboard', [accountsDiv, expensesDiv, incomeDiv]);
   const history = createElement('div', 'col-4 transactions-history');
 
   const row = createElement('div', 'row', [dashboard, history]);

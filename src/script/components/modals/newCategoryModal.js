@@ -79,20 +79,26 @@ export default function newCategoryModal(type) {
 
   if (type === 'accounts') {
     const moneyAmount = createElement(
-      'span',
+      'input',
       'modal-body__amount',
-      '0.00',
-      ['role', 'textbox'],
-      ['contenteditable', true],
+      null,
+      ['type', 'number'],
+      ['value', '0.00'],
+      ['placeholder', '0.00'],
     );
 
     wrap.insertBefore(moneyAmount, iconsContainer);
 
-    createSelect(wrap.querySelector('.modal-body__amount'), {
-      class: 'currency-list',
-      placeholder: app.user.currency.toUpperCase(),
-      list: api.currencyList,
-    });
+    setTimeout(() => {
+      moneyAmount.onblur = () => {
+        moneyAmount.value = parseFloat(moneyAmount.value).toFixed(2);
+      };
+    }, 0);
+
+    const currency = createElement('span', 'new-account_currency');
+    currency.innerText = app.user.currency.toUpperCase();
+
+    wrap.insertBefore(currency, iconsContainer);
   }
 
   saveBtn.addEventListener('click', async () => {
@@ -105,18 +111,15 @@ export default function newCategoryModal(type) {
 
     if (type === 'accounts') {
       newCategoryItem.amount = wrap.querySelector('.modal-body__amount').innerText;
-      newCategoryItem.currency = wrap.querySelector('.modal-body__currency').innerText;
+      newCategoryItem.currency = wrap.querySelector('.currency-list .select__value').innerText;
 
       await app.addUserAccount(newCategoryItem);
-      document.querySelector('main').innerHTML = '';
       app.renderTransactionsPage();
     } else if (type === 'expenses') {
       await app.addUserExpense(newCategoryItem);
-      document.querySelector('main').innerHTML = '';
       app.renderTransactionsPage();
     } else {
       await app.addUserIncome(newCategoryItem);
-      document.querySelector('main').innerHTML = '';
       app.renderTransactionsPage();
     }
 
