@@ -1,8 +1,9 @@
 export default function switchTheme() {
+  const themeToggleDiv = document.querySelector('.toggle.theme');
   const themeToggle = document.getElementById('theme');
 
   themeToggle.addEventListener('change', () => {
-    const ball = document.querySelector('.ball');
+    const ball = themeToggleDiv.querySelector('.ball');
 
     const transition = () => {
       document.documentElement.classList.add('transition');
@@ -12,7 +13,7 @@ export default function switchTheme() {
     };
 
     if (themeToggle.checked) {
-      ball.style.transform = 'translateX(40px)';
+      ball.style.transform = 'translateX(28px)';
       transition();
       document.documentElement.setAttribute('theme', 'light');
     } else {

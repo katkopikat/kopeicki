@@ -1,9 +1,26 @@
-$scale: 80px;
+$scale: 52px;
 
-.theme-toggle {
+.settings-container p {
+  font-size: 1.25rem;
+  color: var(--gray);
+}
+
+.toggle {
+  display: flex;
+  margin: 1rem 0;
+
+  span {
+    padding-left: 0.8rem;
+    color: var(--light);
+  }
+
   .checkbox {
     opacity: 0;
     position: absolute;
+
+    &:checked + label[for='sound'] {
+      background: var(--accounts);
+    }
   }
 
   .label {
@@ -12,16 +29,16 @@ $scale: 80px;
     align-items: center;
     justify-content: space-between;
     width: $scale;
-    height: $scale/2;
-    padding: 3px;
+    height: $scale/2 - 2px;
+    padding: 2px;
     border-radius: $scale/4;
-    background: var(--dark);
+    background: var(--gray);
     transition: all 0.4s ease-in-out;
     cursor: pointer;
 
     svg {
       width: $scale/2 - 6px;
-      height: $scale/2 - 14px;
+      height: $scale/2 - 6px;
       color: var(--light);
       transition: all 0.4s ease-in-out;
     }
@@ -36,7 +53,7 @@ $scale: 80px;
     width: $scale/2 - 6px;
     height: $scale/2 - 6px;
     border-radius: 50%;
-    background: var(--accounts);
+    background: var(--light);
     transition: all 0.4s ease-in-out;
     cursor: pointer;
   }

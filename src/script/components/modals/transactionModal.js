@@ -5,7 +5,7 @@ import modal from './modal';
 import api from '../../api';
 import app from '../../app';
 import renderHistory from '../transactions/history';
-import { getLanguage } from '../../utils/localStorage';
+import { getLanguage, getSound } from '../../utils/localStorage';
 import getExchangeData from '../settings/currencyConverter';
 
 /* options = {
@@ -91,7 +91,7 @@ export default function transactionModal(options) {
     'afterbegin',
     `
       <h5 class="modal-body__title">${titleOptions[options.type][lang] || options[lang]}</h5>
-      <input class="modal-body__amount" placeholder="0.00" type="number">
+      <input class="modal-body__amount" placeholder="0.00" type="number" value="0.00">
       <br>
       <span data-from>${from[lang]}</span>
       <br>
@@ -129,12 +129,12 @@ export default function transactionModal(options) {
   const saveBtn = createElement('button', 'btn btn-light', saveBtnOptions[options.type][lang]);
   wrap.append(saveBtn);
 
-  setTimeout((() => {
+  setTimeout(() => {
     const currencyInput = document.querySelector('.modal-body__amount');
     currencyInput.onblur = () => {
       currencyInput.value = parseFloat(currencyInput.value).toFixed(2);
     };
-  }), 0);
+  }, 0);
 
   const audioExpenses = new Audio();
   const audioIncome = new Audio();
@@ -170,25 +170,29 @@ export default function transactionModal(options) {
       .then((exchange) => {
         tx.amount = exchange;
 
-        const toCurrency = (localStorage.getItem('currency')).toUpperCase();
+        const toCurrency = localStorage.getItem('currency').toUpperCase();
         if (toCurrency !== currencyFrom) {
           tx.description = `${moneyAmountEl.value} ${currencyFrom} //
           ${descriptionEl.value}`;
         }
       })
       .then(() => {
-        api.saveTransaction(tx)
-          .then((result) => {
-            console.log(result);
-            renderHistory();
-          });
+        api.saveTransaction(tx).then((result) => {
+          console.log(result);
+          renderHistory();
+        });
       });
 
     modal.hide();
 
+    // if (getSound()) {
+    //   (isExpense ? audioExpenses : audioIncome).play();
+    // }
+
     if (options.type === 'expenses') audioExpenses.play();
     else if (options.type === 'income') audioIncome.play();
     else audioAccounts.play();
+
   });
 
   return wrap;
