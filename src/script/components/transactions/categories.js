@@ -1,6 +1,7 @@
 import createElement from '../../utils/create';
 import modal from '../modals/modal';
 import transactionModal from '../modals/transactionModal';
+import accountModal from '../modals/accountModal';
 import newCategoryModal from '../modals/newCategoryModal';
 import app from '../../app';
 
@@ -66,12 +67,16 @@ export default function createCategoryList(group, container) {
 
     const type = categoryItem.dataset.group;
 
-    if (!categoryItem.classList.contains('add-category')) {
+    if (categoryItem.classList.contains('add-category')) {
+      modal.setContent(newCategoryModal(type));
+    } else {
       const { category } = categoryItem.dataset;
 
-      modal.setContent(transactionModal({ type, to: category }));
-    } else {
-      modal.setContent(newCategoryModal(type));
+      if (categoryItem.dataset.group === 'accounts') {
+        modal.setContent(accountModal({ type, from: category }));
+      } else {
+        modal.setContent(transactionModal({ type, to: category }));
+      }
     }
 
     modal.show();
@@ -83,51 +88,31 @@ export default function createCategoryList(group, container) {
       Alt + E --> New expense
       Alt + I --> New income
       Alt + A --> New account
-      Alt + S --> Open settings page
-      Alt + R --> Edit categories (remove catrgories)
   */
-
-  let altIsPressed = false;
-  window.addEventListener('keydown', (e) => {
-    if (e.keyCode === 18) {
-      altIsPressed = true;
-      e.preventDefault();
-    }
-  });
-
-  window.addEventListener('keyup', (e) => {
-    if (e.keyCode === 18) {
-      altIsPressed = false;
-      e.preventDefault();
-    }
-  });
+  let keysPushead = [];
 
   window.addEventListener('keydown', (e) => {
-    if (altIsPressed && e.keyCode === 69) {
-      console.log('Alt + E => Open new expense modal!');
-      e.preventDefault();
-      modal.setContent(transactionModal('expenses', ''));
-      modal.show();
-    }
-    // if (altIsPressed && e.keyCode === 73) {
-    //   console.log('Alt + I => Open mew income modal!');
-    //   e.preventDefault();
-    //   modal.setContent(transactionModal('income', ''));
-    //   modal.show();
-    // }
-    if (altIsPressed && e.keyCode === 65) {
-      console.log('Alt + A => Open mew account modal!');
-      e.preventDefault();
-      modal.setContent(transactionModal('account', ''));
-      modal.show();
-    }
-    if (altIsPressed && e.keyCode === 83) {
-      e.preventDefault();
-      console.log('Alt + S => Open setings page!');
-    }
-    if (altIsPressed && e.keyCode === 82) {
-      e.preventDefault();
-      console.log('Alt + R => Edit categories!');
+    keysPushead.push(e.target);
+    if (keysPushead.length === 2) {
+      if (e.altKey && e.keyCode === 69) {
+        console.log('Alt + E => Open new expense modal!');
+        e.preventDefault();
+        // modal.setContent(transactionModal('expenses',''));
+        // modal.show();
+      }
+      if (e.altKey && e.keyCode === 73) {
+        console.log('Alt + I => Open new income modal!');
+        e.preventDefault();
+        // modal.setContent(transactionModal('income', ''));
+        // modal.show();
+      }
+      if (e.altKey && e.keyCode === 65) {
+        console.log('Alt + A => Create new account!');
+        e.preventDefault();
+        // modal.setContent(newCategoryModal('account'));
+        // modal.show();
+      }
+      keysPushead = [];
     }
   });
 }
