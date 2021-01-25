@@ -8,7 +8,6 @@ import app from '../../app';
 export default async function renderTransactionsPage() {
   document.querySelector('main').innerHTML = '';
 
-  localStorage.setItem('currency', app.user.currency);
   await app.getTransactions();
 
   const accountsDiv = createElement(

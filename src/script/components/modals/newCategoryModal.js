@@ -1,8 +1,6 @@
 import createElement from '../../utils/create';
 import modal from './modal';
-import api from '../../api';
 import app from '../../app';
-import createSelect from '../../utils/select';
 import { getLanguage } from '../../utils/localStorage';
 
 export default function newCategoryModal(type) {

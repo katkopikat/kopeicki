@@ -20,37 +20,35 @@ export default function renderStatisticsHtml() {
   const textStatisticsObj = [
     {
       name: 'summaryAccount',
-      text: `На ваших счетах сейчас `
+      text: 'На ваших счетах сейчас ',
     },
     {
       name: 'mostExpensesCategories',
-      text: `Большего всего вы тратите на `
+      text: 'Большего всего вы тратите на ',
     },
     {
       name: 'monthExpenses',
-      text: `На ваших счетах сейчас `
+      text: 'На ваших счетах сейчас ',
     },
     {
       name: 'averageMonthExpenses',
-      text: `На ваших счетах сейчас `
+      text: 'На ваших счетах сейчас ',
     },
     {
       name: 'averageYearExpenses',
-      text: `На ваших счетах сейчас `
+      text: 'На ваших счетах сейчас ',
     },
     {
       name: 'summaryAccount',
-      text: `На ваших счетах сейчас `
-    }
-  ]
+      text: 'На ваших счетах сейчас ',
+    },
+  ];
 
-
-  textStatisticsObj.forEach(info => {
-    let temp = createElement('span', `${info.class}`);
+  textStatisticsObj.forEach((info) => {
+    const temp = createElement('span', `${info.class}`);
     temp.innerText = info.text + app.user.currency;
     textStatistic.append(temp);
-  })
-
+  });
 }
 //   const summaryAccount = createElement('span', 'summary-account-status');
 //   const mostExpensesCategories = createElement('span', 'most-expenses-categ');

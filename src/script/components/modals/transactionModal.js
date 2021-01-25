@@ -152,9 +152,9 @@ export default function transactionModal(options) {
     };
 
     const isAmountInvalid = +tx.amount === 0;
-    const isAccountInvalid = tx.account === translations[lang]['account'];
-    const isCategoryInvalid =
-      tx.category === translations[lang]['income'] || tx.category === translations[lang]['expenses'];
+    const isAccountInvalid = tx.account === translations[lang].account;
+    const isCategoryInvalid = tx.category === translations[lang].income
+                           || tx.category === translations[lang].expenses;
 
     const currencyFrom = document.querySelector('.currency-list .select__value').innerText;
 
@@ -178,15 +178,15 @@ export default function transactionModal(options) {
           });
         });
 
-
       modal.hide();
 
-     if (getSound()) {
-       //(isExpense ? audioExpenses : audioIncome).play();
-       if (options.type === 'expenses') audioExpenses.play();
-       else if (options.type === 'income') audioIncome.play();
-       else audioAccounts.play();
-     }
+      if (getSound()) {
+        // (isExpense ? audioExpenses : audioIncome).play();
+        if (options.type === 'expenses') audioExpenses.play();
+        else if (options.type === 'income') audioIncome.play();
+        else audioAccounts.play();
+      }
+    }
   });
 
   return wrap;
