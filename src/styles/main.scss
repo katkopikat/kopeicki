@@ -5,9 +5,38 @@
 @import './history';
 @import './dragnDrop';
 @import './charts';
-@import './header';
+@import './navbar';
 @import './settings';
 
 body {
   background: var(--dark);
+  overflow-x: hidden;
+}
+
+.wrapper {
+  display: flex;
+}
+
+header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5.5rem;
+  background: var(--dark);
+
+  .navbar-brand {
+    padding: 0;
+
+    .logo {
+      height: 2.5rem;
+    }
+  }
+}
+
+main {
+  position: relative;
+  left: 0;
+  transition: 0.5s ease;
+  width: 100%;
 }

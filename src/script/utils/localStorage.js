@@ -8,3 +8,11 @@ export function setLanguage(value) {
   localStorage.setItem('lang', value);
   translatePage();
 }
+
+export function getSound() {
+  return localStorage.getItem('sound') || false;
+}
+
+export function setSound(value) {
+  localStorage.setItem('sound', value);
+}
