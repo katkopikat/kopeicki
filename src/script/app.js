@@ -4,8 +4,6 @@ class App {
   constructor(apiInstance) {
     this.api = apiInstance;
     this.user = null;
-    this.transactions = null;
-    this.transactionsSummary = null;
   }
 
   async init() {

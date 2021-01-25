@@ -192,7 +192,6 @@ export default function transactionModal(options) {
     if (options.type === 'expenses') audioExpenses.play();
     else if (options.type === 'income') audioIncome.play();
     else audioAccounts.play();
-
   });
 
   return wrap;
