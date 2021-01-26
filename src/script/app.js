@@ -59,7 +59,7 @@ class App {
       txsByMonth[yearMonth].push(tx);
     });
     console.log('months: ', Object.keys(txsByMonth));
-    const txsThisMonth = txsByMonth[monthKey(new Date())];
+    const txsThisMonth = txsByMonth[monthKey(new Date())] || [];
     const monthSummary = {
       expenses: new Map(),
       income: new Map(),
