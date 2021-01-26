@@ -12,14 +12,14 @@ class App {
     // dev mode autologin
     await this.login();
     await this.checkAuth();
-    console.log('from init: ', this.user);
+    console.log(this.user);
   }
 
   async checkAuth() {
     try {
       this.user = await this.api.getUser();
     } catch (e) {
-      console.error(e.message);
+      console.log(e.message);
     }
   }
 

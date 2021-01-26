@@ -25,19 +25,12 @@ const router = () => {
 
   document.querySelector('main').innerHTML = '';
 
-  try {
-    match.component();
-  } catch (e) {
-    console.log(e.message);
-  }
-  // match.component();
+  match.component();
 };
 
 const navigateTo = (url) => {
-  if (app.user) {
-    window.history.pushState(null, null, url);
-    router();
-  }
+  window.history.pushState(null, null, url);
+  router();
 };
 
 toggleSettings();
