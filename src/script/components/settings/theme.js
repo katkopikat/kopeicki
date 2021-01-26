@@ -1,10 +1,18 @@
+import { getTheme, setTheme } from '../../utils/localStorage';
+import { moveToggle } from '../../utils/DOM';
+
 export default function switchTheme() {
   const themeToggleDiv = document.querySelector('.toggle.theme');
   const themeToggle = document.getElementById('theme');
+  const width = 28;
+
+  const isChecked = getTheme() === 'light';
+
+  document.documentElement.setAttribute('theme', getTheme());
+  moveToggle(themeToggleDiv, width, isChecked);
+  themeToggle.checked = isChecked;
 
   themeToggle.addEventListener('change', () => {
-    const ball = themeToggleDiv.querySelector('.ball');
-
     const transition = () => {
       document.documentElement.classList.add('transition');
       window.setTimeout(() => {
@@ -12,16 +20,8 @@ export default function switchTheme() {
       }, 1000);
     };
 
-    if (themeToggle.checked) {
-      ball.style.transform = 'translateX(28px)';
-      transition();
-      document.documentElement.setAttribute('theme', 'light');
-    } else {
-      ball.style.transform = 'translateX(0)';
-      transition();
-      if (document.documentElement.hasAttribute('theme')) {
-        document.documentElement.removeAttribute('theme');
-      }
-    }
+    moveToggle(themeToggleDiv, width, themeToggle.checked);
+    transition();
+    setTheme(themeToggle.checked ? 'light' : 'dark');
   });
 }
