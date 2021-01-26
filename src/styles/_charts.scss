@@ -78,7 +78,7 @@ thead, tbody, tfoot, tr, td, th {
     font-size: 1rem;
 
     span {
-        font-size:1.5rem;
+        font-size:1.3rem;
     }
     .info {
         &_expenses{
@@ -95,3 +95,20 @@ thead, tbody, tfoot, tr, td, th {
     }
 }
 
+.statistic-h{
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    color: var(--font-light);
+
+}
+.text-statistic-wrapper{
+    justify-content: center;
+}
+.statistic-container {
+    // width: 100%;
+    padding: 1.3rem;
+    margin: 1rem;
+    border-radius: 8px;
+    background-color: var(--catergory-bg);
+    box-shadow: var(--shadow);
+}

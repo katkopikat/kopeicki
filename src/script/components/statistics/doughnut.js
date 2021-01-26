@@ -85,9 +85,9 @@ function filterTransactions() {
 
   summaryObj = filtredHistory.reduce((summary, trans) => {
     if (Object.prototype.hasOwnProperty.call(summary, trans.category)) {
-      summary[trans.category] += parseFloat(trans.amount);
+      summary[trans.category] += parseInt(trans.amount, 10);
     } else {
-      summary[trans.category] = parseFloat(trans.amount);
+      summary[trans.category] = parseInt(trans.amount, 10);
     }
     return summary;
   },

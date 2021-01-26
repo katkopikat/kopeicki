@@ -99,7 +99,6 @@ function deleteTransaction() {
   document.querySelector('.table').addEventListener('click', (e) => {
     e.preventDefault();
     deleteTransactionCallback(e.target);
-    console.log(`прелоадер.. ${new Date().getMilliseconds()}`)
   });
 }
 
@@ -127,18 +126,11 @@ function renderTableBtns() {
 }
 
 function rerenderTable() {
-  console.log(`тащим историю... ${new Date().getMilliseconds()}`)
-  //console.log('тащим историю...')
   getHistory().then(() => {
-    
     document.querySelector('.table').remove();
     filterTransaction();
-    
-    //console.log('рисуем страницу...')
     tableCreate();
-    console.log(`рисуем таблицу... ${new Date().getMilliseconds()}`)
     deleteTransaction();
-    console.log(`click-и на delete... ${new Date().getMilliseconds()}`)
   });
 }
 

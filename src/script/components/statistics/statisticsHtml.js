@@ -7,15 +7,30 @@ export default function renderStatisticsHtml() {
   const row = createElement('div', 'row');
   const mainContainer = createElement('div', 'container-xxl transactions-container', row);
 
-  main.append(mainContainer);
-
-  const textStatistic = createElement('div', 'col-10 text-statistic-wrapper');
+  const textStatistic = createElement('div', 'row text-statistic-wrapper');
   const charts = createElement('div', 'col-10 charts-wrapper');
-  // const table = createElement('div', 'col-5 table-wrapper');
 
-  row.append(textStatistic);
-  row.append(charts);
-  // row.append(table);
+  const accountTextWrapper = createElement(
+    'div',
+    'col-10 account-statistic-wrapper statistic-container',
+    '<h1 data-i18n="Account" class="statistic-h">Account</h1>',
+  );
+
+  const expensesTextWrapper = createElement(
+    'div',
+    'col-5 expenses-statistic-wrapper statistic-container',
+    '<h1 data-i18n="Expenses" class="statistic-h">Expenses</h1>',
+  );
+
+  const incomeTextWrapper = createElement(
+    'div',
+    'col-5 income-statistic-wrapper statistic-container',
+    '<h1 data-i18n="Income" class="statistic-h">Income</h1>',
+  );
+
+  main.append(mainContainer);
+  row.append(textStatistic, charts);
+  textStatistic.append(accountTextWrapper, expensesTextWrapper, incomeTextWrapper);
 
   const textStatisticsObj = [
     {
@@ -89,6 +104,13 @@ export default function renderStatisticsHtml() {
   textStatisticsObj.forEach((info) => {
     const textWrapper = createElement('span', 'statistic-text');
     textWrapper.innerHTML = `${info.text} <span class="${info.class}">${info.data} ${app.user.currency.toUpperCase()}.</span><br>`;
-    textStatistic.append(textWrapper);
+
+    if (info.class === 'info_accounts') {
+      accountTextWrapper.append(textWrapper);
+    } else if (info.class === 'info_expenses') {
+      expensesTextWrapper.append(textWrapper);
+    } else {
+      incomeTextWrapper.append(textWrapper);
+    }
   });
 }
