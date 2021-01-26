@@ -10,7 +10,8 @@ class App {
 
   async init() {
     // dev mode autologin
-    await this.login();
+    await this.login('user2@rsclone.com', 'test');
+    // await this.register('testReg5@rsclone.com', 'test');
     await this.checkAuth();
     console.log('from init: ', this.user);
   }
@@ -23,13 +24,26 @@ class App {
     }
   }
 
-  async login(/* email, password */) {
+  logout() {
+    this.api.logout();
+  }
+
+  async login(email, password) {
     try {
-      await this.api.login('user2@rsclone.com', 'test');
-      // await this.api.login(email, password);
+      // await this.api.login('user2@rsclone.com', 'test');
+      await this.api.login(email, password);
       this.user = await this.api.getUser();
       console.log(this.user);
       console.log('login success');
+    } catch (e) {
+      console.error(e.message);
+    }
+  }
+
+  async register(email, password) {
+    try {
+      await this.api.registerUser(email, password);
+      await this.login(email, password);
     } catch (e) {
       console.error(e.message);
     }

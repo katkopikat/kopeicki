@@ -146,7 +146,8 @@ export default function transactionModal(options) {
 
     const isAmountInvalid = +tx.amount === 0;
     const isAccountInvalid = tx.account === translations[lang].account;
-    const isCategoryInvalid = tx.category === translations[lang].income || tx.category === translations[lang].expenses;
+    const isCategoryInvalid = tx.category === translations[lang].income
+    || tx.category === translations[lang].expenses;
 
     const currencyFrom = document.querySelector('.currency-list .select__value').innerText;
 
