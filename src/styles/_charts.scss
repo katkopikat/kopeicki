@@ -69,9 +69,7 @@ thead, tbody, tfoot, tr, td, th {
     }
 }
 
-.bar-container{
-    margin-bottom: 1rem;
-}
+
 
 .statistic-text {
     color: var(--light);
@@ -111,4 +109,23 @@ thead, tbody, tfoot, tr, td, th {
     border-radius: 8px;
     background-color: var(--catergory-bg);
     box-shadow: var(--shadow);
+}
+
+main {
+    margin: 0 auto;
+
+    .row {
+        justify-content: center;
+    }
+
+    .wrapper-doughnut, .bar-wrapper {
+        margin: 1rem;
+        border-radius: 8px;
+        background-color: var(--catergory-bg);
+        box-shadow: var(--shadow);
+        padding: 1.5rem 3rem;
+    }
+    .bar-container{
+        margin-bottom: 1rem;
+    } 
 }
