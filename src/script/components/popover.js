@@ -1,21 +1,16 @@
 import { Popover } from 'bootstrap';
-import { getLanguage } from '../utils/localStorage';
 
-export default function showPopover(elem) {
-  const lang = getLanguage();
-
-  const errorMessage = {
-    en: 'Please fill out all the fields',
-    ru: 'Пожалуйста, заполните все поля',
-    be: 'Калі ласка, запоўніце ўсе палі',
-  };
-
+export default function showPopover(elem, errorMessage, placement) {
   const popover = new Popover(elem, {
-    content: errorMessage[lang],
-    placement: 'right',
+    content: errorMessage,
+    placement,
     container: 'body',
-    trigger: 'focus',
+    trigger: 'manual',
   });
 
   popover.show();
+
+  setTimeout(() => {
+    if (popover) popover.dispose();
+  }, 5000);
 }
