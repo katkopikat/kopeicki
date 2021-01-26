@@ -149,19 +149,13 @@ export default function transactionModal(options) {
       description: descriptionEl.value,
     };
 
-    const isAccountInvalid = tx.account === 'account';
-    const isCategoryInvalid = tx.category === options.type;
+    const isAccountInvalid = tx.account === 'Choose an account';
+    const isCategoryInvalid = tx.category === `Choose ${options.type}`;
 
     const currencyFrom = document.querySelector('.currency-list .select__value').innerText;
 
     if (!tx.amount || isAccountInvalid || isCategoryInvalid) {
       showPopover(saveBtn, errorMessage[lang], 'right');
-      
-      if (getSound() === 'on') {
-        const soundError = new Audio();
-        soundError.src = '/src/assets/sounds/error.mp3';
-        soundError.play();
-      }
     } else {
       getExchangeData(moneyAmountEl.value, currencyFrom)
         .then((exchange) => {
