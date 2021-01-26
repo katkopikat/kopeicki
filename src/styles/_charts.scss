@@ -57,7 +57,29 @@ thead, tbody, tfoot, tr, td, th {
     }
 }
 
-
 .bar-container{
     margin-bottom: 1rem;
 }
+
+.statistic-text {
+    color: var(--light);
+    font-size: 1rem;
+
+    span {
+        font-size:1.5rem;
+    }
+    .info {
+        &_expenses{
+            color: var(--expenses);
+        }
+    
+        &_income{
+            color: var(--income);
+        }
+    
+        &_accounts{
+            color: var(--accounts);
+        }
+    }
+}
+

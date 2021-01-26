@@ -10,7 +10,7 @@ class App {
 
   async init() {
     // dev mode autologin
-    // await this.login();
+    await this.login();
     await this.checkAuth();
     console.log('from init: ', this.user);
   }

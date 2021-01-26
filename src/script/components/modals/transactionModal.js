@@ -131,14 +131,6 @@ export default function transactionModal(options) {
     };
   }, 0);
 
-  const audioExpenses = new Audio();
-  const audioIncome = new Audio();
-  const audioAccounts = new Audio();
-
-  audioIncome.src = '/src/assets/sounds/income.mp3';
-  audioExpenses.src = '/src/assets/sounds/expenses.mp3';
-  audioAccounts.src = '/src/assets/sounds/category.mp3';
-
   saveBtn.addEventListener('click', () => {
     const tx = {
       date: dateEl.value,
@@ -179,11 +171,10 @@ export default function transactionModal(options) {
 
       modal.hide();
 
-      if (getSound()) {
-        // (isExpense ? audioExpenses : audioIncome).play();
-        if (options.type === 'expenses') audioExpenses.play();
-        else if (options.type === 'income') audioIncome.play();
-        else audioAccounts.play();
+      if (getSound() === 'true') {
+        const sound = new Audio();
+        sound.src = `/src/assets/sounds/${options.type}.mp3`;
+        sound.play();
       }
     }
   });

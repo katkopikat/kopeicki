@@ -59,6 +59,10 @@ $scale: 52px;
   }
 }
 
+.lang:last-child{
+  padding-left: 0.5rem 0 !important;
+}
+
 .select {
   position: relative;
   display: inline-block;
@@ -146,6 +150,10 @@ $scale: 52px;
     &.selected {
       color: var(--accounts);
     }
+  }
+
+  &__value{
+    padding-left: 0 !important;
   }
 }
 

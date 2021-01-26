@@ -20,68 +20,75 @@ export default function renderStatisticsHtml() {
   const textStatisticsObj = [
     {
       name: 'summaryAccount',
+      class: 'info_accounts',
+      data: '1000',
       text: 'На ваших счетах сейчас ',
     },
     {
       name: 'mostExpensesCategories',
+      class: 'info_expenses',
+      data: '1000',
       text: 'Большего всего вы тратите на ',
     },
     {
       name: 'monthExpenses',
-      text: 'На ваших счетах сейчас ',
+      class: 'info_expenses',
+      data: '1000',
+      text: 'В этом месяце вы протратили  ',
     },
     {
       name: 'averageMonthExpenses',
-      text: 'На ваших счетах сейчас ',
+      class: 'info_expenses',
+      data: '1000',
+      text: 'В среднем, вы тратите в месяц ',
     },
     {
       name: 'averageYearExpenses',
-      text: 'На ваших счетах сейчас ',
+      class: 'info_expenses',
+      data: '1000',
+      text: 'В среднем, ваши траты за год ',
     },
     {
-      name: 'summaryAccount',
-      text: 'На ваших счетах сейчас ',
+      name: 'allTimeExpenses',
+      class: 'info_expenses',
+      data: '1000',
+      text: 'За всё время ведения расходов вы потратили ',
+    },
+    {
+      name: 'monthIncome',
+      class: 'info_income',
+      data: '1000',
+      text: 'В текущем месяце ваш доход составил ',
+    },
+    {
+      name: 'averageMonthIncome',
+      class: 'info_income',
+      data: '1000',
+      text: 'В среднем, в месяц вы зарабатываете',
+    },
+    {
+      name: 'yearIncome',
+      class: 'info_income',
+      data: '1000',
+      text: 'В этом году ваш доход  ',
+    },
+    {
+      name: 'averageYearIncome',
+      class: 'info_income',
+      data: '1000',
+      text: 'В среднем, в год вы зарабатываете ',
+    },
+    {
+      name: 'allTineIncome',
+      class: 'info_income',
+      data: '1000',
+      text: 'За всё время ведения доходов вы заработали ',
     },
   ];
 
   textStatisticsObj.forEach((info) => {
-    const temp = createElement('span', `${info.class}`);
-    temp.innerText = info.text + app.user.currency;
-    textStatistic.append(temp);
+    const textWrapper = createElement('span', 'statistic-text');
+    textWrapper.innerHTML = `${info.text} <span class="${info.class}">${info.data} ${app.user.currency.toUpperCase()}.</span><br>`;
+    textStatistic.append(textWrapper);
   });
 }
-//   const summaryAccount = createElement('span', 'summary-account-status');
-//   const mostExpensesCategories = createElement('span', 'most-expenses-categ');
-//   const monthExpenses = createElement('span', 'month-expenses');
-//   const averageMonthExpenses = createElement('span', 'average-month-expenses');
-//   const lastYearExpenses = createElement('span', 'last-year-expenses');
-//   const averageYearExpenses = createElement('span', 'month-expenses');
-//   const expensesAllTime = createElement('span', 'expenses-all-time');
-//   const lastMonthIncome = createElement('span', 'last-month-income');
-//   const averageMonthIncome = createElement('span', 'average-month-income');
-//   const lastYearIncome = createElement('span', 'last-year-income');
-//   const averageYearIncome = createElement('span', 'average-year-income');
-//   const incomeAllTime = createElement('span', 'income-all-time');
-
-// НА ВАШИХ СЧЕТАХ СЕЙЧАС: 117 900р
-// Большего всего вы тратите на (3 категории)
-
-// ТРАТЫ:
-// ________
-// В этом месяце вы потратили: +
-// В среднем вы тратите в месяц: +
-
-// В этом году вы потратили: +
-// В среднем вы тратите за год: +
-
-// Траты за всё время составили: +
-
-// ДОХОДЫ
-
-// Ваш доход в этом месяце:+
-// В среднем ваш ежемесячный доход +
-
-// В этом году вы заработали +
-// В среднем вы зарабатываете *** в год +
-
-// Доход за всё время составил:
