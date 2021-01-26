@@ -25,6 +25,17 @@ class ApiClient {
     return true;
   }
 
+  logout() {
+    this.userId = null;
+    this.email = null;
+    this.token = null;
+    this.refreshToken = null;
+    localStorage.removeItem('userId');
+    localStorage.removeItem('email');
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+  }
+
   async getNewTokens(method = 'POST', route = '/users/token', body = false, auth = true) {
     const reqParams = {
       method,
@@ -46,6 +57,7 @@ class ApiClient {
       return response;
     }
     console.log('refresh token !ok: ', response);
+    this.logout();
     return response;
   }
 
@@ -67,7 +79,7 @@ class ApiClient {
     const response = await fetch(`${this.apiUrl}${route}`, reqParams);
     console.log('first response', response);
     if (!response.ok) {
-      const result = await this.getNewTokens('POST', '/users/token', { email: this.email, userId: this.userId });
+      const result = await this.getNewTokens('POST', '/users/token', { email: this.email, userId: this.userId }, auth);
       console.log('second response', result);
       if (!result.ok) {
         const content = await result.json();
