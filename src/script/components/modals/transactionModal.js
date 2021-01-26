@@ -7,7 +7,6 @@ import api from '../../api';
 import app from '../../app';
 import { getLanguage, getSound } from '../../utils/localStorage';
 import getExchangeData from '../settings/currencyConverter';
-import translations from '../../data/translations';
 
 /* options = {
  *    type: 'expenses',
@@ -87,7 +86,7 @@ export default function transactionModal(options) {
     'afterbegin',
     `
       <h5 class="modal-body__title">${titleOptions[options.type][lang]}</h5>
-      <input class="modal-body__amount" placeholder="0.00" type="number" value="0.00">
+      <input class="modal-body__amount" placeholder="0.00" type="number">
       <br>
       <span data-from>${from[lang]}</span>
       <br>
@@ -144,13 +143,12 @@ export default function transactionModal(options) {
       description: descriptionEl.value,
     };
 
-    const isAmountInvalid = +tx.amount === 0;
-    const isAccountInvalid = tx.account === translations[lang].account;
-    const isCategoryInvalid = tx.category === translations[lang].income || tx.category === translations[lang].expenses;
+    const isAccountInvalid = tx.account === 'account';
+    const isCategoryInvalid = tx.category === options.type;
 
     const currencyFrom = document.querySelector('.currency-list .select__value').innerText;
 
-    if (isAmountInvalid || isAccountInvalid || isCategoryInvalid) {
+    if (!tx.amount || isAccountInvalid || isCategoryInvalid) {
       showPopover(saveBtn);
     } else {
       getExchangeData(moneyAmountEl.value, currencyFrom)
