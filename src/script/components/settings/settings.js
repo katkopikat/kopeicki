@@ -11,6 +11,7 @@ export default function toggleSettings() {
     placeholder: getLanguage(),
     list: ['en', 'ru', 'be'],
     onSelect: setLanguage,
+    isTranslatable: true,
   });
 
   switchTheme();

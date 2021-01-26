@@ -33,6 +33,7 @@ function preCreateSelect(options) {
     class: options.class,
     placeholder: isFromSelect ? options.from || 'account' : options.to || options.type,
     list,
+    isTranslatable: true,
   };
 }
 
@@ -104,6 +105,7 @@ export default function transactionModal(options) {
     class: 'currency-list',
     placeholder: app.user.currency.toUpperCase(),
     list: api.currencyList,
+    isTranslatable: false,
   });
 
   createSelect(
@@ -135,17 +137,16 @@ export default function transactionModal(options) {
     const tx = {
       date: dateEl.value,
       user: api.userId,
-      account: selectFromEl.textContent,
+      account: selectFromEl.id,
       amount: moneyAmountEl.value,
-      category: selectToEl.textContent,
+      category: selectToEl.id,
       type: `${options.type}`,
       description: descriptionEl.value,
     };
 
     const isAmountInvalid = +tx.amount === 0;
     const isAccountInvalid = tx.account === translations[lang].account;
-    const isCategoryInvalid = tx.category === translations[lang].income
-                           || tx.category === translations[lang].expenses;
+    const isCategoryInvalid = tx.category === translations[lang].income || tx.category === translations[lang].expenses;
 
     const currencyFrom = document.querySelector('.currency-list .select__value').innerText;
 
