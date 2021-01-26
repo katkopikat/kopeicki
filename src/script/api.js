@@ -98,7 +98,7 @@ class ApiClient {
 
   async registerUser(email, password) {
     const result = await this.request('POST', '/users', { email, password }, false);
-    if (result.id) {
+    if (result.user) {
       return true;
     }
     throw new Error(result.message);
