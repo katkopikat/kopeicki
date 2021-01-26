@@ -1,6 +1,6 @@
 import jsonWebToken from 'jsonwebtoken';
 
-const NO_AUTH_URLS = ['/', '/users/', '/users/login'];
+const NO_AUTH_URLS = ['/', '/users', '/users/login'];
 const REFRESH_URL = '/users/token/';
 const INVALIDTOKEN = 'Access token is missing or invalid';
 
