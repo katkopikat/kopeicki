@@ -30,7 +30,7 @@ function preCreateSelect(options) {
 
   return {
     class: options.class,
-    placeholder: isFromSelect ? options.from || 'account' : options.to || options.type,
+    placeholder: isFromSelect ? options.from || 'Choose an account' : options.to || `Choose ${options.type}`,
     list,
     isTranslatable: true,
   };
@@ -73,6 +73,12 @@ export default function transactionModal(options) {
 
   const from = { en: 'from', ru: 'из', be: 'з' };
   const on = { en: 'on', ru: 'на', be: 'на' };
+
+  const errorMessage = {
+    en: 'Please fill out all the fields',
+    ru: 'Пожалуйста, заполните все поля',
+    be: 'Калі ласка, запоўніце ўсе палі',
+  };
 
   const isExpense = options.type === 'expenses';
 
@@ -149,7 +155,7 @@ export default function transactionModal(options) {
     const currencyFrom = document.querySelector('.currency-list .select__value').innerText;
 
     if (!tx.amount || isAccountInvalid || isCategoryInvalid) {
-      showPopover(saveBtn);
+      showPopover(saveBtn, errorMessage[lang], 'right');
     } else {
       getExchangeData(moneyAmountEl.value, currencyFrom)
         .then((exchange) => {
