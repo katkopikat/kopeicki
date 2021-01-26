@@ -134,7 +134,7 @@ export default function transactionModal(options) {
   setTimeout(() => {
     const currencyInput = document.querySelector('.modal-body__amount');
     currencyInput.onblur = () => {
-      currencyInput.value = parseFloat(currencyInput.value).toFixed(2);
+      currencyInput.value = parseFloat(Math.abs(currencyInput.value)).toFixed(2);
     };
   }, 0);
 
@@ -156,6 +156,12 @@ export default function transactionModal(options) {
 
     if (!tx.amount || isAccountInvalid || isCategoryInvalid) {
       showPopover(saveBtn, errorMessage[lang], 'right');
+      
+      if (getSound() === 'on') {
+        const soundError = new Audio();
+        soundError.src = '/src/assets/sounds/error.mp3';
+        soundError.play();
+      }
     } else {
       getExchangeData(moneyAmountEl.value, currencyFrom)
         .then((exchange) => {
@@ -176,7 +182,7 @@ export default function transactionModal(options) {
 
       modal.hide();
 
-      if (getSound() === 'true') {
+      if (getSound() === 'on') {
         const sound = new Audio();
         sound.src = `/src/assets/sounds/${options.type}.mp3`;
         sound.play();

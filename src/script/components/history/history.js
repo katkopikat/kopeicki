@@ -53,6 +53,7 @@ function tableCreate() {
         <th scope="col" data-i18n="Amount">Amount</th>
         <th scope="col" data-i18n="Account">Account</th>
         <th scope="col" data-i18n="Description">Description</th>
+        <th scope="col" data-i18n="Delete">Delete</th>
       </tr>
     </thead>`;
   const tbody = document.createElement('tbody');
@@ -65,18 +66,21 @@ function tableCreate() {
     const cell3 = row.insertCell();
     const cell4 = row.insertCell();
     const cell5 = row.insertCell();
+    const cell6 = row.insertCell();
 
     cell1.className = 'cell__date';
     cell2.className = transaction.type === 'expenses' ? 'cell__category-expense' : 'cell__category-income';
     cell3.className = 'cell__amount';
     cell4.className = 'cell__account';
     cell5.className = 'cell__description';
+    cell6.className = 'cell__delete';
 
     cell1.innerHTML = formatDate(new Date(transaction.date));
     cell2.innerHTML = transaction.category;
     cell3.innerHTML = transaction.amount;
     cell4.innerHTML = transaction.account;
     cell5.innerHTML = transaction.description;
+    cell6.innerHTML = 'delete';
   });
 
   document.querySelector('.table-wrapper').append(table);

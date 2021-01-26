@@ -23,6 +23,9 @@
   --font-dark: black;
   --expenses-alpha: rgba(243, 94, 110, 0.5);
   --income-alpha: rgba(75, 192, 192, 0.5);
+  --toggle-bg: #afb1b7;
+  --toggle-shadow: inset 0 4px 4px rgba(0, 0, 0, 0.35);
+  --settings-h: #f2c200;
 }
 :root[theme='light'] {
   --accounts: #ecaf12;
@@ -35,8 +38,10 @@
   --filter: invert(1);
   --catergory-bg: #eaf0f7;
   --font-light: black;
-  --font-dark: light;
+  --font-dark: rgb(243, 243, 243);
   --shadow: 8px 10px 14px -7px rgba(0, 0, 0, 0.1);
+  --toggle-bg: #ecaf12;
+  --settings-h: #5c5c5c;
 }
 
 @mixin flex-col() {
