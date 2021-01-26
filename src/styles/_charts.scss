@@ -54,6 +54,18 @@ thead, tbody, tfoot, tr, td, th {
             opacity: 0.6;
             font-style: italic;
         }
+        &__delete{
+            width: 120px;
+            opacity: 0.4;
+            font-size: 0.8rem;
+        }
+        &__delete:hover{
+            cursor: pointer;
+            opacity: 0.7;        
+        }
+        &__delete:hover:after{
+           content: ' transaction'      
+        }
     }
 }
 

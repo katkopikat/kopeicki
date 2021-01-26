@@ -4,6 +4,7 @@ import { Chart } from 'chart.js';
 import moment from 'moment';
 import createElement from '../../utils/create';
 import app from '../../app';
+import { getTheme } from '../../utils/localStorage';
 
 const today = new Date();
 let typeTransaction = 'expenses';
@@ -18,8 +19,7 @@ async function getHistory() {
 }
 
 function setBGColor() {
-  return document.documentElement.hasAttribute('theme')
-    ? 'rgba(234, 237, 241, 1)' : 'rgba(37, 40, 54, 1)';
+  return getTheme() === 'light' ? 'rgba(234, 237, 241, 1)' : 'rgba(37, 40, 54, 1)';
 }
 
 function renderDoughnutHTML() {
@@ -96,7 +96,7 @@ function filterTransactions() {
 
 function calculateTotalSum() {
   return Object.values(summaryObj).length !== 0
-    ? Object.values(summaryObj).reduce((sum, it) => sum + it) : 0;
+    ? parseInt(Object.values(summaryObj).reduce((sum, it) => sum + it), 10) : 0;
 }
 
 function generateChart(type, time) {

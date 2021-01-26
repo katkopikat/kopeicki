@@ -87,7 +87,7 @@ export default function transactionModal(options) {
     'afterbegin',
     `
       <h5 class="modal-body__title">${titleOptions[options.type][lang]}</h5>
-      <input class="modal-body__amount" placeholder="0.00" type="number" value="0.00">
+      <input class="modal-body__amount" placeholder="0.00" type="number">
       <br>
       <span data-from>${from[lang]}</span>
       <br>
@@ -129,7 +129,7 @@ export default function transactionModal(options) {
   setTimeout(() => {
     const currencyInput = document.querySelector('.modal-body__amount');
     currencyInput.onblur = () => {
-      currencyInput.value = parseFloat(currencyInput.value).toFixed(2);
+      currencyInput.value = parseFloat(Math.abs(currencyInput.value)).toFixed(2);
     };
   }, 0);
 
@@ -146,12 +146,18 @@ export default function transactionModal(options) {
 
     const isAmountInvalid = +tx.amount === 0;
     const isAccountInvalid = tx.account === translations[lang].account;
-    const isCategoryInvalid = tx.category === translations[lang].income || tx.category === translations[lang].expenses;
+    const isCategoryInvalid = tx.category === translations[lang].income
+                           || tx.category === translations[lang].expenses;
 
     const currencyFrom = document.querySelector('.currency-list .select__value').innerText;
 
     if (isAmountInvalid || isAccountInvalid || isCategoryInvalid) {
       showPopover(saveBtn);
+      if (getSound() === 'on') {
+        const soundError = new Audio();
+        soundError.src = '/src/assets/sounds/error.mp3';
+        soundError.play();
+      }
     } else {
       getExchangeData(moneyAmountEl.value, currencyFrom)
         .then((exchange) => {
@@ -172,7 +178,7 @@ export default function transactionModal(options) {
 
       modal.hide();
 
-      if (getSound() === 'true') {
+      if (getSound() === 'on') {
         const sound = new Audio();
         sound.src = `/src/assets/sounds/${options.type}.mp3`;
         sound.play();

@@ -1,7 +1,7 @@
 import createElement from '../../utils/create';
 import modal from './modal';
 import app from '../../app';
-import { getLanguage } from '../../utils/localStorage';
+import { getLanguage, getSound } from '../../utils/localStorage';
 
 export default function newCategoryModal(type) {
   const lang = getLanguage();
@@ -109,7 +109,6 @@ export default function newCategoryModal(type) {
 
     if (type === 'accounts') {
       newCategoryItem.amount = wrap.querySelector('.modal-body__amount').innerText;
-      newCategoryItem.currency = wrap.querySelector('.currency-list .select__value').innerText;
 
       await app.addUserAccount(newCategoryItem);
       app.renderTransactionsPage();
@@ -124,7 +123,9 @@ export default function newCategoryModal(type) {
     console.log(newCategoryItem);
 
     modal.hide();
-    audioCategory.play();
+    if (getSound() === 'on') {
+      audioCategory.play();
+    }
   });
 
   return wrap;
