@@ -4,7 +4,7 @@ import { moveToggle } from '../../utils/DOM';
 export default function toggleSound() {
   const soundToggleDiv = document.querySelector('.toggle.sound');
   const soundToggleEl = document.getElementById('sound');
-  const width = 28;
+  const width = 24;
 
   const isChecked = getSound() === 'on';
 

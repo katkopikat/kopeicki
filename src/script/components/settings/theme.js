@@ -4,7 +4,7 @@ import { moveToggle } from '../../utils/DOM';
 export default function switchTheme() {
   const themeToggleDiv = document.querySelector('.toggle.theme');
   const themeToggle = document.getElementById('theme');
-  const width = 28;
+  const width = 24;
 
   const isChecked = getTheme() === 'light';
 
