@@ -137,8 +137,9 @@ export default function newCategoryModal(type) {
       };
 
       if (type === 'accounts') {
-        newCategoryItem.amount = wrap.querySelector('.modal-body__amount').innerText;
+        newCategoryItem.amount = Number(wrap.querySelector('.modal-body__amount').innerText);
 
+        console.log(newCategoryItem);
         await app.addUserAccount(newCategoryItem);
         app.renderTransactionsPage();
       } else if (type === 'expenses') {
