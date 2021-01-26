@@ -61,7 +61,7 @@ thead, tbody, tfoot, tr, td, th {
         }
         &__delete:hover{
             cursor: pointer;
-            opacity: 0.7;        
+            opacity: 1;        
         }
         &__delete:hover:after{
            content: ' transaction'      

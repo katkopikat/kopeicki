@@ -1,5 +1,6 @@
 import createElement from '../../utils/create';
 import app from '../../app';
+import api from '../../api';
 
 function historyHtml() {
   const main = document.querySelector('main');
@@ -58,7 +59,6 @@ function tableCreate() {
     </thead>`;
   const tbody = document.createElement('tbody');
   table.appendChild(tbody);
-
   filtredHistory.forEach((transaction, i) => {
     const row = tbody.insertRow(i);
     const cell1 = row.insertCell();
@@ -81,9 +81,26 @@ function tableCreate() {
     cell4.innerHTML = transaction.account;
     cell5.innerHTML = transaction.description;
     cell6.innerHTML = 'delete';
+
+    cell6.dataset.id = transaction._id;
   });
 
   document.querySelector('.table-wrapper').append(table);
+}
+
+async function deleteTransactionCallback(el) {
+  if ((el).classList.contains('cell__delete')) {
+    const idDelete = el.getAttribute('data-id');
+    api.deleteTransaction(idDelete).then(() => rerenderTable());
+  }
+}
+
+function deleteTransaction() {
+  document.querySelector('.table').addEventListener('click', (e) => {
+    e.preventDefault();
+    deleteTransactionCallback(e.target);
+    console.log(`прелоадер.. ${new Date().getMilliseconds()}`)
+  });
 }
 
 function renderTableBtns() {
@@ -110,8 +127,19 @@ function renderTableBtns() {
 }
 
 function rerenderTable() {
-  document.querySelector('.table').remove();
-  tableCreate();
+  console.log(`тащим историю... ${new Date().getMilliseconds()}`)
+  //console.log('тащим историю...')
+  getHistory().then(() => {
+    
+    document.querySelector('.table').remove();
+    filterTransaction();
+    
+    //console.log('рисуем страницу...')
+    tableCreate();
+    console.log(`рисуем таблицу... ${new Date().getMilliseconds()}`)
+    deleteTransaction();
+    console.log(`click-и на delete... ${new Date().getMilliseconds()}`)
+  });
 }
 
 function buttonsListeners() {
@@ -130,6 +158,7 @@ function createTableContent() {
   tableCreate();
   renderTableBtns();
   buttonsListeners();
+  deleteTransaction();
 }
 
 export default function renderHistoryPage() {
