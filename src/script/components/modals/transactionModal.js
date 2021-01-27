@@ -80,6 +80,12 @@ export default function transactionModal(options) {
     be: 'Калі ласка, запоўніце ўсе палі',
   };
 
+  const invalidSum = {
+    en: 'Transaction amount must not be equal to 0',
+    ru: 'Сумма операции не должна быть нулевой',
+    be: 'Сума аперацыі павінна быць ненулявой',
+  };
+
   const isExpense = options.type === 'expenses';
 
   document.querySelector('.modal-content').className = `modal-content ${options.type}`;
@@ -156,6 +162,8 @@ export default function transactionModal(options) {
 
     if (!tx.amount || isAccountInvalid || isCategoryInvalid) {
       showPopover(saveBtn, errorMessage[lang], 'right');
+    } else if (+tx.amount === 0) {
+      showPopover(moneyAmountEl, invalidSum[lang], 'bottom');
     } else {
       getExchangeData(moneyAmountEl.value, currencyFrom)
         .then((exchange) => {
