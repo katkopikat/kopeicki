@@ -40,6 +40,7 @@ class App {
       this.user = await this.api.getUser();
       this.transactions = await this.getTransactions();
       console.log(this.user);
+      console.log(this);
       console.log('login success');
     } catch (e) {
       console.error(e.message);
@@ -58,7 +59,9 @@ class App {
   async getTransactions(update = false) {
     if (!this.transactions || update) {
       this.transactions = await this.api.getTransactions();
-      this.calcTxsSummary(this.transactions);
+      if (this.transactions) {
+        this.calcTxsSummary(this.transactions);
+      }
     }
     return this.transactions;
   }

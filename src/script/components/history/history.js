@@ -82,6 +82,8 @@ function tableCreate() {
     cell5.innerHTML = transaction.description;
     cell6.innerHTML = 'delete';
 
+    // const { _id } = transaction;
+    // eslint-disable-next-line no-underscore-dangle
     cell6.dataset.id = transaction._id;
   });
 
@@ -91,6 +93,7 @@ function tableCreate() {
 async function deleteTransactionCallback(el) {
   if ((el).classList.contains('cell__delete')) {
     const idDelete = el.getAttribute('data-id');
+    // eslint-disable-next-line no-use-before-define
     api.deleteTransaction(idDelete).then(() => rerenderTable());
   }
 }
