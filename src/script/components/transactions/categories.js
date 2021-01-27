@@ -4,6 +4,7 @@ import transactionModal from '../modals/transactionModal';
 import accountModal from '../modals/accountModal';
 import newCategoryModal from '../modals/newCategoryModal';
 import app from '../../app';
+import { getRandom } from '../../utils/helpers';
 
 export default function createCategoryList(group, container) {
   const txsSummary = app.transactionsSummary;
@@ -77,7 +78,8 @@ export default function createCategoryList(group, container) {
       modal.show();
     } else if (categoryItem.classList.contains('delete-category')) {
       container.querySelectorAll('[draggable]').forEach((el) => {
-        el.style.animation = '';
+        el.classList.add('deleting');
+        el.style.animation = `beforeDeletion 1.5s cubic-bezier(0.3, 0.06, 0.2, 0.9) ${getRandom(0, 0.5)}s infinite`;
       });
     } else {
       const { category } = categoryItem.dataset;

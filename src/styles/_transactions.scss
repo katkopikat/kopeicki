@@ -36,6 +36,7 @@
         row-gap: 0.8rem;
 
         &__item {
+          position: relative;
           width: 6rem;
           @include flex-col;
           align-items: center;
@@ -76,6 +77,48 @@
             filter: invert(1);
           }
         }
+      }
+    }
+
+    .edit {
+      padding: 0.5em;
+      line-height: 42px;
+      border-radius: 50%;
+      transition: all 0.25s;
+
+      &:before {
+        content: '\002B';
+        padding: 0 14px;
+        font-size: 2rem;
+      }
+
+      &:hover {
+        border-radius: 0%;
+      }
+    }
+
+    .delete-category {
+      color: var(--gray);
+
+      span {
+        color: var(--gray);
+      }
+
+      .delete {
+        border: 2px solid var(--gray);
+
+        &:before {
+          content: '\2212';
+        }
+
+        &:hover {
+          border: 2px solid var(--light);
+          color: var(--light);
+        }
+      }
+
+      .delete:hover ~ span {
+        color: var(--light);
       }
     }
   }
@@ -134,44 +177,45 @@
   }
 }
 
-.edit {
-  padding: 0.5em;
-  line-height: 42px;
-  border-radius: 50%;
-  transition: all 0.25s;
-
+.deleting {
   &:before {
-    content: '\002B';
-    padding: 0 14px;
-    font-size: 2rem;
+    content: '\2212';
+    position: absolute;
+    left: 9px;
+    top: -9px;
+    z-index: 10;
+    display: block;
+    padding: 1px 8px;
+    font-size: 1rem;
+    border-radius: 50%;
+    color: var(--gray);
+    background: var(--light);
   }
 
-  &:hover {
-    border-radius: 0%;
+  .category-ammount {
+    opacity: 0;
   }
 }
 
-.delete-category {
-  color: var(--gray);
-
-  span {
-    color: var(--gray) !important;
+@keyframes beforeDeletion {
+  10%,
+  90% {
+    transform: translate3d(-1px, -1px, 0) rotate(5deg);
   }
 
-  .delete {
-    border: 2px solid var(--gray);
-
-    &:before {
-      content: '\2212';
-    }
-
-    &:hover {
-      border: 2px solid var(--light);
-      color: var(--light);
-    }
+  20%,
+  80% {
+    transform: translate3d(2px, -4px, 0) rotate(-2deg);
   }
 
-  .delete:hover ~ span {
-    color: var(--light) !important;
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, -1px, 0) rotate(3deg);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 2px, 0) rotate(-4deg);
   }
 }

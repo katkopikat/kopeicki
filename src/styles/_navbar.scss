@@ -10,7 +10,7 @@ $navWidth: 15rem;
   padding: 1rem 1rem 2rem 3rem;
   z-index: 1000;
   background: var(--dark);
-  transition: left 0.5s ease-in;
+  transition: left 0.5s ease-in-out;
 
   @media (max-height: 600px) {
     & {
