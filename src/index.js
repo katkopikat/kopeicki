@@ -9,8 +9,7 @@ import toggleSettings from './script/components/settings/settings';
 import renderTransactionsPage from './script/components/transactions/transactions';
 import navSlideIn from './script/components/navbar';
 import app from './script/app';
-
-app.renderTransactionsPage = renderTransactionsPage;
+import pubsub from './script/pubsub';
 
 const navigateTo = (url) => {
   // if (app.user) {
@@ -36,6 +35,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  pubsub.subscribe('navigateTo', navigateTo);
   app.init().then(router);
   // router();
 });

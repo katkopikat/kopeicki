@@ -146,6 +146,8 @@ $scale: 46px;
     border-radius: 5px;
     background: var(--light);
     overflow-y: auto;
+    overflow-x: hidden;
+    width: fit-content;
   }
 
   &__list {
@@ -158,6 +160,7 @@ $scale: 46px;
     padding: 0.4rem;
     border-bottom: 1px solid #b3b3b3;
     background: #eaf0f7;
+    color: black;
 
     &:hover {
       background-color: var(--gray);

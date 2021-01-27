@@ -7,6 +7,7 @@ import api from '../../api';
 import app from '../../app';
 import { getLanguage, getSound } from '../../utils/localStorage';
 import getExchangeData from '../settings/currencyConverter';
+import pubsub from '../../pubsub';
 
 /* options = {
  *    type: 'expenses',
@@ -178,7 +179,8 @@ export default function transactionModal(options) {
         .then(() => {
           app.saveTransaction(tx).then((result) => {
             console.log(result);
-            app.renderTransactionsPage();
+            pubsub.publish('renderTransactionsPage');
+            // app.renderTransactionsPage();
           });
         });
 
