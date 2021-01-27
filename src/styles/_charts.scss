@@ -61,7 +61,7 @@ thead, tbody, tfoot, tr, td, th {
         }
         &__delete:hover{
             cursor: pointer;
-            opacity: 0.7;        
+            opacity: 1;        
         }
         &__delete:hover:after{
            content: ' transaction'      
@@ -69,16 +69,14 @@ thead, tbody, tfoot, tr, td, th {
     }
 }
 
-.bar-container{
-    margin-bottom: 1rem;
-}
+
 
 .statistic-text {
     color: var(--light);
     font-size: 1rem;
 
     span {
-        font-size:1.5rem;
+        font-size:1.3rem;
     }
     .info {
         &_expenses{
@@ -95,3 +93,39 @@ thead, tbody, tfoot, tr, td, th {
     }
 }
 
+.statistic-h{
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    color: var(--font-light);
+
+}
+.text-statistic-wrapper{
+    justify-content: center;
+}
+.statistic-container {
+    // width: 100%;
+    padding: 1.3rem;
+    margin: 1rem;
+    border-radius: 8px;
+    background-color: var(--catergory-bg);
+    box-shadow: var(--shadow);
+}
+
+main {
+    margin: 0 auto;
+
+    .row {
+        justify-content: center;
+    }
+
+    .wrapper-doughnut, .bar-wrapper {
+        margin: 1rem;
+        border-radius: 8px;
+        background-color: var(--catergory-bg);
+        box-shadow: var(--shadow);
+        padding: 1.5rem 3rem;
+    }
+    .bar-container{
+        margin-bottom: 1rem;
+    } 
+}

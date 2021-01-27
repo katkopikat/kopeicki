@@ -116,9 +116,9 @@ function filterTransaction() {
   summaryObj = filtredHistory.reduce((summary, trans) => {
     const trMonth = (new Date(trans.date)).getMonth();
     if (Object.prototype.hasOwnProperty.call(summary, trMonth)) {
-      summary[trMonth] += parseFloat(trans.amount);
+      summary[trMonth] += parseInt(trans.amount, 10);
     } else {
-      summary[trMonth] = parseFloat(trans.amount);
+      summary[trMonth] = parseInt(trans.amount, 10);
     }
     return summary;
   },
