@@ -7,7 +7,6 @@ import api from '../../api';
 import app from '../../app';
 import { getLanguage, getSound } from '../../utils/localStorage';
 import getExchangeData from '../settings/currencyConverter';
-import translations from '../../data/translations';
 
 /* options = {
  *    type: 'expenses',
@@ -31,7 +30,7 @@ function preCreateSelect(options) {
 
   return {
     class: options.class,
-    placeholder: isFromSelect ? options.from || 'account' : options.to || options.type,
+    placeholder: isFromSelect ? options.from || 'Choose an account' : options.to || `Choose ${options.type}`,
     list,
     isTranslatable: true,
   };
@@ -75,6 +74,18 @@ export default function transactionModal(options) {
   const from = { en: 'from', ru: 'из', be: 'з' };
   const on = { en: 'on', ru: 'на', be: 'на' };
 
+  const errorMessage = {
+    en: 'Please fill out all the fields',
+    ru: 'Пожалуйста, заполните все поля',
+    be: 'Калі ласка, запоўніце ўсе палі',
+  };
+
+  const invalidSum = {
+    en: 'Transaction amount must not be equal to 0',
+    ru: 'Сумма операции не должна быть нулевой',
+    be: 'Сума аперацыі павінна быць ненулявой',
+  };
+
   const isExpense = options.type === 'expenses';
 
   document.querySelector('.modal-content').className = `modal-content ${options.type}`;
@@ -87,7 +98,7 @@ export default function transactionModal(options) {
     'afterbegin',
     `
       <h5 class="modal-body__title">${titleOptions[options.type][lang]}</h5>
-      <input class="modal-body__amount" placeholder="0.00" type="number" value="0.00">
+      <input class="modal-body__amount" placeholder="0.00" type="number">
       <br>
       <span data-from>${from[lang]}</span>
       <br>
@@ -129,7 +140,7 @@ export default function transactionModal(options) {
   setTimeout(() => {
     const currencyInput = document.querySelector('.modal-body__amount');
     currencyInput.onblur = () => {
-      currencyInput.value = parseFloat(currencyInput.value).toFixed(2);
+      currencyInput.value = parseFloat(Math.abs(currencyInput.value)).toFixed(2);
     };
   }, 0);
 
@@ -144,15 +155,15 @@ export default function transactionModal(options) {
       description: descriptionEl.value,
     };
 
-    const isAmountInvalid = +tx.amount === 0;
-    const isAccountInvalid = tx.account === translations[lang].account;
-    const isCategoryInvalid = tx.category === translations[lang].income
-    || tx.category === translations[lang].expenses;
+    const isAccountInvalid = tx.account === 'Choose an account';
+    const isCategoryInvalid = tx.category === `Choose ${options.type}`;
 
     const currencyFrom = document.querySelector('.currency-list .select__value').innerText;
 
-    if (isAmountInvalid || isAccountInvalid || isCategoryInvalid) {
-      showPopover(saveBtn);
+    if (!tx.amount || isAccountInvalid || isCategoryInvalid) {
+      showPopover(saveBtn, errorMessage[lang], 'right');
+    } else if (+tx.amount === 0) {
+      showPopover(moneyAmountEl, invalidSum[lang], 'bottom');
     } else {
       getExchangeData(moneyAmountEl.value, currencyFrom)
         .then((exchange) => {
@@ -173,7 +184,7 @@ export default function transactionModal(options) {
 
       modal.hide();
 
-      if (getSound() === 'true') {
+      if (getSound() === 'on') {
         const sound = new Audio();
         sound.src = `/src/assets/sounds/${options.type}.mp3`;
         sound.play();

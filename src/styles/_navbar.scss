@@ -82,17 +82,11 @@ $navWidth: 15rem;
   &_open {
     left: 0;
   }
-
-  .bi-moon{
-    fill: none;
-    stroke: white;
-    stroke-width: 1.5;
-  }
 }
 
 .burger {
   position: absolute;
-  top: 2rem;
+  top: 1.3rem;
   left: 3rem;
   width: 28px;
   height: 24px;
@@ -100,7 +94,7 @@ $navWidth: 15rem;
   border: none;
   border-radius: 0;
   background-color: transparent;
-  box-shadow: inset 0 -2px 0 0 var(--light);
+  box-shadow: inset 0 -2px 0 0 #fffffe;
   outline: none;
 
   @media (max-width: 450px) {
@@ -115,7 +109,7 @@ $navWidth: 15rem;
     content: '';
     display: block;
     height: 2px;
-    background-color: var(--light);
+    background-color: #fffffe;
   }
 
   &::before {

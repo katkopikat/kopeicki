@@ -1,5 +1,6 @@
 import createElement from '../../utils/create';
 import app from '../../app';
+import api from '../../api';
 
 function historyHtml() {
   const main = document.querySelector('main');
@@ -53,11 +54,11 @@ function tableCreate() {
         <th scope="col" data-i18n="Amount">Amount</th>
         <th scope="col" data-i18n="Account">Account</th>
         <th scope="col" data-i18n="Description">Description</th>
+        <th scope="col" data-i18n="Delete">Delete</th>
       </tr>
     </thead>`;
   const tbody = document.createElement('tbody');
   table.appendChild(tbody);
-
   filtredHistory.forEach((transaction, i) => {
     const row = tbody.insertRow(i);
     const cell1 = row.insertCell();
@@ -65,21 +66,40 @@ function tableCreate() {
     const cell3 = row.insertCell();
     const cell4 = row.insertCell();
     const cell5 = row.insertCell();
+    const cell6 = row.insertCell();
 
     cell1.className = 'cell__date';
     cell2.className = transaction.type === 'expenses' ? 'cell__category-expense' : 'cell__category-income';
     cell3.className = 'cell__amount';
     cell4.className = 'cell__account';
     cell5.className = 'cell__description';
+    cell6.className = 'cell__delete';
 
     cell1.innerHTML = formatDate(new Date(transaction.date));
     cell2.innerHTML = transaction.category;
     cell3.innerHTML = transaction.amount;
     cell4.innerHTML = transaction.account;
     cell5.innerHTML = transaction.description;
+    cell6.innerHTML = 'delete';
+
+    cell6.dataset.id = transaction._id;
   });
 
   document.querySelector('.table-wrapper').append(table);
+}
+
+async function deleteTransactionCallback(el) {
+  if ((el).classList.contains('cell__delete')) {
+    const idDelete = el.getAttribute('data-id');
+    api.deleteTransaction(idDelete).then(() => rerenderTable());
+  }
+}
+
+function deleteTransaction() {
+  document.querySelector('.table').addEventListener('click', (e) => {
+    e.preventDefault();
+    deleteTransactionCallback(e.target);
+  });
 }
 
 function renderTableBtns() {
@@ -106,8 +126,12 @@ function renderTableBtns() {
 }
 
 function rerenderTable() {
-  document.querySelector('.table').remove();
-  tableCreate();
+  getHistory().then(() => {
+    document.querySelector('.table').remove();
+    filterTransaction();
+    tableCreate();
+    deleteTransaction();
+  });
 }
 
 function buttonsListeners() {
@@ -126,6 +150,7 @@ function createTableContent() {
   tableCreate();
   renderTableBtns();
   buttonsListeners();
+  deleteTransaction();
 }
 
 export default function renderHistoryPage() {

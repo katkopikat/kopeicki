@@ -1,13 +1,48 @@
 import createElement from '../../utils/create';
 import modal from './modal';
 import app from '../../app';
-import { getLanguage } from '../../utils/localStorage';
+import { getLanguage, getSound } from '../../utils/localStorage';
+import showPopover from '../popover';
+import translations from '../../data/translations';
+
+const isNewNameValid = (newName, type, btnElem, inputElem) => {
+  const lang = getLanguage();
+
+  const errorMessage = {
+    en: 'Please fill out all the fields',
+    ru: 'Пожалуйста, заполните все поля',
+    be: 'Калі ласка, запоўніце ўсе палі',
+  };
+
+  const errorExists = {
+    en: 'This name already exists',
+    ru: 'Такое имя уже существует',
+    be: 'Такое імя ўжо існуе',
+  };
+
+  if (!newName) {
+    showPopover(btnElem, errorMessage[lang], 'right');
+    return false;
+  }
+  const listWithTralslations = [];
+  const categoryList = [...app.user[type]];
+  categoryList
+    .map(({ name }) => name)
+    .concat(['account', 'expenses', 'income'])
+    .forEach((item) => {
+      ['en', 'ru', 'be'].forEach((el) => listWithTralslations.push(translations[el][item] || item));
+    });
+
+  const exists = listWithTralslations.find((item) => item.toLowerCase() === newName.toLowerCase());
+  if (exists) {
+    showPopover(inputElem, errorExists[lang], 'bottom');
+    return false;
+  }
+  return true;
+};
 
 export default function newCategoryModal(type) {
   const lang = getLanguage();
-
-  const audioCategory = new Audio();
-  audioCategory.src = '/src/assets/sounds/category.mp3';
 
   const titleOptions = {
     accounts: {
@@ -76,14 +111,7 @@ export default function newCategoryModal(type) {
   [title, newCategoryName, iconsContainer, saveBtn].forEach((el) => wrap.append(el));
 
   if (type === 'accounts') {
-    const moneyAmount = createElement(
-      'input',
-      'modal-body__amount',
-      null,
-      ['type', 'number'],
-      ['value', '0.00'],
-      ['placeholder', '0.00'],
-    );
+    const moneyAmount = createElement('input', 'modal-body__amount', null, ['type', 'number'], ['placeholder', '0.00']);
 
     wrap.insertBefore(moneyAmount, iconsContainer);
 
@@ -100,31 +128,36 @@ export default function newCategoryModal(type) {
   }
 
   saveBtn.addEventListener('click', async () => {
-    const icon = wrap.querySelector('input[name="icon"]:checked').value;
+    if (isNewNameValid(newCategoryName.value, type, saveBtn, newCategoryName)) {
+      const icon = wrap.querySelector('input[name="icon"]:checked').value;
 
-    const newCategoryItem = {
-      name: newCategoryName.value,
-      icon,
-    };
+      const newCategoryItem = {
+        name: newCategoryName.value,
+        icon,
+      };
 
-    if (type === 'accounts') {
-      newCategoryItem.amount = wrap.querySelector('.modal-body__amount').innerText;
-      newCategoryItem.currency = wrap.querySelector('.currency-list .select__value').innerText;
+      if (type === 'accounts') {
+        newCategoryItem.amount = Number(wrap.querySelector('.modal-body__amount').innerText);
 
-      await app.addUserAccount(newCategoryItem);
-      app.renderTransactionsPage();
-    } else if (type === 'expenses') {
-      await app.addUserExpense(newCategoryItem);
-      app.renderTransactionsPage();
-    } else {
-      await app.addUserIncome(newCategoryItem);
-      app.renderTransactionsPage();
+        console.log(newCategoryItem);
+        await app.addUserAccount(newCategoryItem);
+        app.renderTransactionsPage();
+      } else if (type === 'expenses') {
+        await app.addUserExpense(newCategoryItem);
+        app.renderTransactionsPage();
+      } else {
+        await app.addUserIncome(newCategoryItem);
+        app.renderTransactionsPage();
+      }
+
+      if (getSound() === 'on') {
+        const audioCategory = new Audio();
+        audioCategory.src = '/src/assets/sounds/category.mp3';
+        audioCategory.play();
+      }
+
+      modal.hide();
     }
-
-    console.log(newCategoryItem);
-
-    modal.hide();
-    audioCategory.play();
   });
 
   return wrap;

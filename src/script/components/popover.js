@@ -1,21 +1,33 @@
 import { Popover } from 'bootstrap';
-import { getLanguage } from '../utils/localStorage';
+import { getSound } from '../utils/localStorage';
 
-export default function showPopover(elem) {
-  const lang = getLanguage();
-
-  const errorMessage = {
-    en: 'Please fill out all the fields',
-    ru: 'Пожалуйста, заполните все поля',
-    be: 'Калі ласка, запоўніце ўсе палі',
-  };
-
+export default function showPopover(elem, errorMessage, placement) {
   const popover = new Popover(elem, {
-    content: errorMessage[lang],
-    placement: 'right',
+    content: errorMessage,
+    placement: 'auto',
     container: 'body',
-    trigger: 'focus',
+    trigger: 'manual',
+    popperConfig: {
+      modifiers: [
+        {
+          name: 'flip',
+          options: {
+            allowedAutoPlacements: [placement],
+          },
+        },
+      ],
+    },
   });
 
+  if (getSound() === 'on') {
+    const soundError = new Audio();
+    soundError.src = '/src/assets/sounds/error.mp3';
+    soundError.play();
+  }
+
   popover.show();
+
+  setTimeout(() => {
+    popover.hide();
+  }, 3000);
 }
