@@ -35,20 +35,23 @@ header {
 }
 
 main {
-  position: relative;
+  position: absolute;
   left: 0;
-  transition: 0.5s ease;
   width: 100%;
+  transition: 0.5s ease;
 }
 
 footer {
+  @include flex-col;
   text-align: center;
-  display: flex;
-  flex-direction: column;
 
   .code_btn {
     text-align: center;
     opacity: 0.3;
+
+    &:hover {
+      cursor: pointer;
+    }
 
     .bi-code-slash {
       height: 25px;
@@ -57,20 +60,15 @@ footer {
   }
 
   .footer__links {
-    color: var(--gray);
-    font-size: 0.9rem;
-    opacity: 0.5;
     padding-bottom: 0.3rem;
-
-  }
-
-  .code_btn:hover{
-    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--gray);
+    opacity: 0.5;
   }
 
   .link_item {
-    text-decoration: none;
     color: var(--gray);
+    text-decoration: none;
   }
 }
 

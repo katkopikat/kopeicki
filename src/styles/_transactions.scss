@@ -45,7 +45,6 @@
             color: var(--category-sum);
             font-size: 0.7rem;
             margin-top: -0.4rem;
-            //opacity: 0.5;
           }
 
           .category-icon {
@@ -76,21 +75,11 @@
           &:hover .icon-svg {
             filter: invert(1);
           }
-          // &:hover .icon-svg {
-          //   transition: all 0.15s;
-          //   transform: scale(1.1);
-          // }
         }
       }
     }
   }
 }
-//div[data-group="accounts"]
-// input[type='date']
-//  .flex-list__item[data-group='accounts']:hover .icon-svg{
-//   transition: all linear 0.15s;
-//   background-position-y: -40px !important;
-// }
 
 .accounts {
   h4 {
@@ -108,7 +97,9 @@
   .flex-list__item * {
     pointer-events: none;
   }
-  .flex-list__item .add {
+
+  .flex-list__item .add,
+  .flex-list__item .delete {
     pointer-events: all;
   }
 }
@@ -143,27 +134,44 @@
   }
 }
 
-.add {
+.edit {
   padding: 0.5em;
   line-height: 42px;
   border-radius: 50%;
   transition: all 0.25s;
+
+  &:before {
+    content: '\002B';
+    padding: 0 14px;
+    font-size: 2rem;
+  }
+
+  &:hover {
+    border-radius: 0%;
+  }
 }
 
-.add:before {
-  content: ' \002B';
-  padding: 0 14px;
-  font-size: 2rem;
-}
+.delete-category {
+  color: var(--gray);
 
-.add:hover {
-  border-radius: 0%;
-  transition: all 0.25s;
-  // transform: rotate(90deg);
-}
+  span {
+    color: var(--gray) !important;
+  }
 
-// .add:hover::before {
-//   transition: all 0.4s;
-//   transform: rotate(90deg);
-//   color: red;
-// }
+  .delete {
+    border: 2px solid var(--gray);
+
+    &:before {
+      content: '\2212';
+    }
+
+    &:hover {
+      border: 2px solid var(--light);
+      color: var(--light);
+    }
+  }
+
+  .delete:hover ~ span {
+    color: var(--light) !important;
+  }
+}
