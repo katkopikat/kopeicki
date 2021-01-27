@@ -94,12 +94,12 @@ function filterTransactions() {
   {});
 }
 
-function calculateTotalSum() {
-  return Object.values(summaryObj).length !== 0
-    ? parseInt(Object.values(summaryObj).reduce((sum, it) => sum + it), 10) : 0;
-}
+// function calculateTotalSum() {
+//   return Object.values(summaryObj).length !== 0
+//     ? parseInt(Object.values(summaryObj).reduce((sum, it) => sum + it), 10) : 0;
+// }
 
-function generateChart(type, time) {
+function generateChart(/* type, time */) {
   const canvas = document.querySelector('.doughnut-container');
   doughnut = new Chart(canvas, {
     type: 'doughnut',
@@ -182,4 +182,4 @@ export default function renderDoughnutChart() {
 document.getElementById('theme').addEventListener('click', () => {
   doughnut.destroy();
   setTimeout(generateChart, 0);
-  });
+});

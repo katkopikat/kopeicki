@@ -1,3 +1,5 @@
+import app from '../../app';
+
 export default function renderAuthorizationPage() {
   const main = document.querySelector('main');
 
@@ -31,7 +33,7 @@ export default function renderAuthorizationPage() {
       return false;
     }
     console.log('all done', password);
-    // app.login(email, password);
+    app.login(email, password);
     return true;
   });
 }
