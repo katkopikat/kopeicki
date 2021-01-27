@@ -156,7 +156,8 @@ $scale: 46px;
 
   &__item {
     padding: 0.4rem;
-    border-bottom: 1px solid var(--gray);
+    border-bottom: 1px solid #b3b3b3;
+    background: #eaf0f7;
 
     &:hover {
       background-color: var(--gray);
