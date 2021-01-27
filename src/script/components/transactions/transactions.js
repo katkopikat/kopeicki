@@ -4,6 +4,7 @@ import createCategoryList from './categories';
 import renderHistory from './history';
 import translatePage from '../settings/language';
 import app from '../../app';
+import pubsub from '../../pubsub';
 
 export default async function renderTransactionsPage() {
   document.querySelector('main').innerHTML = '';
@@ -54,3 +55,5 @@ export default async function renderTransactionsPage() {
     account.addEventListener('drop', dragDrop);
   });
 }
+
+pubsub.subscribe('renderTransactionsPage', renderTransactionsPage);

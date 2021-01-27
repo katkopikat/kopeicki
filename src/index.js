@@ -8,8 +8,7 @@ import renderStatisticsPage from './script/components/statistics/statistics';
 import renderTransactionsPage from './script/components/transactions/transactions';
 import navSlideIn from './script/components/navbar';
 import app from './script/app';
-
-app.renderTransactionsPage = renderTransactionsPage;
+import pubsub from './script/pubsub';
 
 const router = () => {
   const routes = [
@@ -34,10 +33,10 @@ const router = () => {
 };
 
 const navigateTo = (url) => {
-  if (app.user) {
-    window.history.pushState(null, null, url);
-    router();
-  }
+  // if (app.user) {
+  window.history.pushState(null, null, url);
+  router();
+  // }
 };
 
 toggleSettings();
@@ -57,6 +56,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  pubsub.subscribe('navigateTo', navigateTo);
   app.init().then(router);
   // router();
 });
