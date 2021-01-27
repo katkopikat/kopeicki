@@ -42,7 +42,7 @@
           align-items: center;
           row-gap: 0.2em;
 
-          .category-ammount {
+          .category-amount {
             color: var(--category-sum);
             font-size: 0.7rem;
             margin-top: -0.4rem;
@@ -192,7 +192,7 @@
     background: var(--light);
   }
 
-  .category-ammount {
+  .category-amount {
     opacity: 0;
   }
 }

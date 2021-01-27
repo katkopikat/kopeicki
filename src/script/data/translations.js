@@ -16,7 +16,7 @@ export default {
     Cash: 'Cash',
     'Bank account': 'Bank account',
     Category: 'Category',
-    Amount: 'Ammount',
+    Amount: 'Amount',
     Groceries: 'Groceries',
     Transport: 'Transport',
     'Eating out': 'Eating out',

@@ -1,12 +1,12 @@
 import app from '../../app';
 
-export default async function getExchangeData(ammount, fromCurrency) {
+export default async function getExchangeData(amount, fromCurrency) {
   const toCurrency = app.user.currency.toUpperCase();
-  if (!(+ammount) || toCurrency === fromCurrency) return ammount;
+  if (!+amount || toCurrency === fromCurrency) return amount;
   const endpoint = `https://free.currconv.com/api/v7/convert?apiKey=9907c9f725cc3b503486&q=${fromCurrency}_${toCurrency},${toCurrency}_${fromCurrency}`;
   const response = await fetch(endpoint);
   const data = await response.json();
   const exchangeData = { ...data };
   const base = exchangeData.results[`${fromCurrency}_${toCurrency}`];
-  return (ammount * base.val).toFixed(2);
+  return (amount * base.val).toFixed(2);
 }

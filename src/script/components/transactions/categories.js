@@ -6,6 +6,31 @@ import newCategoryModal from '../modals/newCategoryModal';
 import app from '../../app';
 import { getRandom } from '../../utils/helpers';
 
+async function deleteCategory(e) {
+  e.stopPropagation();
+
+  const { category } = this.dataset;
+  const { group } = this.dataset;
+
+  console.log(category);
+
+  // eslint-disable-next-line default-case
+  switch (group) {
+    case 'accounts':
+      console.log('удаляю кошелек');
+      app.removeUserAccount(category);
+      break;
+    case 'expenses':
+      console.log('удаляю затраты');
+      app.removeUserExpense(category);
+      break;
+    case 'income':
+      console.log('удаляю доход');
+      app.removeUserIncome(category);
+      break;
+  }
+}
+
 export default function createCategoryList(group, container) {
   const txsSummary = app.transactionsSummary;
   let list;
@@ -30,7 +55,7 @@ export default function createCategoryList(group, container) {
 
   list.forEach((category) => {
     const amount = `${Math.round(txsSummary[group]?.get(category.name) || category.amount || 0)}`;
-    const categoryAmmount = createElement('span', 'category-ammount', amount, ['category', category.name]);
+    const categoryAmount = createElement('span', 'category-amount', amount, ['category', category.name]);
     const categoryName = createElement('span', '', category.name, ['i18n', category.name]);
     const imgSrc = `background-image: url(${category.icon});`;
     const categoryIcon = createElement('div', 'icon-svg', null, ['style', imgSrc]);
@@ -39,7 +64,7 @@ export default function createCategoryList(group, container) {
     const categoryElem = createElement(
       'div',
       'flex-list__item',
-      [categoryIconDiv, categoryName, categoryAmmount],
+      [categoryIconDiv, categoryName, categoryAmount],
       ['category', category.name],
       ['group', group],
       ['draggable', isDraggable],
@@ -80,6 +105,7 @@ export default function createCategoryList(group, container) {
       container.querySelectorAll('[draggable]').forEach((el) => {
         el.classList.add('deleting');
         el.style.animation = `beforeDeletion 1.5s cubic-bezier(0.3, 0.06, 0.2, 0.9) ${getRandom(0, 0.5)}s infinite`;
+        el.addEventListener('click', deleteCategory);
       });
     } else {
       const { category } = categoryItem.dataset;
