@@ -10,7 +10,7 @@ class App {
 
   async init() {
     // dev mode autologin
-    await this.login('user2@rsclone.com', 'test');
+    // await this.login('user2@rsclone.com', 'test');
     // await this.register('testReg5@rsclone.com', 'test');
     await this.checkAuth();
     console.log('from init: ', this.user);
@@ -19,6 +19,11 @@ class App {
   async checkAuth() {
     try {
       this.user = await this.api.getUser();
+      this.transactions = await this.getTransactions();
+      console.log(this.api);
+      console.log(this.user);
+      console.log(this.transactions);
+      console.log(this.transactionsSummary);
     } catch (e) {
       console.error(e.message);
     }
@@ -33,6 +38,7 @@ class App {
       // await this.api.login('user2@rsclone.com', 'test');
       await this.api.login(email, password);
       this.user = await this.api.getUser();
+      this.transactions = await this.getTransactions();
       console.log(this.user);
       console.log('login success');
     } catch (e) {
@@ -73,7 +79,7 @@ class App {
       txsByMonth[yearMonth].push(tx);
     });
     console.log('months: ', Object.keys(txsByMonth));
-    const txsThisMonth = txsByMonth[monthKey(new Date())];
+    const txsThisMonth = txsByMonth[monthKey(new Date())] || [];
     const monthSummary = {
       expenses: new Map(),
       income: new Map(),
