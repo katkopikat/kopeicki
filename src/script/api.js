@@ -1,4 +1,4 @@
-import renderAuthorizationPage from './components/authorization/authorization';
+// import renderAuthorizationPage from './components/authorization/authorization';
 import getCurrencylist from './components/settings/currencyList';
 
 class ApiClient {
@@ -84,9 +84,11 @@ class ApiClient {
       if (!result.ok) {
         const content = await result.json();
         console.log('message from content', content);
-        window.history.pushState(null, null, '/login');
-        renderAuthorizationPage();
+        // window.history.pushState(null, null, '/login');
+        // renderAuthorizationPage();
+        document.getElementById('forcostil').click();
         return undefined;
+        // throw new Error('sahbnsaf,fffas');
       }
       console.log(result);
       const content = await result.json();
