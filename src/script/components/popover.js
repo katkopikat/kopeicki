@@ -18,6 +18,6 @@ export default function showPopover(elem, errorMessage, placement) {
   popover.show();
 
   setTimeout(() => {
-    if (popover) popover.dispose();
-  }, 5000);
+    popover.hide();
+  }, 3000);
 }
