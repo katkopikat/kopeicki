@@ -1,43 +1,22 @@
 import './styles/main.scss';
 import 'bootstrap';
 
-import renderAuthorizationPage from './script/components/authorization/authorization';
+import router from './script/router';
+// import renderAuthorizationPage from './script/components/authorization/authorization';
 import toggleSettings from './script/components/settings/settings';
-import renderHistoryPage from './script/components/history/history';
-import renderStatisticsPage from './script/components/statistics/statistics';
+// import renderHistoryPage from './script/components/history/history';
+// import renderStatisticsPage from './script/components/statistics/statistics';
 import renderTransactionsPage from './script/components/transactions/transactions';
 import navSlideIn from './script/components/navbar';
 import app from './script/app';
 
 app.renderTransactionsPage = renderTransactionsPage;
 
-const router = () => {
-  const routes = [
-    { path: '/statistics', component: renderStatisticsPage },
-    { path: '/history', component: renderHistoryPage },
-    { path: '/login', component: renderAuthorizationPage },
-    { path: '/', component: renderTransactionsPage },
-  ];
-
-  const path = window.location.href;
-
-  const match = routes.find((r) => path.includes(r.path));
-
-  document.querySelector('main').innerHTML = '';
-
-  try {
-    match.component();
-  } catch (e) {
-    console.log(e.message);
-  }
-  // match.component();
-};
-
 const navigateTo = (url) => {
-  if (app.user) {
-    window.history.pushState(null, null, url);
-    router();
-  }
+  // if (app.user) {
+  window.history.pushState(null, null, url);
+  router();
+  // }
 };
 
 toggleSettings();
