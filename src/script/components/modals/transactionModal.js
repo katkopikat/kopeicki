@@ -7,7 +7,6 @@ import api from '../../api';
 import app from '../../app';
 import { getLanguage, getSound } from '../../utils/localStorage';
 import getExchangeData from '../settings/currencyConverter';
-import translations from '../../data/translations';
 
 /* options = {
  *    type: 'expenses',
@@ -31,7 +30,7 @@ function preCreateSelect(options) {
 
   return {
     class: options.class,
-    placeholder: isFromSelect ? options.from || 'account' : options.to || options.type,
+    placeholder: isFromSelect ? options.from || 'Choose an account' : options.to || `Choose ${options.type}`,
     list,
     isTranslatable: true,
   };
@@ -74,6 +73,12 @@ export default function transactionModal(options) {
 
   const from = { en: 'from', ru: 'из', be: 'з' };
   const on = { en: 'on', ru: 'на', be: 'на' };
+
+  const errorMessage = {
+    en: 'Please fill out all the fields',
+    ru: 'Пожалуйста, заполните все поля',
+    be: 'Калі ласка, запоўніце ўсе палі',
+  };
 
   const isExpense = options.type === 'expenses';
 
@@ -144,20 +149,13 @@ export default function transactionModal(options) {
       description: descriptionEl.value,
     };
 
-    const isAmountInvalid = +tx.amount === 0;
-    const isAccountInvalid = tx.account === translations[lang].account;
-    const isCategoryInvalid = tx.category === translations[lang].income
-                           || tx.category === translations[lang].expenses;
+    const isAccountInvalid = tx.account === 'Choose an account';
+    const isCategoryInvalid = tx.category === `Choose ${options.type}`;
 
     const currencyFrom = document.querySelector('.currency-list .select__value').innerText;
 
-    if (isAmountInvalid || isAccountInvalid || isCategoryInvalid) {
-      showPopover(saveBtn);
-      if (getSound() === 'on') {
-        const soundError = new Audio();
-        soundError.src = '/src/assets/sounds/error.mp3';
-        soundError.play();
-      }
+    if (!tx.amount || isAccountInvalid || isCategoryInvalid) {
+      showPopover(saveBtn, errorMessage[lang], 'right');
     } else {
       getExchangeData(moneyAmountEl.value, currencyFrom)
         .then((exchange) => {
