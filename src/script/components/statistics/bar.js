@@ -3,10 +3,15 @@
 import { Chart } from 'chart.js';
 import createElement from '../../utils/create';
 import app from '../../app';
+import { moveToggle } from '../../utils/DOM';
+import { getLanguage } from '../../utils/localStorage';
+import translatePage from '../settings/language';
 
 let barChart = null;
 let typeTransaction = 'expenses';
-const monthRU = ['янв', 'фев', 'март', 'апр', 'май', 'июн', 'июл', 'авг', 'сент', 'окт', 'нояб', 'дек'];
+const monthRu = ['Янв', 'Фев', 'Март', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сент', 'Окт', 'Нояб', 'Дек'];
+const monthEn = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const monthBe = ['Студз', 'Люты', 'Сак', 'Крас', 'Май', 'Чэрв', 'Ліп', 'Жнів', 'Вер', 'Кастр', 'Ліст', 'Снеж'];
 
 let choosenYear = new Date().getFullYear();
 const yearsList = [];
@@ -18,31 +23,24 @@ function renderBarHTML() {
   const barCanvas = createElement('canvas', 'bar-container');
   const barTypeBtnsWrapper = createElement(
     'div',
-    'btn-group btn-group-toggle',
-    null,
-    ['toggle', 'buttons'],
+    'toggle bar-type',
   );
 
   const barYearsBtnsWrapper = createElement(
     'div',
-    'btn-group btn-group-toggle bar-years',
-    null,
-    ['toggle', 'buttons'],
+    'btns-year-container',
   );
 
   const barTypeBtns = `
-  <label class="btn btn-secondary active">
-    <input type="radio" name="type-tr" id="expenses" autocomplete="off" checked> Expense
+  <input type="checkbox" class="checkbox" id="bar-type" />
+  <span data-i18n="Expenses">Expenses</span>
+  <label for="bar-type" class="label">
+    <div class="ball"></div>
   </label>
-  <label class="btn btn-secondary">
-    <input type="radio" name="type-tr" id="income" autocomplete="off"> Income
-  </label>`;
+  <span data-i18n="Income">Income</span>`;
 
   document.querySelector('.charts-wrapper').append(barWrapperDiv);
-
-  barWrapperDiv.append(barCanvas);
-  barWrapperDiv.append(barTypeBtnsWrapper);
-  barWrapperDiv.append(barYearsBtnsWrapper);
+  barWrapperDiv.append(barCanvas, barYearsBtnsWrapper, barTypeBtnsWrapper);
 
   barTypeBtnsWrapper.insertAdjacentHTML(
     'beforeend',
@@ -55,6 +53,18 @@ function setBarColor() {
   return new Array(12).fill(typeTransaction === 'expenses' ? 'rgba(50, 124, 235, 1)' : 'rgba(75, 192, 192, 1)');
 }
 
+function setMonthLang() {
+  const lang = getLanguage();
+  switch (lang) {
+    case 'be':
+      return monthBe;
+    case 'ru':
+      return monthRu;
+    default:
+      return monthEn;
+  }
+}
+
 function countYears() {
   history.forEach((trans) => {
     const temp = (new Date(trans.date)).getFullYear();
@@ -65,19 +75,20 @@ function countYears() {
 }
 
 function createYearsBtns() {
-  const yearsBtnsContainer = document.querySelector('.bar-years');
-  console.log(yearsList);
+  const yearsBtnsContainer = document.querySelector('.btns-year-container');
+
   yearsList.sort((a, b) => b - a)
     .forEach((year, i) => {
       const checkedParam = i === 0 ? 'checked' : '';
-      const activeParam = i === 0 ? 'active' : '';
       yearsBtnsContainer.insertAdjacentHTML(
         'beforeend',
         `
-    <label class="btn btn-secondary ${activeParam}">
-    <input type="radio" name="year" id="${year}" autocomplete="off" ${checkedParam}> ${year}
-  </label>
-  `,
+        <ul>
+        <li>
+          <input type="radio" id="${year}" name="bar-year" ${checkedParam}>
+          <label for="${year}">${year}</label>
+          <div class="check"></div>
+        </li>`,
       );
     });
 }
@@ -125,25 +136,39 @@ function filterTransaction() {
   summaryObj);
 }
 
-function buttonsListeners() {
-  document.querySelectorAll('[name="year"]').forEach((btn) => {
+function buttonsTypeListeners() {
+  const typeToggleDiv = document.querySelector('.toggle.bar-type');
+  const typeToggle = document.getElementById('bar-type');
+  const width = 24;
+
+  const isChecked = typeTransaction === 'income';
+  typeToggle.checked = isChecked;
+
+  typeToggle.addEventListener('change', () => {
+    const transition = () => {
+      document.documentElement.classList.add('transition');
+      window.setTimeout(() => {
+        document.documentElement.classList.remove('transition');
+      }, 1000);
+    };
+
+    moveToggle(typeToggleDiv, width, typeToggle.checked);
+    typeTransaction = typeToggle.checked ? 'income' : 'expenses';
+    barChart.destroy();
+    filterTransaction();
+    setBarColor();
+    generateBar();
+    transition();
+  });
+}
+
+function buttonsYearsListeners() {
+  document.querySelectorAll('[name="bar-year"]').forEach((btn) => {
     btn.addEventListener('click', () => {
       if (btn.checked === true) {
         choosenYear = btn.id;
         barChart.destroy();
         filterTransaction();
-        generateBar();
-      }
-    });
-  });
-
-  document.querySelectorAll('[name="type-tr"]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      if (btn.checked === true) {
-        typeTransaction = btn.id;
-        barChart.destroy();
-        filterTransaction();
-        setBarColor();
         generateBar();
       }
     });
@@ -155,7 +180,7 @@ function generateBar() {
   barChart = new Chart(barContainer, {
     type: 'bar',
     data: {
-      labels: monthRU,
+      labels: setMonthLang(),
 
       datasets: [{
         label: `${typeTransaction}`,
@@ -186,9 +211,11 @@ function createBarContent() {
   countYears();
   renderBarHTML();
   createYearsBtns();
-  buttonsListeners();
+  buttonsTypeListeners();
+  buttonsYearsListeners();
   filterTransaction();
   generateBar();
+  translatePage();
 }
 
 export default function renderBarChart() {
