@@ -87,7 +87,7 @@ class ApiClient {
         console.log('message from content', content);
         // window.history.pushState(null, null, '/login');
         // renderAuthorizationPage();
-        //document.getElementById('forcostil').click();
+        // document.getElementById('forcostil').click();
         pubsub.publish('navigateTo', '/login');
         return undefined;
         // throw new Error('sahbnsaf,fffas');
