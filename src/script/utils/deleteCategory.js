@@ -3,12 +3,16 @@ import { getSound } from './localStorage';
 import modal from '../components/modals/modal';
 import confirmModal from '../components/modals/confirmModal';
 
+export const deletionState = { isModalOpened: false };
+
 function deleteCategory(e) {
   e.stopPropagation();
-  console.log(e);
 
-  const { category } = e.target.dataset;
-  const { group } = e.target.dataset;
+  deletionState.isModalOpened = true;
+  const elem = e.target.closest('.flex-list__item');
+
+  const { category } = elem.dataset;
+  const { group } = elem.dataset;
 
   if (getSound() === 'on') {
     const audioCategory = new Audio();
@@ -21,26 +25,25 @@ function deleteCategory(e) {
 }
 
 export function stopDeletion(container) {
+  deletionState.isModalOpened = false;
+
   container.querySelectorAll('[draggable]').forEach((el) => {
     el.classList.remove('deleting');
     el.style.animation = '';
     el.removeEventListener('click', deleteCategory);
   });
 
-  container.querySelector('.selected').classList.remove('selected');
+  if (container.querySelector('.selected')) container.querySelector('.selected').classList.remove('selected');
 }
 
 export function startDeletion(container) {
   container.querySelectorAll('[draggable]').forEach((el) => {
     el.classList.add('deleting');
     el.style.animation = `beforeDeletion 1.5s cubic-bezier(0.3, 0.06, 0.2, 0.9) ${getRandom(0, 0.5)}s infinite`;
-    el.addEventListener('click', (e) => {
-      deleteCategory(e);
-      setTimeout(() => stopDeletion(container), 500);
-    });
+    el.addEventListener('click', deleteCategory);
   });
 
-  setTimeout(() => {
-    if (container.querySelector('.selected')) stopDeletion(container);
-  }, 15000);
+  // setTimeout(() => {
+  //   if (container.querySelector('.selected')) stopDeletion(container);
+  // }, 15000);
 }

@@ -4,7 +4,7 @@ import transactionModal from '../modals/transactionModal';
 import accountModal from '../modals/accountModal';
 import newCategoryModal from '../modals/newCategoryModal';
 import app from '../../app';
-import { startDeletion, stopDeletion } from '../../utils/deleteCategory';
+import { startDeletion, stopDeletion, deletionState } from '../../utils/deleteCategory';
 
 export default function createCategoryList(group, container) {
   const txsSummary = app.transactionsSummary;
@@ -77,7 +77,7 @@ export default function createCategoryList(group, container) {
       modal.setContent(newCategoryModal(type));
       modal.show();
     } else if (categoryItem.classList.contains('delete-category')) {
-      if (container.querySelector('.deleting')) {
+      if (container.querySelector('.deleting') || deletionState.isModalOpened) {
         stopDeletion(container);
       } else {
         e.target.classList.add('selected');
