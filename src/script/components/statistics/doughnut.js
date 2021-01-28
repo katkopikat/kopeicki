@@ -5,6 +5,8 @@ import moment from 'moment';
 import createElement from '../../utils/create';
 import app from '../../app';
 import { getTheme } from '../../utils/localStorage';
+import { moveToggle } from '../../utils/DOM';
+import translatePage from '../settings/language';
 
 const today = new Date();
 let typeTransaction = 'expenses';
@@ -28,39 +30,32 @@ function renderDoughnutHTML() {
 
   const doughnutTypeBtnsWrapper = createElement(
     'div',
-    'btn-group btn-group-toggle',
-    null,
-    ['toggle', 'buttons'],
+    'toggle doughnut-type',
   );
 
   const doughnutPeriodBtnsWrapper = createElement(
     'div',
-    'btn-group btn-group-toggle doughnut-years',
-    null,
-    ['toggle', 'buttons'],
+    'toggle doughnut-period',
   );
 
   const doughnutPeriodBtns = `
-  <label class="btn btn-secondary active">
-  <input type="radio" name="period" id="month" autocomplete="off" checked> Month
-</label>
-<label class="btn btn-secondary">
-  <input type="radio" name="period" id="year" autocomplete="off"> Year
-  </label>`;
+  <input type="checkbox" class="checkbox" id="doughnut-period" />
+  <span data-i18n="Month">Month</span>
+  <label for="doughnut-period" class="label">
+    <div class="ball"></div>
+  </label>
+  <span data-i18n="Year">Year</span>`;
 
   const doughnutTypeBtns = `
-<label class="btn btn-secondary active">
-<input type="radio" name="type" id="expenses" autocomplete="off" checked> Expense
-</label>
-<label class="btn btn-secondary">
-<input type="radio" name="type" id="income" autocomplete="off"> Income
-  </label>`;
+  <input type="checkbox" class="checkbox" id="doughnut-type" />
+  <span data-i18n="Expenses">Expenses</span>
+  <label for="doughnut-type" class="label">
+    <div class="ball"></div>
+  </label>
+  <span data-i18n="Income">Income</span>`;
 
   document.querySelector('.charts-wrapper').append(doughnutWrapperDiv);
-  doughnutWrapperDiv.append(doughnutCanvas);
-
-  doughnutWrapperDiv.append(doughnutTypeBtnsWrapper);
-  doughnutWrapperDiv.append(doughnutPeriodBtnsWrapper);
+  doughnutWrapperDiv.append(doughnutCanvas, doughnutPeriodBtnsWrapper, doughnutTypeBtnsWrapper);
 
   doughnutPeriodBtnsWrapper.insertAdjacentHTML(
     'beforeend',
@@ -94,12 +89,12 @@ function filterTransactions() {
   {});
 }
 
-// function calculateTotalSum() {
-//   return Object.values(summaryObj).length !== 0
-//     ? parseInt(Object.values(summaryObj).reduce((sum, it) => sum + it), 10) : 0;
-// }
+function calculateTotalSum() {
+  return Object.values(summaryObj).length !== 0
+    ? parseInt(Object.values(summaryObj).reduce((sum, it) => sum + it), 10) : 0;
+}
 
-function generateChart(/* type, time */) {
+function generateChart() {
   const canvas = document.querySelector('.doughnut-container');
   doughnut = new Chart(canvas, {
     type: 'doughnut',
@@ -135,7 +130,13 @@ function generateChart(/* type, time */) {
     },
     options: {
       responsive: true,
-      cutoutPercentage: 60,
+      cutoutPercentage: 50,
+      title: {
+        display: true,
+        position: 'top',
+        fontSize: 15,
+        text: `Total ${typeTransaction} for the ${period} ${calculateTotalSum()} rub.`,
+      },
       legend: {
         position: 'right',
       },
@@ -144,35 +145,65 @@ function generateChart(/* type, time */) {
   });
 }
 
-function buttonsListeners() {
-  document.querySelectorAll('[name="period"]').forEach((btnPer) => {
-    btnPer.addEventListener('click', () => {
-      if (btnPer.checked === true) {
-        period = btnPer.id;
-        doughnut.destroy();
-        filterTransactions();
-        generateChart(typeTransaction, period);
-      }
-    });
-  });
+function buttonsTypeListeners() {
+  const typeToggleDiv = document.querySelector('.toggle.doughnut-type');
+  const typeToggle = document.getElementById('doughnut-type');
+  const width = 24;
 
-  document.querySelectorAll('[name="type"]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      if (btn.checked === true) {
-        typeTransaction = btn.id;
-        doughnut.destroy();
-        filterTransactions();
-        generateChart(typeTransaction, period);
-      }
-    });
+  const isChecked = typeTransaction === 'income';
+  typeToggle.checked = isChecked;
+
+  typeToggle.addEventListener('change', () => {
+    const transition = () => {
+      document.documentElement.classList.add('transition');
+      window.setTimeout(() => {
+        document.documentElement.classList.remove('transition');
+      }, 1000);
+    };
+
+    moveToggle(typeToggleDiv, width, typeToggle.checked);
+    typeTransaction = typeToggle.checked ? 'income' : 'expenses';
+    doughnut.destroy();
+    filterTransactions();
+    console.log(typeTransaction);
+    generateChart(typeTransaction, period);
+    transition();
+  });
+}
+
+function buttonsPeriodListeners() {
+  const periodToggleDiv = document.querySelector('.toggle.doughnut-period');
+  const periodToggle = document.getElementById('doughnut-period');
+  const width = 24;
+
+  const isChecked = typeTransaction === 'year';
+  periodToggle.checked = isChecked;
+
+  periodToggle.addEventListener('change', () => {
+    const transition = () => {
+      document.documentElement.classList.add('transition');
+      window.setTimeout(() => {
+        document.documentElement.classList.remove('transition');
+      }, 1000);
+    };
+
+    moveToggle(periodToggleDiv, width, periodToggle.checked);
+    period = periodToggle.checked ? 'year' : 'month';
+    doughnut.destroy();
+    filterTransactions();
+    console.log(period);
+    generateChart(typeTransaction, period);
+    transition();
   });
 }
 
 function createDoughnutContent() {
   filterTransactions();
   renderDoughnutHTML();
-  buttonsListeners();
+  buttonsTypeListeners();
+  buttonsPeriodListeners();
   generateChart(typeTransaction, period);
+  translatePage();
 }
 
 export default function renderDoughnutChart() {

@@ -1,4 +1,4 @@
-import renderStatisticsHtml from './statisticsHtml';
+import renderStatisticsHtml from './statisticsInfo';
 import renderBarChart from './bar';
 import renderDoughnutChart from './doughnut';
 

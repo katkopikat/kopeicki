@@ -6,7 +6,7 @@ import router from './script/router';
 import toggleSettings from './script/components/settings/settings';
 // import renderHistoryPage from './script/components/history/history';
 // import renderStatisticsPage from './script/components/statistics/statistics';
-import renderTransactionsPage from './script/components/transactions/transactions';
+// import renderTransactionsPage from './script/components/transactions/transactions';
 import navSlideIn from './script/components/navbar';
 import app from './script/app';
 import pubsub from './script/pubsub';

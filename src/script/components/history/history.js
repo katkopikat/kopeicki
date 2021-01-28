@@ -1,6 +1,7 @@
 import createElement from '../../utils/create';
 import app from '../../app';
 import api from '../../api';
+import translatePage from '../settings/language';
 
 function historyHtml() {
   const main = document.querySelector('main');
@@ -68,23 +69,26 @@ function tableCreate() {
     const cell5 = row.insertCell();
     const cell6 = row.insertCell();
 
+    const { type, date, category, amount, account, description, id } = transaction;
+
     cell1.className = 'cell__date';
-    cell2.className = transaction.type === 'expenses' ? 'cell__category-expense' : 'cell__category-income';
+    cell2.className = type === 'expenses' ? 'cell__category-expense' : 'cell__category-income';
     cell3.className = 'cell__amount';
     cell4.className = 'cell__account';
     cell5.className = 'cell__description';
     cell6.className = 'cell__delete';
 
-    cell1.innerHTML = formatDate(new Date(transaction.date));
-    cell2.innerHTML = transaction.category;
-    cell3.innerHTML = transaction.amount;
-    cell4.innerHTML = transaction.account;
-    cell5.innerHTML = transaction.description;
+    cell1.innerHTML = formatDate(new Date(date));
+    cell2.innerHTML = category;
+    cell3.innerHTML = amount;
+    cell4.innerHTML = account;
+    cell5.innerHTML = description;
     cell6.innerHTML = 'delete';
 
-    // const { _id } = transaction;
-    // eslint-disable-next-line no-underscore-dangle
-    cell6.dataset.id = transaction._id;
+    cell2.dataset.i18n = category;
+    cell4.dataset.i18n = account;
+    cell6.dataset.i18n = 'Delete';
+    cell6.dataset.id = id;
   });
 
   document.querySelector('.table-wrapper').append(table);
@@ -154,6 +158,7 @@ function createTableContent() {
   renderTableBtns();
   buttonsListeners();
   deleteTransaction();
+  translatePage();
 }
 
 export default function renderHistoryPage() {
