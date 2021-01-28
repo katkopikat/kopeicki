@@ -91,6 +91,36 @@
   background: var(--income);
 }
 
+.modal-content.warning {
+  background: var(--accounts);
+
+  .modal-body__title {
+    margin-bottom: 1.7rem;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .btns-container {
+    display: flex;
+    justify-content: center;
+    column-gap: 2.5rem;
+
+    .btn {
+      padding: 0.2rem 1.5rem;
+      font-size: 1.2rem;
+      color: var(--light);
+      background: var(--dark);
+      transition: all 0.3s;
+
+      &:hover {
+        color: var(--dark);
+        background: var(--light);
+        cursor: pointer;
+      }
+    }
+  }
+}
+
 .modal-header {
   color: var(--dark);
   padding: 1rem 1rem 0 0;

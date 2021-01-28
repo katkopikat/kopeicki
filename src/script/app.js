@@ -127,17 +127,17 @@ class App {
   }
 
   async removeUserAccount(account) {
-    this.user.accounts = this.user.accounts.filter((item) => item.name !== account.name);
+    this.user.accounts = this.user.accounts.filter((item) => item.name !== account);
     this.user = await this.api.updateUser(this.user);
   }
 
   async removeUserExpense(expense) {
-    this.user.expenses = this.user.expenses.filter((item) => item.name !== expense.name);
+    this.user.expenses = this.user.expenses.filter((item) => item.name !== expense);
     this.user = await this.api.updateUser(this.user);
   }
 
   async removeUserIncome(income) {
-    this.user.income = this.user.income.filter((item) => item.name !== income.name);
+    this.user.income = this.user.income.filter((item) => item.name !== income);
     this.user = await this.api.updateUser(this.user);
   }
 }

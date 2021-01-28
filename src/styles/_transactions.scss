@@ -36,16 +36,16 @@
         row-gap: 0.8rem;
 
         &__item {
+          position: relative;
           width: 6rem;
           @include flex-col;
           align-items: center;
           row-gap: 0.2em;
 
-          .category-ammount {
+          .category-amount {
             color: var(--category-sum);
             font-size: 0.7rem;
             margin-top: -0.4rem;
-            //opacity: 0.5;
           }
 
           .category-icon {
@@ -76,21 +76,56 @@
           &:hover .icon-svg {
             filter: invert(1);
           }
-          // &:hover .icon-svg {
-          //   transition: all 0.15s;
-          //   transform: scale(1.1);
-          // }
         }
+      }
+    }
+
+    .edit {
+      padding: 0.5em;
+      line-height: 42px;
+      border-radius: 50%;
+      transition: all 0.25s;
+
+      &:before {
+        content: '\002B';
+        padding: 0 14px;
+        font-size: 2rem;
+      }
+
+      &:hover {
+        border-radius: 0%;
+      }
+    }
+
+    .delete-category {
+      color: var(--gray);
+
+      span {
+        color: var(--gray);
+      }
+
+      .delete {
+        border: 2px solid var(--gray);
+
+        &:before {
+          content: '\2212';
+        }
+
+        &:hover,
+        &.selected {
+          border: 2px solid var(--light);
+          border-radius: 0%;
+          color: var(--light);
+        }
+      }
+
+      .delete:hover ~ span,
+      .selected ~ span {
+        color: var(--light);
       }
     }
   }
 }
-//div[data-group="accounts"]
-// input[type='date']
-//  .flex-list__item[data-group='accounts']:hover .icon-svg{
-//   transition: all linear 0.15s;
-//   background-position-y: -40px !important;
-// }
 
 .accounts {
   h4 {
@@ -108,7 +143,9 @@
   .flex-list__item * {
     pointer-events: none;
   }
-  .flex-list__item .add {
+
+  .flex-list__item .add,
+  .flex-list__item .delete {
     pointer-events: all;
   }
 }
@@ -143,27 +180,45 @@
   }
 }
 
-.add {
-  padding: 0.5em;
-  line-height: 42px;
-  border-radius: 50%;
-  transition: all 0.25s;
+.deleting {
+  &:before {
+    content: '\2212';
+    position: absolute;
+    left: 9px;
+    top: -9px;
+    z-index: 10;
+    display: block;
+    padding: 1px 8px;
+    font-size: 1rem;
+    border-radius: 50%;
+    color: var(--gray);
+    background: var(--light);
+  }
+
+  .category-amount {
+    opacity: 0;
+  }
 }
 
-.add:before {
-  content: ' \002B';
-  padding: 0 14px;
-  font-size: 2rem;
-}
+@keyframes beforeDeletion {
+  10%,
+  90% {
+    transform: translate3d(-1px, -1px, 0) rotate(5deg);
+  }
 
-.add:hover {
-  border-radius: 0%;
-  transition: all 0.25s;
-  // transform: rotate(90deg);
-}
+  20%,
+  80% {
+    transform: translate3d(2px, -4px, 0) rotate(-2deg);
+  }
 
-// .add:hover::before {
-//   transition: all 0.4s;
-//   transform: rotate(90deg);
-//   color: red;
-// }
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, -1px, 0) rotate(3deg);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 2px, 0) rotate(-4deg);
+  }
+}
