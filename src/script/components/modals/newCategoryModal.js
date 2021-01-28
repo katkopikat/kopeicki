@@ -4,6 +4,7 @@ import app from '../../app';
 import { getLanguage, getSound } from '../../utils/localStorage';
 import showPopover from '../popover';
 import translations from '../../data/translations';
+import pubsub from '../../pubsub';
 
 const isNewNameValid = (newName, type, btnElem, inputElem) => {
   const lang = getLanguage();
@@ -141,13 +142,13 @@ export default function newCategoryModal(type) {
 
         console.log(newCategoryItem);
         await app.addUserAccount(newCategoryItem);
-        app.renderTransactionsPage();
+        pubsub.publish('navigateTo', '/');
       } else if (type === 'expenses') {
         await app.addUserExpense(newCategoryItem);
-        app.renderTransactionsPage();
+        pubsub.publish('navigateTo', '/');
       } else {
         await app.addUserIncome(newCategoryItem);
-        app.renderTransactionsPage();
+        pubsub.publish('navigateTo', '/');
       }
 
       if (getSound() === 'on') {
