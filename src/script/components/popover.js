@@ -21,7 +21,7 @@ export default function showPopover(elem, errorMessage, placement) {
 
   if (getSound() === 'on') {
     const soundError = new Audio();
-    soundError.src = '/src/assets/sounds/error.mp3';
+    soundError.src = 'sounds/error.mp3';
     soundError.play();
   }
 

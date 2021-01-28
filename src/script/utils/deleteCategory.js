@@ -16,7 +16,7 @@ function deleteCategory(e) {
 
   if (getSound() === 'on') {
     const audioCategory = new Audio();
-    audioCategory.src = '/src/assets/sounds/warn.mp3';
+    audioCategory.src = 'sounds/warn.mp3';
     audioCategory.play();
   }
 
