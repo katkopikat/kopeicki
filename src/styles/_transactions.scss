@@ -111,13 +111,16 @@
           content: '\2212';
         }
 
-        &:hover {
+        &:hover,
+        &.selected {
           border: 2px solid var(--light);
+          border-radius: 0%;
           color: var(--light);
         }
       }
 
-      .delete:hover ~ span {
+      .delete:hover ~ span,
+      .selected ~ span {
         color: var(--light);
       }
     }

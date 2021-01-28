@@ -4,32 +4,7 @@ import transactionModal from '../modals/transactionModal';
 import accountModal from '../modals/accountModal';
 import newCategoryModal from '../modals/newCategoryModal';
 import app from '../../app';
-import { getRandom } from '../../utils/helpers';
-
-async function deleteCategory(e) {
-  e.stopPropagation();
-
-  const { category } = this.dataset;
-  const { group } = this.dataset;
-
-  console.log(category);
-
-  // eslint-disable-next-line default-case
-  switch (group) {
-    case 'accounts':
-      console.log('удаляю кошелек');
-      app.removeUserAccount(category);
-      break;
-    case 'expenses':
-      console.log('удаляю затраты');
-      app.removeUserExpense(category);
-      break;
-    case 'income':
-      console.log('удаляю доход');
-      app.removeUserIncome(category);
-      break;
-  }
-}
+import { startDeletion, stopDeletion } from '../../utils/deleteCategory';
 
 export default function createCategoryList(group, container) {
   const txsSummary = app.transactionsSummary;
@@ -102,11 +77,12 @@ export default function createCategoryList(group, container) {
       modal.setContent(newCategoryModal(type));
       modal.show();
     } else if (categoryItem.classList.contains('delete-category')) {
-      container.querySelectorAll('[draggable]').forEach((el) => {
-        el.classList.add('deleting');
-        el.style.animation = `beforeDeletion 1.5s cubic-bezier(0.3, 0.06, 0.2, 0.9) ${getRandom(0, 0.5)}s infinite`;
-        el.addEventListener('click', deleteCategory);
-      });
+      if (container.querySelector('.deleting')) {
+        stopDeletion(container);
+      } else {
+        e.target.classList.add('selected');
+        startDeletion(container);
+      }
     } else {
       const { category } = categoryItem.dataset;
 
