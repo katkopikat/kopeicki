@@ -118,24 +118,18 @@ class App {
   }
 
   async removeUserAccount(account) {
-    console.log('пошел удалять, хозяйка');
-    this.user.accounts = this.user.accounts.filter((item) => item.name !== account.name);
+    this.user.accounts = this.user.accounts.filter((item) => item.name !== account);
     this.user = await this.api.updateUser(this.user);
-    console.log('удаліл');
   }
 
   async removeUserExpense(expense) {
-    console.log('пошел удалять, хозяйка');
-    this.user.expenses = this.user.expenses.filter((item) => item.name !== expense.name);
+    this.user.expenses = this.user.expenses.filter((item) => item.name !== expense);
     this.user = await this.api.updateUser(this.user);
-    console.log('удаліл');
   }
 
   async removeUserIncome(income) {
-    console.log('пошел удалять, хозяйка');
-    this.user.income = this.user.income.filter((item) => item.name !== income.name);
+    this.user.income = this.user.income.filter((item) => item.name !== income);
     this.user = await this.api.updateUser(this.user);
-    console.log('удаліл');
   }
 }
 
