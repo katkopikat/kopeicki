@@ -1,5 +1,6 @@
-import renderAuthorizationPage from './components/authorization/authorization';
+// import renderAuthorizationPage from './components/authorization/authorization';
 import getCurrencylist from './components/settings/currencyList';
+import pubsub from './pubsub';
 
 class ApiClient {
   constructor(apiUrl) {
@@ -84,9 +85,12 @@ class ApiClient {
       if (!result.ok) {
         const content = await result.json();
         console.log('message from content', content);
-        window.history.pushState(null, null, '/login');
-        renderAuthorizationPage();
+        // window.history.pushState(null, null, '/login');
+        // renderAuthorizationPage();
+        //document.getElementById('forcostil').click();
+        pubsub.publish('navigateTo', '/login');
         return undefined;
+        // throw new Error('sahbnsaf,fffas');
       }
       console.log(result);
       const content = await result.json();

@@ -90,7 +90,8 @@ function filterTransactions() {
 }
 
 function calculateTotalSum() {
-  return Object.values(summaryObj).reduce((sum, it) => sum + it);
+  return Object.values(summaryObj).length !== 0
+    ? parseInt(Object.values(summaryObj).reduce((sum, it) => sum + it), 10) : 0;
 }
 
 function generateChart() {

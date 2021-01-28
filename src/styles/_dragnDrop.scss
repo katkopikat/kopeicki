@@ -45,18 +45,21 @@
   display: none;
 }
 
-.dragging span {
-  opacity: 0;
+.dragging {
+  transform: translate(0, 0);
+
+  span {
+    opacity: 0;
+  }
 }
 
 .hovered {
-
-  .category-icon{
+  .category-icon {
     animation: shake 0.5s;
     animation-iteration-count: infinite;
   }
 
-  .icon-svg{
+  .icon-svg {
     transition: all ease-in 0.15s;
     background-position-y: 50px !important;
   }

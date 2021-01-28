@@ -4,9 +4,19 @@ import { getSound } from '../utils/localStorage';
 export default function showPopover(elem, errorMessage, placement) {
   const popover = new Popover(elem, {
     content: errorMessage,
-    placement,
+    placement: 'auto',
     container: 'body',
     trigger: 'manual',
+    popperConfig: {
+      modifiers: [
+        {
+          name: 'flip',
+          options: {
+            allowedAutoPlacements: [placement],
+          },
+        },
+      ],
+    },
   });
 
   if (getSound() === 'on') {
@@ -18,6 +28,6 @@ export default function showPopover(elem, errorMessage, placement) {
   popover.show();
 
   setTimeout(() => {
-    if (popover) popover.dispose();
-  }, 5000);
+    popover.hide();
+  }, 3000);
 }

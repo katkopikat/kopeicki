@@ -97,6 +97,7 @@ function tableCreate() {
 async function deleteTransactionCallback(el) {
   if ((el).classList.contains('cell__delete')) {
     const idDelete = el.getAttribute('data-id');
+    // eslint-disable-next-line no-use-before-define
     api.deleteTransaction(idDelete).then(() => rerenderTable());
   }
 }
