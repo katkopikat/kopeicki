@@ -188,7 +188,7 @@ export default function transactionModal(options) {
 
       if (getSound() === 'on') {
         const sound = new Audio();
-        sound.src = `/src/assets/sounds/${options.type}.mp3`;
+        sound.src = `sounds/${options.type}.mp3`;
         sound.play();
       }
     }
