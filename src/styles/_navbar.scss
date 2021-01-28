@@ -1,7 +1,7 @@
 $navWidth: 15rem;
 
 .nav {
-  position: absolute;
+  position: fixed;
   left: $navWidth * -1;
   width: $navWidth;
   height: calc(100vh - 5.5rem);
