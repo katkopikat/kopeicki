@@ -2,6 +2,7 @@ import createElement from '../../utils/create';
 import modal from './modal';
 import app from '../../app';
 import { getLanguage } from '../../utils/localStorage';
+import pubsub from '../../pubsub';
 
 export default function confirmModal(group, category) {
   const lang = getLanguage();
@@ -61,8 +62,12 @@ export default function confirmModal(group, category) {
             break;
           // no default
         }
+
+        modal.hide();
+        pubsub.publish('navigateTo', '/');
+      } else {
+        modal.hide();
       }
-      modal.hide();
     }
   });
 
