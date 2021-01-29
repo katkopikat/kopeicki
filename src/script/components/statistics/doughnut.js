@@ -31,8 +31,45 @@ function setBGColor() {
   return getTheme() === 'light' ? 'rgba(234, 240, 247, 1)' : 'rgba(29, 32, 43, 1)';
 }
 
+function setLegendDisplay() {
+  if (window.innerWidth <= 450) {
+    return {
+      display: false,
+    };
+  }
+  if (window.innerWidth <= 500) {
+    return {
+      display: true,
+      position: 'bottom',
+      labels: {
+        fontSize: 8,
+        boxWidth: 10,
+      },
+    };
+  } if (window.innerWidth <= 700) {
+    return {
+      display: true,
+      position: 'bottom',
+      labels: {
+        fontSize: 10,
+        boxWidth: 10,
+      },
+    };
+  }
+  return {
+    display: true,
+    position: 'bottom',
+    labels: {
+      fontSize: 11,
+      boxWidth: 20,
+      padding: 20,
+    },
+  };
+}
+
 function renderDoughnutHTML() {
   const doughnutWrapperDiv = createElement('div', 'wrapper-doughnut');
+  const doughnutHeading = createElement('h3', 'heading heading-doughnut');
   const doughnutCanvas = createElement('canvas', 'doughnut-container');
 
   const doughnutTypeBtnsWrapper = createElement(
@@ -62,7 +99,8 @@ function renderDoughnutHTML() {
   <span data-i18n="Income">Income</span>`;
 
   document.querySelector('.charts-wrapper').append(doughnutWrapperDiv);
-  doughnutWrapperDiv.append(doughnutCanvas, doughnutPeriodBtnsWrapper, doughnutTypeBtnsWrapper);
+  doughnutWrapperDiv.append(doughnutHeading, doughnutCanvas,
+    doughnutPeriodBtnsWrapper, doughnutTypeBtnsWrapper);
 
   doughnutPeriodBtnsWrapper.insertAdjacentHTML(
     'beforeend',
@@ -72,6 +110,11 @@ function renderDoughnutHTML() {
     'beforeend',
     `${doughnutTypeBtns}`,
   );
+}
+
+function renderHeading() {
+  const doughnutHeading = document.querySelector('.heading-doughnut');
+  doughnutHeading.innerText = `Total ${typeTransaction} for the ${period} ${calculateTotalSum()} rub.`;
 }
 
 function filterTransactions() {
@@ -143,17 +186,23 @@ function generateChart() {
       }],
     },
     options: {
+      layout: {
+        padding: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+        },
+      },
       responsive: true,
       cutoutPercentage: 50,
       title: {
-        display: true,
+        // display: true,
         position: 'top',
-        fontSize: 15,
+        fontSize: 12,
         text: `Total ${typeTransaction} for the ${period} ${calculateTotalSum()} rub.`,
       },
-      legend: {
-        position: 'right',
-      },
+      legend: setLegendDisplay(),
     },
 
   });
@@ -177,10 +226,7 @@ function buttonsTypeListeners() {
 
     moveToggle(typeToggleDiv, width, typeToggle.checked);
     typeTransaction = typeToggle.checked ? 'income' : 'expenses';
-    doughnut.destroy();
-    filterTransactions();
-    console.log(typeTransaction);
-    generateChart(typeTransaction, period);
+    rerenderDoughnut();
     transition();
   });
 }
@@ -203,12 +249,16 @@ function buttonsPeriodListeners() {
 
     moveToggle(periodToggleDiv, width, periodToggle.checked);
     period = periodToggle.checked ? 'year' : 'month';
-    doughnut.destroy();
-    filterTransactions();
-    console.log(period);
-    generateChart(typeTransaction, period);
+    rerenderDoughnut();
     transition();
   });
+}
+
+function rerenderDoughnut() {
+  doughnut.destroy();
+  filterTransactions();
+  generateChart(typeTransaction, period);
+  renderHeading();
 }
 
 function createDoughnutContent() {
@@ -217,15 +267,39 @@ function createDoughnutContent() {
   buttonsTypeListeners();
   buttonsPeriodListeners();
   generateChart(typeTransaction, period);
+  renderHeading();
   translatePage();
   preloader();
 }
 
 export default function renderDoughnutChart() {
-  getHistory().then(() => createDoughnutContent());
+  getHistory().then(() => {
+    createDoughnutContent();
+    mediaQuerySizes();
+  });
 }
 
 document.getElementById('theme').addEventListener('click', () => {
   doughnut.destroy();
   setTimeout(generateChart, 0);
 });
+
+function trackWindowSize(e) {
+  if (e.matches) {
+    doughnut.destroy();
+    generateChart(typeTransaction, period);
+    console.log('Перерисовка доната');
+  }
+}
+
+function mediaQuerySizes() {
+  const mediaQuery700 = window.matchMedia('(max-width: 700px)');
+  const mediaQuery500 = window.matchMedia('(max-width: 500px)');
+  const mediaQuery450 = window.matchMedia('(max-width: 450px)');
+  mediaQuery700.addListener(trackWindowSize);
+  mediaQuery500.addListener(trackWindowSize);
+  mediaQuery450.addListener(trackWindowSize);
+  trackWindowSize(mediaQuery700);
+  trackWindowSize(mediaQuery500);
+  trackWindowSize(mediaQuery450);
+}

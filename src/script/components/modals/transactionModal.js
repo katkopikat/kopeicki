@@ -120,7 +120,7 @@ export default function transactionModal(options) {
   createSelect(wrap.querySelector('.modal-body__title'), {
     class: 'currency-list',
     placeholder: app.user.currency.toUpperCase(),
-    list: api.currencyList,
+    list: [...['USD', 'EUR', 'RUB', 'BYN', 'UAH', 'KZT'], ...api.currencyList],
     isTranslatable: false,
   });
 
