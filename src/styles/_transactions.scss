@@ -99,12 +99,14 @@
 
     .delete-category {
       color: var(--gray);
+    
 
       span {
         color: var(--gray);
       }
 
       .delete {
+        opacity: 0.3;
         border: 2px solid var(--gray);
 
         &:before {
@@ -208,17 +210,17 @@
 
   20%,
   80% {
-    transform: translate3d(2px, -4px, 0) rotate(-2deg);
+    transform: translate3d(2px, -3px, 0) rotate(-2deg);
   }
 
   30%,
   50%,
   70% {
-    transform: translate3d(-4px, -1px, 0) rotate(3deg);
+    transform: translate3d(-3px, -1px, 0) rotate(3deg);
   }
 
   40%,
   60% {
-    transform: translate3d(4px, 2px, 0) rotate(-4deg);
+    transform: translate3d(3px, 2px, 0) rotate(-4deg);
   }
 }

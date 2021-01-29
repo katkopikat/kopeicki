@@ -10,6 +10,7 @@ import toggleSettings from './script/components/settings/settings';
 import navSlideIn from './script/components/navbar';
 import app from './script/app';
 import pubsub from './script/pubsub';
+import './assets/images/favicon.png';
 
 const navigateTo = (url) => {
   // if (app.user) {

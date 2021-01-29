@@ -15,6 +15,10 @@ import pubsub from '../../pubsub';
  *    to: 'Eating out',
  *  };
  */
+function preloader() {
+  const preloaderEl = document.getElementById('preloader');
+  preloaderEl.classList.toggle('visible');
+}
 
 function preCreateSelect(options) {
   const isFromSelect = options.class.includes('from');
@@ -116,7 +120,7 @@ export default function transactionModal(options) {
   createSelect(wrap.querySelector('.modal-body__title'), {
     class: 'currency-list',
     placeholder: app.user.currency.toUpperCase(),
-    list: api.currencyList,
+    list: [...['USD', 'EUR', 'RUB', 'BYN', 'UAH', 'KZT'], ...api.currencyList],
     isTranslatable: false,
   });
 
@@ -168,6 +172,7 @@ export default function transactionModal(options) {
     } else {
       getExchangeData(moneyAmountEl.value, currencyFrom)
         .then((exchange) => {
+          preloader();
           tx.amount = exchange;
 
           const toCurrency = app.user.currency.toUpperCase();
@@ -185,6 +190,7 @@ export default function transactionModal(options) {
         });
 
       modal.hide();
+      setTimeout(preloader, 1500);
 
       if (getSound() === 'on') {
         const sound = new Audio();

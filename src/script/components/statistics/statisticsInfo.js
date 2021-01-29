@@ -3,7 +3,7 @@ import app from '../../app';
 import { getLanguage } from '../../utils/localStorage';
 import translatePage from '../settings/language';
 
-export default function renderStatisticsHtml() {
+export default function renderTextStatistics() {
   const main = document.querySelector('main');
   const row = createElement('div', 'row');
   const mainContainer = createElement('div', 'container-xxl transactions-container', row);
@@ -164,8 +164,10 @@ export default function renderStatisticsHtml() {
 
   /* Text translation when the language changes.
      Whaiting rendering menu and change language on the localStorage. */
-  setTimeout(document.querySelector('.select__list').addEventListener('click', () => {
-    document.querySelectorAll('.statistic-text').forEach((el) => el.remove());
-    setTimeout(renderInfo, 0);
-  }), 0);
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.select__list').addEventListener('click', () => {
+      document.querySelectorAll('.statistic-text').forEach((el) => el.remove());
+      setTimeout(renderInfo, 0);
+    });
+  });
 }

@@ -1,5 +1,5 @@
 import renderAuthorizationPage from './components/authorization/authorization';
-import renderHistoryPage from './components/history/history';
+import renderHistoryPage from './components/history/tableHistory';
 import renderStatisticsPage from './components/statistics/statistics';
 import renderTransactionsPage from './components/transactions/transactions';
 
