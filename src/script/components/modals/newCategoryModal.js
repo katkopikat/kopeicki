@@ -152,7 +152,7 @@ export default function newCategoryModal(type) {
 
       if (getSound() === 'on') {
         const audioCategory = new Audio();
-        audioCategory.src = '/src/assets/sounds/category.mp3';
+        audioCategory.src = 'sounds/category.mp3';
         audioCategory.play();
       }
 

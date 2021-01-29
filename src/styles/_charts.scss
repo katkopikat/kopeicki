@@ -3,7 +3,7 @@
     width: 6px;
 }
 ::-webkit-scrollbar-thumb {
-    background-color: var(--catergory-bg);
+    background-color: var(--accounts);
     border-radius: 20px;
 }
 ::-webkit-scrollbar-corner {
@@ -30,9 +30,19 @@ thead, tbody, tfoot, tr, td, th {
 
     &-wrapper{
         max-height: 85vh;
-        overflow: auto;
+        padding: 1.3rem;
+        margin: 1rem;
+        border-radius: 8px;
+        background-color: var(--catergory-bg);
+        box-shadow: var(--shadow);
     }
 
+
+    &-mask{
+        max-height: 77vh;
+        overflow: auto;
+    }
+    
     & > :not(caption){
         border-bottom: 1px solid #383838;
     }
@@ -64,7 +74,7 @@ thead, tbody, tfoot, tr, td, th {
             opacity: 1;        
         }
         &__delete:hover:after{
-           content: ' transaction'      
+           content: '\00D7'      
         }
     }
 }
@@ -112,6 +122,7 @@ thead, tbody, tfoot, tr, td, th {
 }
 
 main {
+    transition: all 0.4s;
     .row {
         justify-content: center;
     }

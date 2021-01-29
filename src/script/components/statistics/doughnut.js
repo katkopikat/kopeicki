@@ -4,9 +4,10 @@ import { Chart } from 'chart.js';
 import moment from 'moment';
 import createElement from '../../utils/create';
 import app from '../../app';
-import { getTheme } from '../../utils/localStorage';
+import { getTheme, getLanguage } from '../../utils/localStorage';
 import { moveToggle } from '../../utils/DOM';
 import translatePage from '../settings/language';
+import translations from '../../data/translations';
 
 const today = new Date();
 let typeTransaction = 'expenses';
@@ -14,6 +15,12 @@ let period = 'mounth';
 let summaryObj = null;
 let doughnut = null;
 let history;
+
+function preloader() {
+  console.log('прелоадер');
+  const preloaderEl = document.getElementById('preloader');
+  preloaderEl.classList.toggle('visible');
+}
 
 async function getHistory() {
   const transactions = await app.api.getTransactions();
@@ -89,6 +96,13 @@ function filterTransactions() {
   {});
 }
 
+function translateCategoriesName() {
+  const lang = getLanguage();
+  const categoryName = Object.keys(summaryObj);
+  const dictionary = (Object.keys(translations[lang]));
+  return categoryName.map((it) => (dictionary.includes(it) ? translations[lang][it] : it));
+}
+
 function calculateTotalSum() {
   return Object.values(summaryObj).length !== 0
     ? parseInt(Object.values(summaryObj).reduce((sum, it) => sum + it), 10) : 0;
@@ -99,7 +113,7 @@ function generateChart() {
   doughnut = new Chart(canvas, {
     type: 'doughnut',
     data: {
-      labels: Object.keys(summaryObj).length !== 0 ? Object.keys(summaryObj) : ['You`re haven`t any transactions'],
+      labels: Object.keys(summaryObj).length !== 0 ? translateCategoriesName() : ['You`re haven`t any transactions'],
       datasets: [{
         data: Object.values(summaryObj).length !== 0 ? Object.values(summaryObj) : [1],
         backgroundColor: [
@@ -204,6 +218,7 @@ function createDoughnutContent() {
   buttonsPeriodListeners();
   generateChart(typeTransaction, period);
   translatePage();
+  preloader();
 }
 
 export default function renderDoughnutChart() {

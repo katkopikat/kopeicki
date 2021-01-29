@@ -12,11 +12,11 @@ export default function confirmModal(group, category) {
     be: 'Выдаліць катэгорыю?',
   };
 
-  const msgTransaction = {
-    en: 'Delete transaction?',
-    ru: 'Удалить операцию?',
-    be: 'Выдаліць аперацыю?',
-  };
+  // const msgTransaction = {
+  //   en: 'Delete transaction?',
+  //   ru: 'Удалить операцию?',
+  //   be: 'Выдаліць аперацыю?',
+  // };
 
   const msgYes = {
     en: 'Yes',

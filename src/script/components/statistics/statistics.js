@@ -1,9 +1,15 @@
-import renderStatisticsHtml from './statisticsInfo';
+import renderTextStatistics from './statisticsInfo';
 import renderBarChart from './bar';
 import renderDoughnutChart from './doughnut';
 
+function preloader() {
+  const preloaderEl = document.getElementById('preloader');
+  preloaderEl.classList.toggle('visible');
+}
+
 export default function renderStatisticsPage() {
-  renderStatisticsHtml();
+  preloader();
+  renderTextStatistics();
   renderDoughnutChart();
   renderBarChart();
 }

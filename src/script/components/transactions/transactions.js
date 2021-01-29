@@ -6,10 +6,17 @@ import translatePage from '../settings/language';
 import app from '../../app';
 import pubsub from '../../pubsub';
 
+function preloader() {
+  const preloaderEl = document.getElementById('preloader');
+  preloaderEl.classList.toggle('visible');
+}
+
 export default async function renderTransactionsPage() {
   document.querySelector('main').innerHTML = '';
 
   if (app.user) {
+    preloader();
+
     await app.getTransactions();
 
     const accountsDiv = createElement(
@@ -56,6 +63,7 @@ export default async function renderTransactionsPage() {
       account.addEventListener('drop', dragDrop);
     });
   }
+  preloader();
 }
 
 pubsub.subscribe('renderTransactionsPage', renderTransactionsPage);
