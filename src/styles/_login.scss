@@ -1,0 +1,189 @@
+.login__overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: var(--dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  .login__content {
+    display: flex;
+    background: var(--middle);
+
+    .side {
+      @include flex-col;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem 1rem 2rem;
+    }
+
+    .left {
+      width: 35%;
+      z-index: 10;
+      padding-top: 3rem;
+      background: var(--expenses);
+
+      &.yellow {
+        background: var(--accounts);
+      }
+
+      h2,
+      p {
+        text-align: center;
+        color: var(--light);
+      }
+
+      p {
+        margin-bottom: 1rem;
+        font-size: 14px;
+      }
+    }
+
+    .right {
+      width: 65%;
+      background: var(--middle);
+
+      .img-wrapper {
+        display: flex;
+        width: 7rem;
+
+        img {
+          width: 100%;
+        }
+      }
+
+      .form__header {
+        margin-bottom: 0;
+        text-align: center;
+        color: var(--light);
+      }
+
+      .form__subtitle {
+        margin-bottom: 2rem;
+        text-align: center;
+        color: var(--gray);
+      }
+
+      .form__body {
+        align-self: stretch;
+        @include flex-col;
+        align-items: center;
+        row-gap: 0.8rem;
+
+        .form-group {
+          position: relative;
+          width: 60%;
+
+          &.two-col {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+
+          svg {
+            position: absolute;
+            top: 50%;
+            left: 0.8rem;
+            color: var(--gray);
+            transform: translateY(-50%);
+            opacity: 0.6;
+            pointer-events: none;
+          }
+
+          input::placeholder {
+            padding-left: 1.3rem;
+            color: var(--gray);
+            opacity: 0.6;
+          }
+
+          input {
+            padding: 0.2rem 0.75rem;
+            border-radius: 0;
+          }
+
+          .form-file {
+            display: block;
+            padding: 0.2rem 0.75rem;
+            background: #fff;
+            cursor: pointer;
+
+            span {
+              color: var(--gray);
+              opacity: 0.6;
+            }
+          }
+
+          .file-input {
+            width: 0;
+            height: 0;
+            visibility: hidden;
+          }
+        }
+      }
+    }
+
+    .btn {
+      margin-top: 1rem;
+      padding: 0.3em 2.2em;
+      color: var(--expenses);
+      text-transform: uppercase;
+      border: 3px solid var(--expenses);
+      border-radius: 1.2em;
+      transition: all 0.3s;
+
+      &.btn-yellow {
+        color: var(--accounts);
+        border: 3px solid var(--accounts);
+      }
+
+      &:hover {
+        color: var(--dark);
+        background: var(--expenses);
+        cursor: pointer;
+      }
+
+      &.btn-yellow:hover {
+        background: var(--accounts);
+      }
+
+      &[data-action] {
+        border: 3px solid var(--light);
+        color: var(--light);
+
+        &:hover {
+          color: var(--dark);
+          background: var(--light);
+        }
+      }
+    }
+  }
+}
+
+@keyframes goRight {
+  0% {
+    width: 40%;
+    transform: translateX(0);
+  }
+
+  50% {
+    width: 50%;
+  }
+
+  100% {
+    width: 40%;
+    transform: translateX(150%);
+  }
+}
+
+@keyframes goLeft {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-67%);
+  }
+}
