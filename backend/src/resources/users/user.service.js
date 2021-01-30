@@ -37,6 +37,6 @@ export async function register(email, password) {
     password: await hashPassword(password),
     ...template.toObject(),
   });
-  console.log(user);
+  //console.log(user);
   return [201, { user }];
 }

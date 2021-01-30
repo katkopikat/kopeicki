@@ -3,9 +3,12 @@ import createElement from '../../utils/create';
 import app from '../../app';
 import api from '../../api';
 import translatePage from '../settings/language';
+import { clearPage } from '../../utils/DOM';
+import createSelect from '../../utils/select';
 
 let typeTransaction = 'all';
 let history;
+const categoryName = 'ALL';
 
 function preloader() {
   const preloaderEl = document.getElementById('preloader');
@@ -15,11 +18,18 @@ function preloader() {
 function historyHtml() {
   const main = document.querySelector('main');
   const row = createElement('div', 'row table-wrapper');
-  const mainContainer = createElement('div', 'container-xxl transactions-container', row);
+  const mainContainer = createElement('div', 'container-xxl table-container', row);
+  const tableHeading = createElement('h3', 'heading heading-table');
   const table = createElement('div', 'table-mask');
 
+  const tableBtnsWrapper = createElement(
+    'div',
+    'btns-table-container',
+  );
+
   main.append(mainContainer);
-  row.append(table);
+  row.append(tableHeading, tableBtnsWrapper, table);
+  tableHeading.innerText = 'История транзакций';
 }
 
 function formatDate(date) {
@@ -44,10 +54,63 @@ function filterTransaction() {
   const historyByDate = history.sort((a, b) => b.date - a.date);
   if (typeTransaction === 'all') return historyByDate;
   return historyByDate.filter((transaction) => transaction.type === typeTransaction);
+
+  // const trDate = new Date(transaction.date);
+  // if (period === 'year') {
+  //   const oneYearAgo = new Date().setFullYear(new Date().getFullYear() - 1);
+  //   return moment(transaction.date).isBetween(oneYearAgo, moment.now())
+  //          && transaction.type === typeTransaction;
+  // }
+  // return trDate.getMonth() === today.getMonth() && transaction.type === typeTransaction;
 }
 
-function tableCreate() {
-  const filtredHistory = filterTransaction();
+function createCategoryList() {
+  const tr = filterTransaction();
+
+  const summaryObj = tr.reduce((summary, trans) => {
+    if (Object.prototype.hasOwnProperty.call(summary, trans.category)) {
+      summary[trans.category] += parseInt(trans.amount, 10);
+    } else {
+      summary[trans.category] = parseInt(trans.amount, 10);
+    }
+    return summary;
+  },
+  {});
+
+  const categoryList = createSelect(document.querySelector('.btns-table-container'), {
+    placeholder: 'ALL',
+    class: 'category-list',
+    list: ['ALL', ...Object.keys(summaryObj)],
+    isTranslatable: true,
+  });
+
+  document.querySelector('#ALL').classList.add('selected');
+
+  setTimeout(() => {
+    document.querySelectorAll('.select__item').forEach((it) => {
+      it.addEventListener('click', () => {
+        console.log(it.id);
+        let filtred = filterByCategory(it.id);
+        document.querySelector('.table').remove();
+        tableCreate(filtred);
+        deleteTransaction();
+      // preloader();
+      });
+    });
+  }, 1000);
+}
+
+function filterByCategory(categ) {
+  const tr = filterTransaction();
+
+  if (categ === 'ALL') return tr;
+  return tr.filter((transaction) => transaction.category === categ);
+
+  
+}
+
+function tableCreate(filtredTransactioon) {
+  // const filtredHistory = filterTransaction();
   const table = document.createElement('table');
   table.className = 'table';
   table.innerHTML = `<thead>
@@ -62,7 +125,7 @@ function tableCreate() {
     </thead>`;
   const tbody = document.createElement('tbody');
   table.appendChild(tbody);
-  filtredHistory.forEach((transaction, i) => {
+  filtredTransactioon.forEach((transaction, i) => {
     const row = tbody.insertRow(i);
     const cell1 = row.insertCell();
     const cell2 = row.insertCell();
@@ -114,26 +177,26 @@ function deleteTransaction() {
 }
 
 function renderTableBtns() {
-  const tableTypeBtns = createElement(
-    'div',
-    'btn-group btn-group-toggle type-table',
-    null,
-    ['toggle', 'buttons'],
-  );
+  const tableTypeBtns = document.querySelector('.btns-table-container');
   tableTypeBtns.insertAdjacentHTML(
     'beforeend',
-    `
-    <label class="btn btn-secondary">
-    <input type="radio" name="type-table" id="all" autocomplete="on"> All
-    </label>
-    <label class="btn btn-secondary active">
-    <input type="radio" name="type-table" id="expenses" autocomplete="off" checked> Expenses
-    </label>
-    <label class="btn btn-secondary">
-    <input type="radio" name="type-table" id="income" autocomplete="off"> Income
-    </label>`,
+    `<ul>
+      <li>
+        <input type="radio" id="all" name="table-type" checked >
+        <label for="all">All</label>
+        <div class="check"></div>
+      </li>
+      <li>
+        <input type="radio" id="expenses" name="table-type">
+        <label for="expenses">Expenses</label>
+        <div class="check"></div>
+      </li>
+      <li>
+        <input type="radio" id="income" name="table-type">
+        <label for="income">Income</label>
+        <div class="check"></div>
+      </li>`,
   );
-  document.querySelector('.table-wrapper').prepend(tableTypeBtns);
 }
 
 function rerenderTable() {
@@ -147,22 +210,23 @@ function rerenderTable() {
   });
 }
 
-function buttonsListeners() {
-  document.querySelectorAll('[name="type-table"]').forEach((btn) => {
+function buttonsTypeListeners() {
+  document.querySelectorAll('[name="table-type"]').forEach((btn) => {
     btn.addEventListener('click', () => {
       if (btn.checked === true) {
         typeTransaction = btn.id;
-        rerenderTable(typeTransaction);
+        rerenderTable();
       }
     });
   });
 }
 
 function createTableContent() {
-  filterTransaction();
-  tableCreate();
+  // filterTransaction();
+  tableCreate(filterTransaction());
   renderTableBtns();
-  buttonsListeners();
+  createCategoryList();
+  buttonsTypeListeners();
   deleteTransaction();
   translatePage();
 }
@@ -170,6 +234,7 @@ function createTableContent() {
 export default function renderHistoryPage() {
   preloader();
   getHistory().then(() => {
+    clearPage();
     historyHtml();
     createTableContent();
     preloader();

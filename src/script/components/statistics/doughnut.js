@@ -3,7 +3,6 @@
 import { Chart } from 'chart.js';
 import moment from 'moment';
 import createElement from '../../utils/create';
-import app from '../../app';
 import { getTheme, getLanguage } from '../../utils/localStorage';
 import { moveToggle } from '../../utils/DOM';
 import translatePage from '../settings/language';
@@ -14,59 +13,36 @@ let typeTransaction = 'expenses';
 let period = 'mounth';
 let summaryObj = null;
 let doughnut = null;
-let history;
+let dataHistory;
 
 function preloader() {
-  console.log('прелоадер');
   const preloaderEl = document.getElementById('preloader');
   preloaderEl.classList.toggle('visible');
 }
 
-async function getHistory() {
-  const transactions = await app.api.getTransactions();
-  history = [...transactions];
+function filterTransactions() {
+  const filtredHistory = dataHistory.filter((transaction) => {
+    const trDate = new Date(transaction.date);
+    if (period === 'year') {
+      const oneYearAgo = new Date().setFullYear(new Date().getFullYear() - 1);
+      return moment(transaction.date).isBetween(oneYearAgo, moment.now())
+             && transaction.type === typeTransaction;
+    }
+    return trDate.getMonth() === today.getMonth() && transaction.type === typeTransaction;
+  });
+
+  summaryObj = filtredHistory.reduce((summary, trans) => {
+    if (Object.prototype.hasOwnProperty.call(summary, trans.category)) {
+      summary[trans.category] += parseInt(trans.amount, 10);
+    } else {
+      summary[trans.category] = parseInt(trans.amount, 10);
+    }
+    return summary;
+  },
+  {});
 }
 
-function setBGColor() {
-  return getTheme() === 'light' ? 'rgba(234, 240, 247, 1)' : 'rgba(29, 32, 43, 1)';
-}
-
-function setLegendDisplay() {
-  if (window.innerWidth <= 450) {
-    return {
-      display: false,
-    };
-  }
-  if (window.innerWidth <= 500) {
-    return {
-      display: true,
-      position: 'bottom',
-      labels: {
-        fontSize: 8,
-        boxWidth: 10,
-      },
-    };
-  } if (window.innerWidth <= 700) {
-    return {
-      display: true,
-      position: 'bottom',
-      labels: {
-        fontSize: 10,
-        boxWidth: 10,
-      },
-    };
-  }
-  return {
-    display: true,
-    position: 'bottom',
-    labels: {
-      fontSize: 11,
-      boxWidth: 20,
-      padding: 20,
-    },
-  };
-}
-
+/* Set settings for doughnuts chart */
 function renderDoughnutHTML() {
   const doughnutWrapperDiv = createElement('div', 'wrapper-doughnut');
   const doughnutHeading = createElement('h3', 'heading heading-doughnut');
@@ -112,31 +88,54 @@ function renderDoughnutHTML() {
   );
 }
 
+function setBGColor() {
+  return getTheme() === 'light' ? 'rgba(234, 240, 247, 1)' : 'rgba(29, 32, 43, 1)';
+}
+
+function setLegendDisplay() {
+  if (window.innerWidth <= 450) {
+    return {
+      display: false,
+    };
+  }
+  if (window.innerWidth <= 500) {
+    return {
+      display: true,
+      position: 'bottom',
+      labels: {
+        fontSize: 8,
+        boxWidth: 10,
+      },
+    };
+  } if (window.innerWidth <= 700) {
+    return {
+      display: true,
+      position: 'bottom',
+      labels: {
+        fontSize: 10,
+        boxWidth: 10,
+      },
+    };
+  }
+  return {
+    display: true,
+    position: 'bottom',
+    labels: {
+      fontSize: 11,
+      boxWidth: 20,
+      padding: 20,
+    },
+  };
+}
+
+function calculateTotalSum() {
+  return Object.values(summaryObj).length !== 0
+    ? parseInt(Object.values(summaryObj).reduce((sum, it) => sum + it), 10) : 0;
+}
+
 function renderHeading() {
   const doughnutHeading = document.querySelector('.heading-doughnut');
   doughnutHeading.innerText = `Total ${typeTransaction} for the ${period} ${calculateTotalSum()} rub.`;
-}
-
-function filterTransactions() {
-  const filtredHistory = history.filter((transaction) => {
-    const trDate = new Date(transaction.date);
-    if (period === 'year') {
-      const oneYearAgo = new Date().setFullYear(new Date().getFullYear() - 1);
-      return moment(transaction.date).isBetween(oneYearAgo, moment.now())
-             && transaction.type === typeTransaction;
-    }
-    return trDate.getMonth() === today.getMonth() && transaction.type === typeTransaction;
-  });
-
-  summaryObj = filtredHistory.reduce((summary, trans) => {
-    if (Object.prototype.hasOwnProperty.call(summary, trans.category)) {
-      summary[trans.category] += parseInt(trans.amount, 10);
-    } else {
-      summary[trans.category] = parseInt(trans.amount, 10);
-    }
-    return summary;
-  },
-  {});
 }
 
 function translateCategoriesName() {
@@ -146,11 +145,7 @@ function translateCategoriesName() {
   return categoryName.map((it) => (dictionary.includes(it) ? translations[lang][it] : it));
 }
 
-function calculateTotalSum() {
-  return Object.values(summaryObj).length !== 0
-    ? parseInt(Object.values(summaryObj).reduce((sum, it) => sum + it), 10) : 0;
-}
-
+/* Renderings Chart instance */
 function generateChart() {
   const canvas = document.querySelector('.doughnut-container');
   doughnut = new Chart(canvas, {
@@ -170,6 +165,7 @@ function generateChart() {
           'rgba(52, 62, 176, 1)',
           'rgba(47, 186, 147, 1)',
           'rgba(0, 93, 236, 1)',
+
           'rgba(243, 94, 110, 1)',
           'rgba(54, 162, 235, 1)',
           'rgba(255, 206, 86, 1)',
@@ -197,7 +193,6 @@ function generateChart() {
       responsive: true,
       cutoutPercentage: 50,
       title: {
-        // display: true,
         position: 'top',
         fontSize: 12,
         text: `Total ${typeTransaction} for the ${period} ${calculateTotalSum()} rub.`,
@@ -208,6 +203,20 @@ function generateChart() {
   });
 }
 
+/* Rerender chart, when toggles are pusded or window size is changed */
+function rerenderDoughnut() {
+  doughnut.destroy();
+  generateChart(typeTransaction, period);
+}
+
+/* Rerender chart, when toggles are pusded or window size is changed */
+function rerenderDoughnutByToggles() {
+  filterTransactions();
+  rerenderDoughnut();
+  renderHeading();
+}
+
+/* Buttons */
 function buttonsTypeListeners() {
   const typeToggleDiv = document.querySelector('.toggle.doughnut-type');
   const typeToggle = document.getElementById('doughnut-type');
@@ -226,7 +235,7 @@ function buttonsTypeListeners() {
 
     moveToggle(typeToggleDiv, width, typeToggle.checked);
     typeTransaction = typeToggle.checked ? 'income' : 'expenses';
-    rerenderDoughnut();
+    rerenderDoughnutByToggles();
     transition();
   });
 }
@@ -249,18 +258,35 @@ function buttonsPeriodListeners() {
 
     moveToggle(periodToggleDiv, width, periodToggle.checked);
     period = periodToggle.checked ? 'year' : 'month';
-    rerenderDoughnut();
+    rerenderDoughnutByToggles();
     transition();
   });
 }
 
-function rerenderDoughnut() {
-  doughnut.destroy();
-  filterTransactions();
-  generateChart(typeTransaction, period);
-  renderHeading();
+/* Settings for responsive or when theme is changing */
+function trackWindowSize(e) {
+  if (e.matches) {
+    rerenderDoughnut();
+  }
 }
 
+function mediaQuerySizes() {
+  const breakpoints = ['(max-width: 700px)', '(max-width: 500px)', '(max-width: 450px)',
+    '(min-width: 700px)', '(min-width: 500px)', '(min-width: 450px)'];
+
+  breakpoints.forEach((it) => {
+    const mediaQuery = window.matchMedia(it);
+    mediaQuery.addListener(trackWindowSize);
+    trackWindowSize(mediaQuery);
+  });
+}
+
+document.getElementById('theme').addEventListener('click', () => {
+  doughnut.destroy();
+  setTimeout(generateChart, 0);
+});
+
+/* Only first time rendering Chart instance */
 function createDoughnutContent() {
   filterTransactions();
   renderDoughnutHTML();
@@ -272,34 +298,9 @@ function createDoughnutContent() {
   preloader();
 }
 
-export default function renderDoughnutChart() {
-  getHistory().then(() => {
-    createDoughnutContent();
-    mediaQuerySizes();
-  });
-}
-
-document.getElementById('theme').addEventListener('click', () => {
-  doughnut.destroy();
-  setTimeout(generateChart, 0);
-});
-
-function trackWindowSize(e) {
-  if (e.matches) {
-    doughnut.destroy();
-    generateChart(typeTransaction, period);
-    console.log('Перерисовка доната');
-  }
-}
-
-function mediaQuerySizes() {
-  const mediaQuery700 = window.matchMedia('(max-width: 700px)');
-  const mediaQuery500 = window.matchMedia('(max-width: 500px)');
-  const mediaQuery450 = window.matchMedia('(max-width: 450px)');
-  mediaQuery700.addListener(trackWindowSize);
-  mediaQuery500.addListener(trackWindowSize);
-  mediaQuery450.addListener(trackWindowSize);
-  trackWindowSize(mediaQuery700);
-  trackWindowSize(mediaQuery500);
-  trackWindowSize(mediaQuery450);
+/* Main  */
+export default function renderDoughnutChart(data) {
+  dataHistory = data;
+  createDoughnutContent();
+  mediaQuerySizes();
 }
