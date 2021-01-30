@@ -22,10 +22,30 @@
     background-color: var(--catergory-bg);
     box-shadow: var(--shadow);
 
-    h4 {
-      font-size: calc(1.1rem + 0.3vw);
+    .item__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 1rem;
-      text-transform: uppercase;
+
+      div {
+        text-align: right;
+
+        p {
+          margin: 0;
+          font-style: italic;
+          color: var(--gray);
+        }
+
+        h5 {
+          font-weight: 400;
+        }
+      }
+
+      h4 {
+        font-size: calc(1.1rem + 0.3vw);
+        text-transform: uppercase;
+      }
     }
 
     .flex-list {
@@ -130,7 +150,7 @@
 }
 
 .accounts {
-  h4 {
+  .item__header {
     color: var(--accounts);
   }
   .category-icon {
@@ -160,7 +180,7 @@
 }
 
 .expenses {
-  h4 {
+  .item__header {
     color: var(--expenses);
   }
 
@@ -182,7 +202,7 @@
 }
 
 .income {
-  h4 {
+  .item__header {
     color: var(--income);
   }
 

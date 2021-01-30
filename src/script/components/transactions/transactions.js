@@ -22,14 +22,36 @@ export default async function renderTransactionsPage() {
     const accountsDiv = createElement(
       'div',
       'transactions-dashboard__item accounts',
-      "<h4 data-i18n='accounts'>Accounts</h4>",
+      `<div class="item__header">
+      <h4 data-i18n="accounts">Accounts</h4>
+      <div>
+        <p data-i18n="rest">Rest:</p>
+        <h5>${app.transactionsSummary.expensesTotal}</h5>
+      </div>
+      </div>`,
     );
     const expensesDiv = createElement(
       'div',
       'transactions-dashboard__item expenses',
-      "<h4 data-i18n='expenses'>Expenses</h4>",
+      `<div class="item__header">
+      <h4 data-i18n="expenses">Expenses</h4>
+      <div>
+        <p data-i18n="this month">This month:</p>
+        <h5>-${app.transactionsSummary.expensesTotal}</h5>
+      </div>
+      </div>`,
     );
-    const incomeDiv = createElement('div', 'transactions-dashboard__item income', "<h4 data-i18n='income'>Income</h4>");
+    const incomeDiv = createElement(
+      'div',
+      'transactions-dashboard__item income',
+      `<div class="item__header">
+      <h4 data-i18n="income">Income</h4>
+      <div>
+        <p data-i18n="this month">This month:</p>
+        <h5>+${app.transactionsSummary.incomeTotal}</h5>
+      </div>
+      </div>`,
+    );
 
     const dashboard = createElement('div', 'col-8 transactions-dashboard', [accountsDiv, expensesDiv, incomeDiv]);
     const history = createElement('div', 'col-4 transactions-history');
