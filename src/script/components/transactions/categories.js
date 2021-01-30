@@ -74,8 +74,10 @@ export default function createCategoryList(group, container) {
     const type = categoryItem.dataset.group;
 
     if (categoryItem.classList.contains('add-category')) {
-      modal.setContent(newCategoryModal(type));
-      modal.show();
+      if (deletionState.isDeletionEnded) {
+        modal.setContent(newCategoryModal(type));
+        modal.show();
+      }
     } else if (categoryItem.classList.contains('delete-category')) {
       if (container.querySelector('.deleting') || deletionState.isModalOpened) {
         stopDeletion(container);
