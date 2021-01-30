@@ -60,7 +60,7 @@ export default function createCategoryList(group, container) {
   const deleteCategoryBtn = createElement(
     'div',
     'flex-list__item delete-category',
-    '<div class="edit delete"></div><span data-i18n="delete">Delete category</span>',
+    '<div class="edit delete"></div><span data-i18n="delete category">Delete category</span>',
     ['group', group],
   );
 
@@ -82,8 +82,7 @@ export default function createCategoryList(group, container) {
       if (container.querySelector('.deleting') || deletionState.isModalOpened) {
         stopDeletion(container);
       } else {
-        e.target.classList.add('selected');
-        startDeletion(container);
+        startDeletion(e.target, container);
       }
     } else {
       const { category } = categoryItem.dataset;

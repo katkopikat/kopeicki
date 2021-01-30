@@ -1,5 +1,6 @@
 import { getRandom } from './helpers';
-import { getSound } from './localStorage';
+import { getSound, getLanguage } from './localStorage';
+import translations from '../data/translations';
 import modal from '../components/modals/modal';
 import confirmModal from '../components/modals/confirmModal';
 
@@ -34,18 +35,34 @@ export function stopDeletion(container) {
     el.removeEventListener('click', deleteCategory);
   });
 
-  if (container.querySelector('.selected')) container.querySelector('.selected').classList.remove('selected');
+  const btn = container.querySelector('.selected');
+
+  if (btn) {
+    btn.classList.remove('selected');
+
+    const lang = getLanguage();
+
+    const btnText = btn.querySelector('span');
+    btnText.innerText = translations[lang]['delete category'];
+    btnText.dataset.i18n = 'delete category';
+  }
 }
 
-export function startDeletion(container) {
+export function startDeletion(elClicked, container) {
   deletionState.isDeletionEnded = false;
+
+  const lang = getLanguage();
+
+  const btn = elClicked.closest('.flex-list__item');
+  const btnText = btn.querySelector('span');
+
+  btn.classList.add('selected');
+  btnText.innerText = translations[lang]['stop deletion'];
+  btnText.dataset.i18n = 'stop deletion';
+
   container.querySelectorAll('[draggable]').forEach((el) => {
     el.classList.add('deleting');
     el.style.animation = `beforeDeletion 1.5s cubic-bezier(0.3, 0.06, 0.2, 0.9) ${getRandom(0, 0.5)}s infinite`;
     el.addEventListener('click', deleteCategory);
   });
-
-  // setTimeout(() => {
-  //   if (container.querySelector('.selected')) stopDeletion(container);
-  // }, 15000);
 }
