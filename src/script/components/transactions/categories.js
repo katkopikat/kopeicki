@@ -98,36 +98,4 @@ export default function createCategoryList(group, container) {
   });
 
   container.append(listContainer);
-
-  /* ------------ HOT KEYS ---------------
-      Alt + E --> New expense
-      Alt + I --> New income
-      Alt + A --> New account
-  */
-  let keysPushead = [];
-
-  window.addEventListener('keydown', (e) => {
-    keysPushead.push(e.target);
-    if (keysPushead.length === 2) {
-      if (e.altKey && e.keyCode === 69) {
-        console.log('Alt + E => Open new expense modal!');
-        e.preventDefault();
-        // modal.setContent(transactionModal('expenses',''));
-        // modal.show();
-      }
-      if (e.altKey && e.keyCode === 73) {
-        console.log('Alt + I => Open new income modal!');
-        e.preventDefault();
-        // modal.setContent(transactionModal('income', ''));
-        // modal.show();
-      }
-      if (e.altKey && e.keyCode === 65) {
-        console.log('Alt + A => Create new account!');
-        e.preventDefault();
-        // modal.setContent(newCategoryModal('account'));
-        // modal.show();
-      }
-      keysPushead = [];
-    }
-  });
 }
