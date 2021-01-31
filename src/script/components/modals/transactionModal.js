@@ -48,12 +48,12 @@ export default function transactionModal(options) {
     expenses: {
       en: 'Spent',
       ru: 'Потратил',
-      be: 'Патраціў',
+      by: 'Патраціў',
     },
     income: {
       en: 'Earned',
       ru: 'Заработал',
-      be: 'Зарабіў',
+      by: 'Зарабіў',
     },
   };
 
@@ -61,34 +61,34 @@ export default function transactionModal(options) {
     expenses: {
       en: 'Spent it!',
       ru: 'Потрачено!',
-      be: 'Патрачано!',
+      by: 'Патрачано!',
     },
     income: {
       en: 'Received!',
       ru: 'Получено!',
-      be: 'Атрымаў!',
+      by: 'Атрымаў!',
     },
   };
 
   const descriptionLabels = {
     en: 'Do you have anything to say?',
     ru: 'Как-то прокомментируем?',
-    be: 'Неяк пракамэнтуем?',
+    by: 'Неяк пракамэнтуем?',
   };
 
-  const from = { en: 'from', ru: 'из', be: 'з' };
-  const on = { en: 'on', ru: 'на', be: 'на' };
+  const from = { en: 'from', ru: 'из', by: 'з' };
+  const on = { en: 'on', ru: 'на', by: 'на' };
 
   const errorMessage = {
     en: 'Please fill out all the fields',
     ru: 'Пожалуйста, заполните все поля',
-    be: 'Калі ласка, запоўніце ўсе палі',
+    by: 'Калі ласка, запоўніце ўсе палі',
   };
 
   const invalidSum = {
     en: 'Transaction amount must not be equal to 0',
     ru: 'Сумма операции не должна быть нулевой',
-    be: 'Сума аперацыі павінна быць ненулявой',
+    by: 'Сума аперацыі павінна быць ненулявой',
   };
 
   const isExpense = options.type === 'expenses';
@@ -185,7 +185,6 @@ export default function transactionModal(options) {
           app.saveTransaction(tx).then((result) => {
             console.log(result);
             pubsub.publish('renderTransactionsPage');
-            // app.renderTransactionsPage();
           });
         });
 

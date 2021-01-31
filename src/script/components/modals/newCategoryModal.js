@@ -12,13 +12,13 @@ const isNewNameValid = (newName, type, btnElem, inputElem) => {
   const errorMessage = {
     en: 'Please fill out all the fields',
     ru: 'Пожалуйста, заполните все поля',
-    be: 'Калі ласка, запоўніце ўсе палі',
+    by: 'Калі ласка, запоўніце ўсе палі',
   };
 
   const errorExists = {
     en: 'This name already exists',
     ru: 'Такое имя уже существует',
-    be: 'Такое імя ўжо існуе',
+    by: 'Такое імя ўжо існуе',
   };
 
   if (!newName) {
@@ -49,24 +49,24 @@ export default function newCategoryModal(type) {
     accounts: {
       en: 'Do you have a new account?',
       ru: 'Хотите завести новый счет?',
-      be: 'Хочаце завесці новы рахунак?',
+      by: 'Хочаце завесці новы рахунак?',
     },
     expenses: {
       en: 'What else will you spend money on?',
       ru: 'На что еще будем тратить деньги?',
-      be: 'На што яшчэ будзем траціць грошы?',
+      by: 'На што яшчэ будзем траціць грошы?',
     },
     income: {
       en: 'Where else will you get money from?',
       ru: 'Где еще будем брать деньги?',
-      be: 'Адкуль яшчэ будзем браць грошы?',
+      by: 'Адкуль яшчэ будзем браць грошы?',
     },
   };
 
   const saveBtnOptions = {
     en: 'Create!',
     ru: 'Создать!',
-    be: 'Стварыць!',
+    by: 'Стварыць!',
   };
 
   const numOfItems = {

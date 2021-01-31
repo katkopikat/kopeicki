@@ -10,25 +10,25 @@ export default function confirmModal(group, category) {
   const msgCategory = {
     en: 'Delete category?',
     ru: 'Удалить категорию?',
-    be: 'Выдаліць катэгорыю?',
+    by: 'Выдаліць катэгорыю?',
   };
 
   // const msgTransaction = {
   //   en: 'Delete transaction?',
   //   ru: 'Удалить операцию?',
-  //   be: 'Выдаліць аперацыю?',
+  //   by: 'Выдаліць аперацыю?',
   // };
 
   const msgYes = {
     en: 'Yes',
     ru: 'Да',
-    be: 'Так',
+    by: 'Так',
   };
 
   const msgNo = {
     en: 'No',
     ru: 'Нет',
-    be: 'Не',
+    by: 'Не',
   };
 
   document.querySelector('.modal-content').className = 'modal-content warning';

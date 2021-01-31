@@ -8,19 +8,19 @@ export default function accountModal(options) {
   const titleOptions = {
     en: 'What do we do?',
     ru: 'Что будем делать?',
-    be: 'Што будзем рабіць?',
+    by: 'Што будзем рабіць?',
   };
 
   const expenseBtn = {
     en: 'Spend money!',
     ru: 'Тратить деньги!',
-    be: 'Траціць грошы!',
+    by: 'Траціць грошы!',
   };
 
   const incomeBtn = {
     en: 'Get money!',
     ru: 'Получать деньги!',
-    be: 'Атрымліваць грошы!',
+    by: 'Атрымліваць грошы!',
   };
 
   const modal = document.querySelector('.modal-content');
