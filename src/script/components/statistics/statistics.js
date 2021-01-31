@@ -16,10 +16,11 @@ async function getDataHistory() {
 }
 
 export default function renderStatisticsPage() {
-  getDataHistory().then(() => {
+  Promise.all([getDataHistory(), app.api.getTransactionsStats()]).then(([, stat]) => {
+  // getDataHistory().then(() => {
     clearPage();
     preloader();
-    renderTextStatistics();
+    renderTextStatistics(stat);
     renderDoughnutChart(data);
     renderBarChart(data);
   });
