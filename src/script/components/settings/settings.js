@@ -9,7 +9,7 @@ export default function toggleSettings() {
   createSelect(selectEl, {
     class: 'select__language',
     placeholder: getLanguage(),
-    list: ['en', 'ru', 'be'],
+    list: ['en', 'ru', 'by'],
     onSelect: setLanguage,
     isTranslatable: true,
   });

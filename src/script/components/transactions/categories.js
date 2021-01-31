@@ -4,6 +4,7 @@ import transactionModal from '../modals/transactionModal';
 import accountModal from '../modals/accountModal';
 import newCategoryModal from '../modals/newCategoryModal';
 import app from '../../app';
+import { startDeletion, stopDeletion, deletionState } from '../../utils/deleteCategory';
 
 export default function createCategoryList(group, container) {
   const txsSummary = app.transactionsSummary;
@@ -28,21 +29,17 @@ export default function createCategoryList(group, container) {
   const listContainer = createElement('div', 'flex-list');
 
   list.forEach((category) => {
-    const categoryAmmount = createElement('span', 'category-ammount', null, ['category', category.name]);
+    const amount = `${Math.round(txsSummary[group]?.get(category.name) || category.amount || 0)}`;
+    const categoryAmount = createElement('span', 'category-amount', amount, ['category', category.name]);
     const categoryName = createElement('span', '', category.name, ['i18n', category.name]);
     const imgSrc = `background-image: url(${category.icon});`;
     const categoryIcon = createElement('div', 'icon-svg', null, ['style', imgSrc]);
     const categoryIconDiv = createElement('div', 'category-icon', categoryIcon);
 
-    // categoryAmmount.innerHTML = '1000';
-    categoryAmmount.textContent = Math.round(
-      txsSummary[group]?.get(category.name) || category.amount || 0,
-    );
-
     const categoryElem = createElement(
       'div',
       'flex-list__item',
-      [categoryIconDiv, categoryName, categoryAmmount],
+      [categoryIconDiv, categoryName, categoryAmount],
       ['category', category.name],
       ['group', group],
       ['draggable', isDraggable],
@@ -54,11 +51,20 @@ export default function createCategoryList(group, container) {
   const addCategoryBtn = createElement(
     'div',
     'flex-list__item add-category',
-    '<div class="add"></div><span data-i18n="new">New category</span>',
+    '<div class="edit add"></div><span data-i18n="new">New category</span>',
     ['group', group],
   );
 
   listContainer.append(addCategoryBtn);
+
+  const deleteCategoryBtn = createElement(
+    'div',
+    'flex-list__item delete-category',
+    '<div class="edit delete"></div><span data-i18n="delete category">Delete category</span>',
+    ['group', group],
+  );
+
+  listContainer.append(deleteCategoryBtn);
 
   listContainer.addEventListener('click', (e) => {
     const categoryItem = e.target.closest('.flex-list__item');
@@ -68,7 +74,16 @@ export default function createCategoryList(group, container) {
     const type = categoryItem.dataset.group;
 
     if (categoryItem.classList.contains('add-category')) {
-      modal.setContent(newCategoryModal(type));
+      if (deletionState.isDeletionEnded) {
+        modal.setContent(newCategoryModal(type));
+        modal.show();
+      }
+    } else if (categoryItem.classList.contains('delete-category')) {
+      if (container.querySelector('.deleting') || deletionState.isModalOpened) {
+        stopDeletion(container);
+      } else {
+        startDeletion(e.target, container);
+      }
     } else {
       const { category } = categoryItem.dataset;
 
@@ -77,42 +92,10 @@ export default function createCategoryList(group, container) {
       } else {
         modal.setContent(transactionModal({ type, to: category }));
       }
-    }
 
-    modal.show();
+      modal.show();
+    }
   });
 
   container.append(listContainer);
-
-  /* ------------ HOT KEYS ---------------
-      Alt + E --> New expense
-      Alt + I --> New income
-      Alt + A --> New account
-  */
-  let keysPushead = [];
-
-  window.addEventListener('keydown', (e) => {
-    keysPushead.push(e.target);
-    if (keysPushead.length === 2) {
-      if (e.altKey && e.keyCode === 69) {
-        console.log('Alt + E => Open new expense modal!');
-        e.preventDefault();
-        // modal.setContent(transactionModal('expenses',''));
-        // modal.show();
-      }
-      if (e.altKey && e.keyCode === 73) {
-        console.log('Alt + I => Open new income modal!');
-        e.preventDefault();
-        // modal.setContent(transactionModal('income', ''));
-        // modal.show();
-      }
-      if (e.altKey && e.keyCode === 65) {
-        console.log('Alt + A => Create new account!');
-        e.preventDefault();
-        // modal.setContent(newCategoryModal('account'));
-        // modal.show();
-      }
-      keysPushead = [];
-    }
-  });
 }

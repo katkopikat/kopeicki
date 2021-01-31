@@ -60,10 +60,10 @@ class ApiClient {
     }
     const response = await fetch(`${this.apiUrl}${route}`, reqParams);
     if (response.ok) {
-      console.log('refresh token ok: ', response);
+      // console.log('refresh token ok: ', response);
       return response;
     }
-    console.log('refresh token !ok: ', response);
+    // console.log('refresh token !ok: ', response);
     this.logout();
     return response;
   }
@@ -79,7 +79,7 @@ class ApiClient {
     if (body) {
       reqParams.body = JSON.stringify(body);
     }
-    console.log('this from request', this);
+    // console.log('this from request', this);
     // TODO method for checking the request route and whether authorization data
     if (auth && !(this.token == null)) {
       reqParams.withCredentials = true;
@@ -90,17 +90,17 @@ class ApiClient {
       return undefined;
     }
     const response = await fetch(`${this.apiUrl}${route}`, reqParams);
-    console.log('first response', response);
+    // console.log('first response', response);
     if ((response.ok === false) && (this.CheckCurrentUser() === true)) {
       const result = await this.getNewTokens('POST', '/users/token', { email: this.email, userId: this.userId }, auth);
-      console.log('second response', result);
+      // console.log('second response', result);
       if (!result.ok) {
         const content = await result.json();
-        console.log('message from content', content);
+        // console.log('message from content', content);
         // pubsub.publish('navigateTo', '/login');
         return content;
       }
-      console.log(result);
+      // console.log(result);
       const content = await result.json();
       await this.setLocalStorage(
         content.userId,
@@ -109,7 +109,7 @@ class ApiClient {
         content.refreshToken,
       );
       const responseAfterRefresh = await this.request(method, route, body, auth);
-      console.log('after refresh', responseAfterRefresh);
+      // console.log('after refresh', responseAfterRefresh);
       return responseAfterRefresh;
     }
     return response.json();

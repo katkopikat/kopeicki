@@ -14,7 +14,7 @@ class App {
     // await this.login('user2@rsclone.com', 'test');
     // await this.register('testReg5@rsclone.com', 'test');
     await this.checkAuth();
-    console.log('from init: ', this.user);
+    // console.log('from init: ', this.user);
   }
 
   async checkAuth() {
@@ -44,9 +44,9 @@ class App {
         this.transactions = await this.getTransactions();
         return true;
       }
-      console.log(this.user);
-      console.log(this);
-      console.log('login success');
+      // console.log(this.user);
+      // console.log(this);
+      // console.log('login success');
       return result;
     } catch (e) {
       console.error(e.message);
@@ -92,7 +92,7 @@ class App {
       if (!txsByMonth[yearMonth]) txsByMonth[yearMonth] = [];
       txsByMonth[yearMonth].push(tx);
     });
-    console.log('months: ', Object.keys(txsByMonth));
+    // console.log('months: ', Object.keys(txsByMonth));
     const txsThisMonth = txsByMonth[monthKey(new Date())] || [];
     const monthSummary = {
       expenses: new Map(),
@@ -106,7 +106,7 @@ class App {
       expensesTotal: [...monthSummary.expenses.values()].reduce((acc, x) => acc + x, 0),
       incomeTotal: [...monthSummary.income.values()].reduce((acc, x) => acc + x, 0),
     });
-    console.log('this month: ', monthSummary);
+    // console.log('this month: ', monthSummary);
     this.transactionsSummary = monthSummary;
   }
 
@@ -138,17 +138,17 @@ class App {
   }
 
   async removeUserAccount(account) {
-    this.user.accounts = this.user.accounts.filter((item) => item.name !== account.name);
+    this.user.accounts = this.user.accounts.filter((item) => item.name !== account);
     this.user = await this.api.updateUser(this.user);
   }
 
   async removeUserExpense(expense) {
-    this.user.expenses = this.user.expenses.filter((item) => item.name !== expense.name);
+    this.user.expenses = this.user.expenses.filter((item) => item.name !== expense);
     this.user = await this.api.updateUser(this.user);
   }
 
   async removeUserIncome(income) {
-    this.user.income = this.user.income.filter((item) => item.name !== income.name);
+    this.user.income = this.user.income.filter((item) => item.name !== income);
     this.user = await this.api.updateUser(this.user);
   }
 }

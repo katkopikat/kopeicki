@@ -28,6 +28,7 @@ module.exports = {
           from: path.resolve(__dirname, 'src/assets'),
           to: path.resolve(__dirname, 'dist'),
         },
+        '../_redirects',
       ],
     }),
     new MiniCssExtractPlugin({
@@ -51,7 +52,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|jpg|jpeg|svg)/,
+        test: /\.(png|jpg|jpeg|svg|gif)/,
         use: ['file-loader'],
       },
       {
