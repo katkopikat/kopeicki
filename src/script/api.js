@@ -120,6 +120,10 @@ class ApiClient {
     throw new Error(result.message);
   }
 
+  async getTransactionsStats() {
+    return this.request('GET', '/transactions/statistics');
+  }
+
   async getTransactions(/* todo filter */) {
     return this.request('GET', '/transactions');
   }
