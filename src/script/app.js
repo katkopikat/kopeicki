@@ -1,4 +1,5 @@
 import api from './api';
+// import pubsub from './pubsub';
 
 class App {
   constructor(apiInstance) {
@@ -19,13 +20,14 @@ class App {
   async checkAuth() {
     try {
       this.user = await this.api.getUser();
-      this.transactions = await this.getTransactions();
-      // console.log(this.api);
-      // console.log(this.user);
-      // console.log(this.transactions);
-      // console.log(this.transactionsSummary);
+      if (this.user) {
+        this.transactions = await this.getTransactions();
+      } else {
+        console.log('navigateTo', '/login');
+        window.history.pushState(null, null, '/login');
+      }
     } catch (e) {
-      // console.error(e.message);
+      console.error(e.message);
     }
   }
 
@@ -36,23 +38,32 @@ class App {
   async login(email, password) {
     try {
       // await this.api.login('user2@rsclone.com', 'test');
-      await this.api.login(email, password);
-      this.user = await this.api.getUser();
-      this.transactions = await this.getTransactions();
-      //console.log(this.user);
-      //console.log(this);
-      //console.log('login success');
+      const result = await this.api.login(email, password);
+      if (result === true) {
+        this.user = await this.api.getUser();
+        this.transactions = await this.getTransactions();
+        return true;
+      }
+      // console.log(this.user);
+      // console.log(this);
+      // console.log('login success');
+      return result;
     } catch (e) {
-      //console.error(e.message);
+      console.error(e.message);
+      return e;
     }
   }
 
   async register(email, password) {
     try {
-      await this.api.registerUser(email, password);
-      await this.login(email, password);
+      const result = await this.api.registerUser(email, password);
+      if (result === true) {
+        await this.login(email, password);
+      }
+      return result;
     } catch (e) {
-     // console.error(e.message);
+      console.error(e.message);
+      return e;
     }
   }
 
@@ -81,7 +92,7 @@ class App {
       if (!txsByMonth[yearMonth]) txsByMonth[yearMonth] = [];
       txsByMonth[yearMonth].push(tx);
     });
-    //console.log('months: ', Object.keys(txsByMonth));
+    // console.log('months: ', Object.keys(txsByMonth));
     const txsThisMonth = txsByMonth[monthKey(new Date())] || [];
     const monthSummary = {
       expenses: new Map(),
@@ -95,7 +106,7 @@ class App {
       expensesTotal: [...monthSummary.expenses.values()].reduce((acc, x) => acc + x, 0),
       incomeTotal: [...monthSummary.income.values()].reduce((acc, x) => acc + x, 0),
     });
-    //console.log('this month: ', monthSummary);
+    // console.log('this month: ', monthSummary);
     this.transactionsSummary = monthSummary;
   }
 

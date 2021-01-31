@@ -17,12 +17,9 @@ const login = async () => {
   const email = document.getElementById('log-in-email').value;
   const password = document.getElementById('log-in-password').value;
 
-  await app.login(email, password);
-
-  if (app.user) {
-    pubsub.publish('navigateTo', '/');
-  }
-  return true;
+  const result = await app.login(email, password);
+  console.log('login res from auth', result);
+  return result;
 };
 
 const register = async () => {
@@ -43,13 +40,10 @@ const register = async () => {
     return false;
   }
   console.log('all done', password);
-  await app.register(email, password);
+  const result = await app.register(email, password);
 
-  if (app.user) {
-    pubsub.publish('navigateTo', '/');
-  }
-
-  return true;
+  console.log('register res from auth', result);
+  return result;
 };
 
 export default function renderAuthorizationPage() {
@@ -138,7 +132,7 @@ export default function renderAuthorizationPage() {
 
   const loginContent = loginWrapper.querySelector('.login__content');
 
-  loginContent.addEventListener('click', (e) => {
+  loginContent.addEventListener('click', async (e) => {
     if (!e.target.tagName === 'BUTTON') return false;
 
     const { action } = e.target.dataset;
@@ -172,8 +166,8 @@ export default function renderAuthorizationPage() {
           console.log(selectElement);
         }, 300);
       } else if (action === 'go-left') {
-        leftSide.style.animation = 'goRight 1s ease forwards reverse';
-        rightSide.style.animation = 'goLeft 1s ease forwards reverse';
+        leftSide.style.animation = 'goRight 1s ease backwards reverse';
+        rightSide.style.animation = 'goLeft 1s ease backwards reverse';
         buttonSubmit.textContent = 'sign up';
         buttonSubmit.dataset.action = 'go-right';
         leftSide.children[0].innerHTML = leftSideSignIn;
@@ -184,9 +178,22 @@ export default function renderAuthorizationPage() {
     if (e.target.id === 'submit') {
       console.log('asd');
       if (e.target.dataset.auth === 'sign in') {
-        login();
+        const result = await login();
+        if (result !== true) {
+          console.log('error ', result);
+        }
+        if (app.user) {
+          pubsub.publish('navigateTo', '/');
+        }
       } else {
-        register();
+        const result = await register();
+        if (result !== true) {
+          console.log('error ', result);
+        }
+        console.log('from regbutt', app.user);
+        if (app.user) {
+          pubsub.publish('navigateTo', '/');
+        }
       }
     }
     return true;
