@@ -34,10 +34,15 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   pubsub.subscribe('navigateTo', navigateTo);
+
   app.init().then(router);
 });
 
-document.getElementById('logout').addEventListener('click', app.logout());
+document.getElementById('logout').addEventListener('click', (e) => {
+  e.preventDefault();
+  app.logout();
+  navigateTo('/login');
+});
 
 hotKeys();
 navSlideIn();

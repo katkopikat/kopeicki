@@ -80,7 +80,6 @@ class ApiClient {
       reqParams.body = JSON.stringify(body);
     }
     // console.log('this from request', this);
-    // TODO method for checking the request route and whether authorization data
     if (auth && !(this.token == null)) {
       reqParams.withCredentials = true;
       reqParams.headers.Authorization = `${this.token}`;
@@ -156,7 +155,8 @@ class ApiClient {
   }
 
   async getUser() {
-    return this.request('GET', '/users/current');
+    const result = await this.request('GET', '/users/current');
+    return result;
   }
 
   async updateUser(userData) {
