@@ -60,7 +60,7 @@ export default function createCategoryList(group, container) {
   const deleteCategoryBtn = createElement(
     'div',
     'flex-list__item delete-category',
-    '<div class="edit delete"></div><span data-i18n="delete">Delete category</span>',
+    '<div class="edit delete"></div><span data-i18n="delete category">Delete category</span>',
     ['group', group],
   );
 
@@ -74,14 +74,15 @@ export default function createCategoryList(group, container) {
     const type = categoryItem.dataset.group;
 
     if (categoryItem.classList.contains('add-category')) {
-      modal.setContent(newCategoryModal(type));
-      modal.show();
+      if (deletionState.isDeletionEnded) {
+        modal.setContent(newCategoryModal(type));
+        modal.show();
+      }
     } else if (categoryItem.classList.contains('delete-category')) {
       if (container.querySelector('.deleting') || deletionState.isModalOpened) {
         stopDeletion(container);
       } else {
-        e.target.classList.add('selected');
-        startDeletion(container);
+        startDeletion(e.target, container);
       }
     } else {
       const { category } = categoryItem.dataset;
@@ -97,36 +98,4 @@ export default function createCategoryList(group, container) {
   });
 
   container.append(listContainer);
-
-  /* ------------ HOT KEYS ---------------
-      Alt + E --> New expense
-      Alt + I --> New income
-      Alt + A --> New account
-  */
-  let keysPushead = [];
-
-  window.addEventListener('keydown', (e) => {
-    keysPushead.push(e.target);
-    if (keysPushead.length === 2) {
-      if (e.altKey && e.keyCode === 69) {
-        console.log('Alt + E => Open new expense modal!');
-        e.preventDefault();
-        // modal.setContent(transactionModal('expenses',''));
-        // modal.show();
-      }
-      if (e.altKey && e.keyCode === 73) {
-        console.log('Alt + I => Open new income modal!');
-        e.preventDefault();
-        // modal.setContent(transactionModal('income', ''));
-        // modal.show();
-      }
-      if (e.altKey && e.keyCode === 65) {
-        console.log('Alt + A => Create new account!');
-        e.preventDefault();
-        // modal.setContent(newCategoryModal('account'));
-        // modal.show();
-      }
-      keysPushead = [];
-    }
-  });
 }
