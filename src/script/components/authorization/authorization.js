@@ -59,7 +59,7 @@ export default function renderAuthorizationPage() {
   <p>Enter your personal details and start counting copecks with us</p>`;
 
   const rightSideSignIn = `
-  <div class="img-wrapper">
+  <div class="img-wrapper gif-wallet">
   <img src="gifs/wallet2.gif" alt="" />
   </div>
   <h3 class="form__header">Log in to Copeicki</h3>
@@ -85,7 +85,7 @@ export default function renderAuthorizationPage() {
   <p>To start counting copecks with us please login with your personal info</p>`;
 
   const rightSideSignUp = `
-  <div class="img-wrapper">
+  <div class="img-wrapper gif-coin">
     <img src="gifs/coin-rotation.gif" alt="">
   </div>
   <h3 class="form__header">Create an account</h3>
@@ -126,11 +126,11 @@ export default function renderAuthorizationPage() {
   loginWrapper.insertAdjacentHTML(
     'afterbegin',
     `<div class="login__content">
-  <div class="left side">
+  <div class="left side border-left">
   <div class="left__content">${leftSideSignIn}</div>
-  <button class="btn" data-action="go-right" id="move-id">Sign up</button>
+  <button class="btn btn-sign-up" data-action="go-right" id="move-id">Sign up</button>
   </div>
-  <div class="right side">${rightSideSignIn}</div>
+  <div class="right side border-right">${rightSideSignIn}</div>
   </div>`,
   );
 
@@ -145,23 +145,32 @@ export default function renderAuthorizationPage() {
     const leftSide = loginContent.querySelector('.left');
     const rightSide = loginContent.querySelector('.right');
     const buttonSubmit = document.getElementById('move-id');
+    const btnSignUp = document.querySelector('.btn-sign-up');
 
     if (action) {
       if (action === 'go-right') {
         leftSide.style.animation = 'goRight 1s ease forwards';
         rightSide.style.animation = 'goLeft 1s ease forwards';
+        btnSignUp.style.animation = 'stretchBtn 1s ease';
         buttonSubmit.textContent = 'sign in';
         buttonSubmit.dataset.action = 'go-left';
 
-        leftSide.children[0].innerHTML = leftSideSignUp;
-        rightSide.innerHTML = rightSideSignUp;
-        const selectElement = createSelect(document.getElementById('formFile'), {
-          class: 'currency-list',
-          placeholder: 'RUB',
-          list: app.api.currencyList,
-          isTranslatable: false,
-        });
-        console.log(selectElement);
+        leftSide.classList.toggle('border-right');
+        leftSide.classList.toggle('border-left');
+        rightSide.classList.toggle('border-right');
+        rightSide.classList.toggle('border-left');
+
+        setTimeout(() => {
+          leftSide.children[0].innerHTML = leftSideSignUp;
+          rightSide.innerHTML = rightSideSignUp;
+          const selectElement = createSelect(document.getElementById('formFile'), {
+            class: 'currency-list',
+            placeholder: 'RUB',
+            list: app.api.currencyList,
+            isTranslatable: false,
+          });
+          console.log(selectElement);
+        }, 300);
       } else if (action === 'go-left') {
         leftSide.style.animation = 'goRight 1s ease forwards reverse';
         rightSide.style.animation = 'goLeft 1s ease forwards reverse';
