@@ -31,7 +31,7 @@ const isNewNameValid = (newName, type, btnElem, inputElem) => {
     .map(({ name }) => name)
     .concat(['account', 'expenses', 'income'])
     .forEach((item) => {
-      ['en', 'ru', 'be'].forEach((el) => listWithTralslations.push(translations[el][item] || item));
+      ['en', 'ru', 'by'].forEach((el) => listWithTralslations.push(translations[el][item] || item));
     });
 
   const exists = listWithTralslations.find((item) => item.toLowerCase() === newName.toLowerCase());

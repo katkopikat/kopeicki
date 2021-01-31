@@ -40,26 +40,25 @@ th {
 }
 
 .statistic-text {
-    color: var(--light);
+  color: var(--light);
 
-    span {
-        font-size: 1rem;
+  span {
+    font-size: 1rem;
+  }
+  .info {
+    &_expenses {
+      color: var(--expenses);
+      font-size: 1.2rem;
     }
-    .info {
-        &_expenses{
-            color: var(--expenses);
-            font-size: 1.2rem;
-        }
-    
-        &_income{
-            color: var(--income);
-            font-size: 1.2rem;
-        }
-    
-        &_accounts{
-            color: var(--accounts);
-            font-size: 1.2rem;
-        }
+
+    &_income {
+      color: var(--income);
+      font-size: 1.2rem;
+    }
+
+    &_accounts {
+      color: var(--accounts);
+      font-size: 1.2rem;
     }
   }
 }
