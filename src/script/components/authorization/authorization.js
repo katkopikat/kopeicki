@@ -29,10 +29,10 @@ export default function renderAuthorizationPage() {
     const email = document.getElementById('inputEmail').value;
     const password = document.getElementById('inputPassword').value;
     if (!emailValidation(email)) {
-      //console.log('incorrect email');
+      // console.log('incorrect email');
       return false;
     }
-    //console.log('all done', password);
+    // console.log('all done', password);
     app.login(email, password);
     return true;
   });
