@@ -27,7 +27,7 @@ export default async function renderTransactionsPage() {
       <h4 data-i18n="accounts">Accounts</h4>
       <div>
         <p data-i18n="rest">Rest:</p>
-        <h5>${formatNumber(app.transactionsSummary.expensesTotal)}</h5>
+        <h5>${formatNumber(app.getAccountsTotal())}</h5>
       </div>
       </div>`,
     );

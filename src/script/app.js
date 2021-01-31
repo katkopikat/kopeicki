@@ -99,6 +99,11 @@ class App {
     this.transactionsSummary = monthSummary;
   }
 
+  getAccountsTotal() {
+    const accounts = this.user?.accounts || [];
+    return accounts.reduce((total, acc) => total + Number(acc.amount || 0), 0);
+  }
+
   getUserAccounts() {
     return this.user.accounts;
   }
