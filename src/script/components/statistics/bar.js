@@ -21,15 +21,9 @@ function renderBarHTML() {
   const barWrapperDiv = createElement('div', 'bar-wrapper');
   const barHeading = createElement('h3', 'heading heading-bar');
   const barCanvas = createElement('canvas', 'bar-container');
-  const barTypeBtnsWrapper = createElement(
-    'div',
-    'toggle bar-type',
-  );
+  const barTypeBtnsWrapper = createElement('div', 'toggle bar-type');
 
-  const barYearsBtnsWrapper = createElement(
-    'div',
-    'btns-year-container',
-  );
+  const barYearsBtnsWrapper = createElement('div', 'btns-year-container');
 
   const barTypeBtns = `
   <input type="checkbox" class="checkbox" id="bar-type" />
@@ -55,7 +49,7 @@ function renderHeading() {
   const type = typeTransaction;
   if (lang === 'ru') {
     barHeading.innerHTML = `Суммарные <span data-i18n="${type}">${type}</span> за ${choosenYear} год.`;
-  } else if (lang === 'be') {
+  } else if (lang === 'by') {
     barHeading.innerHTML = `Сумарны <span data-i18n="${type}">${type}</span> за ${choosenYear} год.`;
   } else {
     barHeading.innerHTML = `Total <span data-i18n="${type}">${type}</span> for the ${choosenYear} year.`;
@@ -75,7 +69,7 @@ function setLegendFontSize() {
 function setMonthLang() {
   const lang = getLanguage();
   switch (lang) {
-    case 'be':
+    case 'by':
       return monthBe;
     case 'ru':
       return monthRu;
@@ -86,7 +80,7 @@ function setMonthLang() {
 
 function countYears() {
   dataHistory.forEach((trans) => {
-    const temp = (new Date(trans.date)).getFullYear();
+    const temp = new Date(trans.date).getFullYear();
     if (!yearsList.includes(temp)) {
       yearsList.push(temp);
     }
@@ -96,7 +90,8 @@ function countYears() {
 function createYearsBtns() {
   const yearsBtnsContainer = document.querySelector('.btns-year-container');
 
-  yearsList.sort((a, b) => b - a)
+  yearsList
+    .sort((a, b) => b - a)
     .forEach((year, i) => {
       const checkedParam = i === 0 ? 'checked' : '';
       yearsBtnsContainer.insertAdjacentHTML(
@@ -139,15 +134,14 @@ function filterTransaction() {
   });
 
   summaryObj = filtredHistory.reduce((summary, trans) => {
-    const trMonth = (new Date(trans.date)).getMonth();
+    const trMonth = new Date(trans.date).getMonth();
     if (Object.prototype.hasOwnProperty.call(summary, trMonth)) {
       summary[trMonth] += parseInt(trans.amount, 10);
     } else {
       summary[trMonth] = parseInt(trans.amount, 10);
     }
     return summary;
-  },
-  summaryObj);
+  }, summaryObj);
 }
 
 function buttonsTypeListeners() {
@@ -197,14 +191,16 @@ function generateBar() {
     data: {
       labels: setMonthLang(),
 
-      datasets: [{
-        minBarLength: 2,
-        label: `${typeTransaction}`,
-        data: Object.values(summaryObj),
-        backgroundColor: setBarColor(),
-        borderColor: setBarColor(),
-        borderWidth: 1,
-      }],
+      datasets: [
+        {
+          minBarLength: 2,
+          label: `${typeTransaction}`,
+          data: Object.values(summaryObj),
+          backgroundColor: setBarColor(),
+          borderColor: setBarColor(),
+          borderWidth: 1,
+        },
+      ],
     },
     options: {
       title: {
@@ -212,23 +208,27 @@ function generateBar() {
         text: `${typeTransaction} for the ${choosenYear} year`,
       },
       scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true,
-            fontSize: setLegendFontSize(),
-            callback(value) {
-              if (Number(value) >= 1000) {
-                return `${String(value).slice(0, -3)}K`;
-              }
-              return value;
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+              fontSize: setLegendFontSize(),
+              callback(value) {
+                if (Number(value) >= 1000) {
+                  return `${String(value).slice(0, -3)}K`;
+                }
+                return value;
+              },
             },
           },
-        }],
-        xAxes: [{
-          ticks: {
-            fontSize: setLegendFontSize(),
+        ],
+        xAxes: [
+          {
+            ticks: {
+              fontSize: setLegendFontSize(),
+            },
           },
-        }],
+        ],
       },
       legend: {
         display: false,
