@@ -14,12 +14,12 @@ body {
   overflow-x: hidden;
 }
 
-.wrapper {
-  display: flex;
-}
-
 header {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1020;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,6 +33,11 @@ header {
       height: 2.5rem;
     }
   }
+}
+
+.wrapper {
+  display: flex;
+  margin-top: 4rem;
 }
 
 main {
@@ -120,15 +125,13 @@ footer {
 }
 
 .hidden {
-visibility: hidden;
-opacity: 0;
-transition: visibility 0s 0.25s, opacity 0.4s linear;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 0.25s, opacity 0.4s linear;
 }
 
 .visible {
-visibility: visible;
-opacity: 1;
-transition: opacity 0.4s linear;
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.4s linear;
 }
-
-

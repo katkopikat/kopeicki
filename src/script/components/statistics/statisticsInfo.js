@@ -4,32 +4,44 @@ import translatePage from '../settings/language';
 
 export default function renderTextStatistics() {
   const main = document.querySelector('main');
-  const row = createElement('div', 'row');
-  const mainContainer = createElement('div', 'container-xxl transactions-container', row);
-  const textStatistic = createElement('div', 'row text-statistic-wrapper');
-  const charts = createElement('div', 'col-10 charts-wrapper');
+
+  const mainContainer = createElement(
+    'div',
+    'container-xxl statistics-container',
+    `<div class="row"></div>
+    <div class="row"></div>
+    <div class="row"></div>`,
+  );
+
+  const firstRow = mainContainer.querySelector('.row:first-child');
+  const secondRow = mainContainer.querySelector('.row:nth-child(2)');
+  const thirdRow = mainContainer.querySelector('.row:last-child');
+
+  const charts = createElement('div', 'col charts-wrapper');
 
   const accountTextWrapper = createElement(
     'div',
-    'col-10 account-statistic-wrapper statistic-container',
+    'col account-statistic-wrapper statistic-container',
     '<h1 data-i18n="accounts" class="statistic-h">Accounts</h1>',
   );
 
   const expensesTextWrapper = createElement(
     'div',
-    'col-5 expenses-statistic-wrapper statistic-container',
+    'col expenses-statistic-wrapper statistic-container',
     '<h1 data-i18n="expenses" class="statistic-h">Expenses</h1>',
   );
 
   const incomeTextWrapper = createElement(
     'div',
-    'col-5 income-statistic-wrapper statistic-container',
+    'col income-statistic-wrapper statistic-container',
     '<h1 data-i18n="incomes" class="statistic-h">Incomes</h1>',
   );
 
+  firstRow.append(accountTextWrapper);
+  secondRow.append(expensesTextWrapper, incomeTextWrapper);
+  thirdRow.append(charts);
+
   main.append(mainContainer);
-  row.append(textStatistic, charts);
-  textStatistic.append(accountTextWrapper, expensesTextWrapper, incomeTextWrapper);
 
   const infoStatistics = [
     {
