@@ -1,3 +1,27 @@
+.invisible {
+  display: none;
+}
+
+.dragging {
+  transform: translate(0, 0);
+
+  span {
+    opacity: 0;
+  }
+}
+
+.hovered {
+  .category-icon {
+    animation: shake 0.5s;
+    animation-iteration-count: infinite;
+  }
+
+  .icon-svg {
+    transition: all ease-in 0.15s;
+    background-position-y: 50px !important;
+  }
+}
+
 @keyframes delete {
   0% {
     transform: translateY(0px);
@@ -39,28 +63,5 @@
 
   100% {
     transform: translateY(0px);
-  }
-}
-.invisible {
-  display: none;
-}
-
-.dragging {
-  transform: translate(0, 0);
-
-  span {
-    opacity: 0;
-  }
-}
-
-.hovered {
-  .category-icon {
-    animation: shake 0.5s;
-    animation-iteration-count: infinite;
-  }
-
-  .icon-svg {
-    transition: all ease-in 0.15s;
-    background-position-y: 50px !important;
   }
 }

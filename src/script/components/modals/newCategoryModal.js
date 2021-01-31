@@ -4,6 +4,7 @@ import app from '../../app';
 import { getLanguage, getSound } from '../../utils/localStorage';
 import showPopover from '../popover';
 import translations from '../../data/translations';
+import pubsub from '../../pubsub';
 
 const isNewNameValid = (newName, type, btnElem, inputElem) => {
   const lang = getLanguage();
@@ -11,13 +12,13 @@ const isNewNameValid = (newName, type, btnElem, inputElem) => {
   const errorMessage = {
     en: 'Please fill out all the fields',
     ru: 'Пожалуйста, заполните все поля',
-    be: 'Калі ласка, запоўніце ўсе палі',
+    by: 'Калі ласка, запоўніце ўсе палі',
   };
 
   const errorExists = {
     en: 'This name already exists',
     ru: 'Такое имя уже существует',
-    be: 'Такое імя ўжо існуе',
+    by: 'Такое імя ўжо існуе',
   };
 
   if (!newName) {
@@ -48,24 +49,24 @@ export default function newCategoryModal(type) {
     accounts: {
       en: 'Do you have a new account?',
       ru: 'Хотите завести новый счет?',
-      be: 'Хочаце завесці новы рахунак?',
+      by: 'Хочаце завесці новы рахунак?',
     },
     expenses: {
       en: 'What else will you spend money on?',
       ru: 'На что еще будем тратить деньги?',
-      be: 'На што яшчэ будзем траціць грошы?',
+      by: 'На што яшчэ будзем траціць грошы?',
     },
     income: {
       en: 'Where else will you get money from?',
       ru: 'Где еще будем брать деньги?',
-      be: 'Адкуль яшчэ будзем браць грошы?',
+      by: 'Адкуль яшчэ будзем браць грошы?',
     },
   };
 
   const saveBtnOptions = {
     en: 'Create!',
     ru: 'Создать!',
-    be: 'Стварыць!',
+    by: 'Стварыць!',
   };
 
   const numOfItems = {
@@ -137,22 +138,22 @@ export default function newCategoryModal(type) {
       };
 
       if (type === 'accounts') {
-        newCategoryItem.amount = Number(wrap.querySelector('.modal-body__amount').innerText);
+        newCategoryItem.amount = Number(wrap.querySelector('.modal-body__amount').value);
 
         console.log(newCategoryItem);
         await app.addUserAccount(newCategoryItem);
-        app.renderTransactionsPage();
+        pubsub.publish('navigateTo', '/');
       } else if (type === 'expenses') {
         await app.addUserExpense(newCategoryItem);
-        app.renderTransactionsPage();
+        pubsub.publish('navigateTo', '/');
       } else {
         await app.addUserIncome(newCategoryItem);
-        app.renderTransactionsPage();
+        pubsub.publish('navigateTo', '/');
       }
 
       if (getSound() === 'on') {
         const audioCategory = new Audio();
-        audioCategory.src = '/src/assets/sounds/category.mp3';
+        audioCategory.src = 'sounds/category.mp3';
         audioCategory.play();
       }
 

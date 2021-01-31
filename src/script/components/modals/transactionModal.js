@@ -15,6 +15,10 @@ import pubsub from '../../pubsub';
  *    to: 'Eating out',
  *  };
  */
+function preloader() {
+  const preloaderEl = document.getElementById('preloader');
+  preloaderEl.classList.toggle('visible');
+}
 
 function preCreateSelect(options) {
   const isFromSelect = options.class.includes('from');
@@ -44,12 +48,12 @@ export default function transactionModal(options) {
     expenses: {
       en: 'Spent',
       ru: 'Потратил',
-      be: 'Патраціў',
+      by: 'Патраціў',
     },
     income: {
       en: 'Earned',
       ru: 'Заработал',
-      be: 'Зарабіў',
+      by: 'Зарабіў',
     },
   };
 
@@ -57,34 +61,34 @@ export default function transactionModal(options) {
     expenses: {
       en: 'Spent it!',
       ru: 'Потрачено!',
-      be: 'Патрачано!',
+      by: 'Патрачано!',
     },
     income: {
       en: 'Received!',
       ru: 'Получено!',
-      be: 'Атрымаў!',
+      by: 'Атрымаў!',
     },
   };
 
   const descriptionLabels = {
     en: 'Do you have anything to say?',
     ru: 'Как-то прокомментируем?',
-    be: 'Неяк пракамэнтуем?',
+    by: 'Неяк пракамэнтуем?',
   };
 
-  const from = { en: 'from', ru: 'из', be: 'з' };
-  const on = { en: 'on', ru: 'на', be: 'на' };
+  const from = { en: 'from', ru: 'из', by: 'з' };
+  const on = { en: 'on', ru: 'на', by: 'на' };
 
   const errorMessage = {
     en: 'Please fill out all the fields',
     ru: 'Пожалуйста, заполните все поля',
-    be: 'Калі ласка, запоўніце ўсе палі',
+    by: 'Калі ласка, запоўніце ўсе палі',
   };
 
   const invalidSum = {
     en: 'Transaction amount must not be equal to 0',
     ru: 'Сумма операции не должна быть нулевой',
-    be: 'Сума аперацыі павінна быць ненулявой',
+    by: 'Сума аперацыі павінна быць ненулявой',
   };
 
   const isExpense = options.type === 'expenses';
@@ -116,7 +120,7 @@ export default function transactionModal(options) {
   createSelect(wrap.querySelector('.modal-body__title'), {
     class: 'currency-list',
     placeholder: app.user.currency.toUpperCase(),
-    list: api.currencyList,
+    list: [...['USD', 'EUR', 'RUB', 'BYN', 'UAH', 'KZT'], ...api.currencyList],
     isTranslatable: false,
   });
 
@@ -168,6 +172,7 @@ export default function transactionModal(options) {
     } else {
       getExchangeData(moneyAmountEl.value, currencyFrom)
         .then((exchange) => {
+          preloader();
           tx.amount = exchange;
 
           const toCurrency = app.user.currency.toUpperCase();
@@ -180,15 +185,15 @@ export default function transactionModal(options) {
           app.saveTransaction(tx).then((result) => {
             console.log(result);
             pubsub.publish('renderTransactionsPage');
-            // app.renderTransactionsPage();
           });
         });
 
       modal.hide();
+      setTimeout(preloader, 1500);
 
       if (getSound() === 'on') {
         const sound = new Audio();
-        sound.src = `/src/assets/sounds/${options.type}.mp3`;
+        sound.src = `sounds/${options.type}.mp3`;
         sound.play();
       }
     }

@@ -2,7 +2,6 @@
 /* eslint-disable no-param-reassign */
 import { Chart } from 'chart.js';
 import createElement from '../../utils/create';
-import app from '../../app';
 import { moveToggle } from '../../utils/DOM';
 import { getLanguage } from '../../utils/localStorage';
 import translatePage from '../settings/language';
@@ -16,10 +15,11 @@ const monthBe = ['Студз', 'Люты', 'Сак', 'Крас', 'Май', 'Чэ
 let choosenYear = new Date().getFullYear();
 const yearsList = [];
 let summaryObj = {};
-let history;
+let dataHistory;
 
 function renderBarHTML() {
   const barWrapperDiv = createElement('div', 'bar-wrapper');
+  const barHeading = createElement('h3', 'heading heading-bar');
   const barCanvas = createElement('canvas', 'bar-container');
   const barTypeBtnsWrapper = createElement(
     'div',
@@ -40,7 +40,7 @@ function renderBarHTML() {
   <span data-i18n="Income">Income</span>`;
 
   document.querySelector('.charts-wrapper').append(barWrapperDiv);
-  barWrapperDiv.append(barCanvas, barYearsBtnsWrapper, barTypeBtnsWrapper);
+  barWrapperDiv.append(barHeading, barCanvas, barYearsBtnsWrapper, barTypeBtnsWrapper);
 
   barTypeBtnsWrapper.insertAdjacentHTML(
     'beforeend',
@@ -49,8 +49,27 @@ function renderBarHTML() {
   );
 }
 
+function renderHeading() {
+  const lang = getLanguage();
+  const barHeading = document.querySelector('.heading-bar');
+  const type = typeTransaction;
+  if (lang === 'ru') {
+    barHeading.innerHTML = `Суммарные <span data-i18n="${type}">${type}</span> за ${choosenYear} год.`;
+  } else if (lang === 'be') {
+    barHeading.innerHTML = `Сумарны <span data-i18n="${type}">${type}</span> за ${choosenYear} год.`;
+  } else {
+    barHeading.innerHTML = `Total <span data-i18n="${type}">${type}</span> for the ${choosenYear} year.`;
+  }
+}
+
 function setBarColor() {
   return new Array(12).fill(typeTransaction === 'expenses' ? 'rgba(50, 124, 235, 1)' : 'rgba(75, 192, 192, 1)');
+}
+
+function setLegendFontSize() {
+  if (window.innerWidth <= 500) return 8;
+  if (window.innerWidth <= 700) return 10;
+  return 12;
 }
 
 function setMonthLang() {
@@ -66,7 +85,7 @@ function setMonthLang() {
 }
 
 function countYears() {
-  history.forEach((trans) => {
+  dataHistory.forEach((trans) => {
     const temp = (new Date(trans.date)).getFullYear();
     if (!yearsList.includes(temp)) {
       yearsList.push(temp);
@@ -93,11 +112,6 @@ function createYearsBtns() {
     });
 }
 
-async function getHistory() {
-  const transactions = await app.api.getTransactions();
-  history = [...transactions];
-}
-
 function clearObject() {
   summaryObj = {
     0: 0,
@@ -118,7 +132,7 @@ function clearObject() {
 function filterTransaction() {
   clearObject();
 
-  const filtredHistory = history.filter((transaction) => {
+  const filtredHistory = dataHistory.filter((transaction) => {
     const trYear = new Date(transaction.date).getFullYear();
     // eslint-disable-next-line eqeqeq
     return transaction.type === typeTransaction && trYear == choosenYear;
@@ -170,6 +184,7 @@ function buttonsYearsListeners() {
         barChart.destroy();
         filterTransaction();
         generateBar();
+        renderHeading();
       }
     });
   });
@@ -183,6 +198,7 @@ function generateBar() {
       labels: setMonthLang(),
 
       datasets: [{
+        minBarLength: 2,
         label: `${typeTransaction}`,
         data: Object.values(summaryObj),
         backgroundColor: setBarColor(),
@@ -192,17 +208,31 @@ function generateBar() {
     },
     options: {
       title: {
-        display: true,
+        display: false,
         text: `${typeTransaction} for the ${choosenYear} year`,
       },
       scales: {
         yAxes: [{
           ticks: {
             beginAtZero: true,
+            fontSize: setLegendFontSize(),
+            callback(value) {
+              if (Number(value) >= 1000) {
+                return `${String(value).slice(0, -3)}K`;
+              }
+              return value;
+            },
+          },
+        }],
+        xAxes: [{
+          ticks: {
+            fontSize: setLegendFontSize(),
           },
         }],
       },
-
+      legend: {
+        display: false,
+      },
     },
   });
 }
@@ -215,9 +245,30 @@ function createBarContent() {
   buttonsYearsListeners();
   filterTransaction();
   generateBar();
+  renderHeading();
   translatePage();
+  mediaQuerySizes();
 }
 
-export default function renderBarChart() {
-  getHistory().then(() => createBarContent());
+export default function renderBarChart(data) {
+  dataHistory = data;
+  createBarContent();
+}
+
+/* Settings for responsive or when theme is changing */
+function trackWindowSize(e) {
+  if (e.matches) {
+    barChart.destroy();
+    generateBar();
+  }
+}
+
+function mediaQuerySizes() {
+  const breakpoints = ['(max-width: 700px)', '(max-width: 500px)', '(min-width: 700px)', '(min-width: 50px)'];
+
+  breakpoints.forEach((it) => {
+    const mediaQuery = window.matchMedia(it);
+    mediaQuery.addListener(trackWindowSize);
+    trackWindowSize(mediaQuery);
+  });
 }
