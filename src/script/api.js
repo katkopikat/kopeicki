@@ -54,10 +54,10 @@ class ApiClient {
     }
     const response = await fetch(`${this.apiUrl}${route}`, reqParams);
     if (response.ok) {
-      console.log('refresh token ok: ', response);
+      // console.log('refresh token ok: ', response);
       return response;
     }
-    console.log('refresh token !ok: ', response);
+    // console.log('refresh token !ok: ', response);
     this.logout();
     return response;
   }
@@ -78,13 +78,13 @@ class ApiClient {
       reqParams.headers.Authorization = `${this.token}`; // `Bearer ${this.token}`
     }
     const response = await fetch(`${this.apiUrl}${route}`, reqParams);
-    console.log('first response', response);
+    // console.log('first response', response);
     if (!response.ok) {
       const result = await this.getNewTokens('POST', '/users/token', { email: this.email, userId: this.userId }, auth);
-      console.log('second response', result);
+      // console.log('second response', result);
       if (!result.ok) {
         const content = await result.json();
-        console.log('message from content', content);
+        // console.log('message from content', content);
         // window.history.pushState(null, null, '/login');
         // renderAuthorizationPage();
         // document.getElementById('forcostil').click();
@@ -92,11 +92,11 @@ class ApiClient {
         return undefined;
         // throw new Error('sahbnsaf,fffas');
       }
-      console.log(result);
+      // console.log(result);
       const content = await result.json();
       this.setLocalStorage(content.userId, content.email, content.token, content.refreshToken);
       const responseAfterRefresh = await this.request(method, route, body, auth);
-      console.log('after refresh', responseAfterRefresh);
+      // console.log('after refresh', responseAfterRefresh);
       return responseAfterRefresh;
     }
     return response.json();

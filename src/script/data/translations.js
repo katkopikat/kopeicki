@@ -74,6 +74,9 @@ export default {
       'December',
     ],
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    transactionHistory: 'Transaction history',
+    All: 'All',
+    allCategories: 'ALL CATEGORIES',
   },
   ru: {
     Settings: 'Настройки',
@@ -152,6 +155,9 @@ export default {
       'Декабря',
     ],
     monthsShort: ['Янв', 'Фев', 'Март', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сент', 'Окт', 'Нояб', 'Дек'],
+    transactionHistory: 'История транзакций',
+    All: 'Все',
+    allCategories: 'ВСЕ КАТЕГОРИИ',
   },
   be: {
     Settings: 'Настройкі',
@@ -230,5 +236,8 @@ export default {
       'Снежня',
     ],
     monthsShort: ['Студз', 'Люты', 'Сак', 'Крас', 'Май', 'Чэрв', 'Ліп', 'Жнів', 'Вер', 'Кастр', 'Ліст', 'Снеж'],
+    transactionHistory: 'Гісторыя транзакцый',
+    All: 'Усе',
+    allCategories: 'УСЕ КАТЭГОРЫІ',
   },
 };

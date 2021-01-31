@@ -13,19 +13,19 @@ class App {
     // await this.login('user2@rsclone.com', 'test');
     // await this.register('testReg5@rsclone.com', 'test');
     await this.checkAuth();
-    console.log('from init: ', this.user);
+    // console.log('from init: ', this.user);
   }
 
   async checkAuth() {
     try {
       this.user = await this.api.getUser();
       this.transactions = await this.getTransactions();
-      console.log(this.api);
-      console.log(this.user);
-      console.log(this.transactions);
-      console.log(this.transactionsSummary);
+      // console.log(this.api);
+      // console.log(this.user);
+      // console.log(this.transactions);
+      // console.log(this.transactionsSummary);
     } catch (e) {
-      console.error(e.message);
+      // console.error(e.message);
     }
   }
 
@@ -39,11 +39,11 @@ class App {
       await this.api.login(email, password);
       this.user = await this.api.getUser();
       this.transactions = await this.getTransactions();
-      console.log(this.user);
-      console.log(this);
-      console.log('login success');
+      //console.log(this.user);
+      //console.log(this);
+      //console.log('login success');
     } catch (e) {
-      console.error(e.message);
+      //console.error(e.message);
     }
   }
 
@@ -52,7 +52,7 @@ class App {
       await this.api.registerUser(email, password);
       await this.login(email, password);
     } catch (e) {
-      console.error(e.message);
+     // console.error(e.message);
     }
   }
 
@@ -81,7 +81,7 @@ class App {
       if (!txsByMonth[yearMonth]) txsByMonth[yearMonth] = [];
       txsByMonth[yearMonth].push(tx);
     });
-    console.log('months: ', Object.keys(txsByMonth));
+    //console.log('months: ', Object.keys(txsByMonth));
     const txsThisMonth = txsByMonth[monthKey(new Date())] || [];
     const monthSummary = {
       expenses: new Map(),
@@ -95,7 +95,7 @@ class App {
       expensesTotal: [...monthSummary.expenses.values()].reduce((acc, x) => acc + x, 0),
       incomeTotal: [...monthSummary.income.values()].reduce((acc, x) => acc + x, 0),
     });
-    console.log('this month: ', monthSummary);
+    //console.log('this month: ', monthSummary);
     this.transactionsSummary = monthSummary;
   }
 
