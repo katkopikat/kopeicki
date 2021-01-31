@@ -5,6 +5,7 @@ import renderHistory from './history';
 import translatePage from '../settings/language';
 import app from '../../app';
 import pubsub from '../../pubsub';
+import { formatNumber } from '../../utils/helpers';
 
 function preloader() {
   const preloaderEl = document.getElementById('preloader');
@@ -26,7 +27,7 @@ export default async function renderTransactionsPage() {
       <h4 data-i18n="accounts">Accounts</h4>
       <div>
         <p data-i18n="rest">Rest:</p>
-        <h5>${app.transactionsSummary.expensesTotal}</h5>
+        <h5>${formatNumber(app.transactionsSummary.expensesTotal)}</h5>
       </div>
       </div>`,
     );
@@ -37,7 +38,7 @@ export default async function renderTransactionsPage() {
       <h4 data-i18n="expenses">Expenses</h4>
       <div>
         <p data-i18n="this month">This month:</p>
-        <h5>-${app.transactionsSummary.expensesTotal}</h5>
+        <h5>-${formatNumber(app.transactionsSummary.expensesTotal)}</h5>
       </div>
       </div>`,
     );
@@ -48,7 +49,7 @@ export default async function renderTransactionsPage() {
       <h4 data-i18n="income">Income</h4>
       <div>
         <p data-i18n="this month">This month:</p>
-        <h5>+${app.transactionsSummary.incomeTotal}</h5>
+        <h5>+${formatNumber(app.transactionsSummary.incomeTotal)}</h5>
       </div>
       </div>`,
     );
