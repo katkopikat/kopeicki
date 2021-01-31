@@ -194,3 +194,9 @@
      font-size: 0.7rem !important;
  }
 }
+
+@media(max-width:500px){
+  .table-wrapper ul li label{
+    padding: 0px 20px 0px 25px;
+  }
+}

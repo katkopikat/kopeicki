@@ -52,7 +52,7 @@ export default function renderTextStatistics() {
     {
       name: 'mostExpensesCategories',
       class: 'info_expenses',
-      data: '1000',
+      data: 'Продукты, Транспорт, Дом',
     },
     {
       name: 'monthExpenses',
@@ -95,7 +95,7 @@ export default function renderTextStatistics() {
       data: '1000',
     },
     {
-      name: 'allTineIncome',
+      name: 'allTimeIncome',
       class: 'info_income',
       data: '1000',
     },
@@ -107,7 +107,8 @@ export default function renderTextStatistics() {
         'p',
         'statistic-text',
         `<span data-i18n="stat${i}"></span>
-        <span class="${info.class}">${info.data} ${app.user.currency.toUpperCase()}.</span>`,
+        <span class="${info.class}">${info.data}
+        ${info.name === 'mostExpensesCategories' ? '' : app.user.currency.toUpperCase()}.</span>`,
       );
 
       if (info.class === 'info_accounts') {
@@ -121,13 +122,4 @@ export default function renderTextStatistics() {
   }
   renderInfo();
   translatePage();
-
-  /* Text translation when the language changes.
-     Whaiting rendering menu and change language on the localStorage. */
-  window.addEventListener('DOMContentLoaded', () => {
-    document.querySelector('.select__list').addEventListener('click', () => {
-      document.querySelectorAll('.statistic-text').forEach((el) => el.remove());
-      setTimeout(renderInfo, 0);
-    });
-  });
 }
