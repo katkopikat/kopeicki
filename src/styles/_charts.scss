@@ -192,6 +192,12 @@ thead, tbody, tfoot, tr, td, th {
    }
 }
 
+@media(max-width: 768px){
+    .transactions-container .row {
+        flex-direction: row;
+    }
+}
+
 @media(max-width: 700px){
      .wrapper-doughnut, .bar-wrapper {
         padding: 1rem 1.2rem;
@@ -221,21 +227,41 @@ thead, tbody, tfoot, tr, td, th {
         margin-bottom: 0.4rem;
         margin-top: 0.4rem;
     }
+
+    .bar-container{
+        padding: 0.5rem;
+    }
+
     .wrapper-doughnut, .bar-wrapper {
         padding: 0.5rem 0rem;
+        align-items: center;
+
         .toggle {
             transform: scale(0.5);
             margin: 0;
             margin-top: -0.4rem;
+            margin-bottom: 0.5rem !important;
         }
         .heading{
-            padding: 0;
+            padding-top: 0.5rem 0 0 0;
             font-size: 0.6rem;
         }
     }
 
+    .bar-wrapper {
+        padding: 0px 0rem 0px 1rem;
+    } 
+
     .btns-year-container{
         transform: scale(0.5); 
+    }
+
+    .statistic-text {
+        font-size: 0.8rem;
+    
+        span {
+            font-size:1rem;
+        }
     }
 }
 
@@ -250,10 +276,12 @@ thead, tbody, tfoot, tr, td, th {
         padding: 0.6rem;
 
         .toggle {
-            transform: scale(0.5);
+            transform: scale(0.4);
             margin: 0;
             margin-top: -0.4rem;
             align-items: center;
+           
+
         }
 
 

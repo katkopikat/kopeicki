@@ -4,7 +4,7 @@
   height: 6px;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: var(--accounts);
+  background-color: var(--gray);
   border-radius: 20px;
 }
 ::-webkit-scrollbar-corner {
@@ -12,19 +12,22 @@
 }
 
 .table-wrapper{
+
+  .heading {
+    padding: 0.5rem 0.8rem 1rem;
+    color: var(--light);
+  }
     .btns-table-container{
-      display: flex;
-      margin-top: -17px;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
       }
       
       .btns-table-container ul{
+        display: flex;
         margin: 0 !important;
         padding: 0 !important;
       }
       
       ul li{
-        color: #AAAAAA;
         display: block;
         position: relative;
       }
@@ -39,8 +42,9 @@
         position: relative;
         font-weight: 400;
         font-size: 0.9rem;
-        padding: 0px 0px 0px 30px;
-        margin: 11px auto;
+        padding: 0px 30px 0px 30px;
+        color: var(--gray);
+        // margin: 11px auto;
         // height: 0px;
         z-index: 9;
         cursor: pointer;
@@ -86,6 +90,21 @@
       input[type=radio]:checked ~ label{
         color: var(--gray)
       }      
+
+      .category-list{
+        margin-bottom: 1rem;
+
+        .select__item {
+          color: black;
+        }
+      }
+
+      .select__value {
+        color: #f2c200;
+        opacity: 1;
+    }
+      
+
 }
 
 .table {
@@ -124,6 +143,8 @@
     border-color: white;
     border-style: solid;
     border-width: 0;
+    z-index: 1;
+    padding-bottom: 1rem;
   }
 
   .cell {
@@ -131,10 +152,13 @@
          opacity: 0.6;
       }
       &__category-income{
-          background-color: var(--income-alpha);
+          // background-color: var(--income-alpha);
+          background-color: rgb(32 234 230 / 60%);
+          
       }
       &__category-expense{
-          background-color: var(--expenses-alpha);
+          // background-color: var(--expenses-alpha);
+          background-color: #2d72ff8c
       }
       &__account{
           opacity: 0.6;
