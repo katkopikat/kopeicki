@@ -48,6 +48,10 @@ export default function renderTextStatistics(stat) {
   const lang = getLanguage();
   const dictionary = (Object.keys(translations[lang]));
   const thisYear = String(new Date().getFullYear());
+  const { mostSpend } = stat;
+  if (!mostSpend.length) {
+    mostSpend.push('nothing yet');
+  }
   const infoStatistics = [
     {
       name: 'summaryAccount',
@@ -57,7 +61,7 @@ export default function renderTextStatistics(stat) {
     {
       name: 'mostExpensesCategories',
       class: 'info_expenses',
-      data: (stat.mostSpend.map((it) => (dictionary.includes(it) ? translations[lang][it] : it))).join(', '),
+      data: (mostSpend.map((it) => (dictionary.includes(it) ? translations[lang][it] : it))).join(', '),
     },
     {
       name: 'monthExpenses',
@@ -67,17 +71,17 @@ export default function renderTextStatistics(stat) {
     {
       name: 'averageMonthExpenses',
       class: 'info_expenses',
-      data: formatNumber(stat.avgMonth.expenses), // '1000',
+      data: formatNumber(stat.avgMonth?.expenses || 0), // '1000',
     },
     {
       name: 'averageYearExpenses',
       class: 'info_expenses',
-      data: formatNumber(stat.perYear.expenses.avgYear),
+      data: formatNumber(stat.perYear?.expenses?.avgYear || 0),
     },
     {
       name: 'allTimeExpenses',
       class: 'info_expenses',
-      data: formatNumber(stat.perYear.expenses.total),
+      data: formatNumber(stat.perYear?.expenses?.total || 0),
     },
     {
       name: 'monthIncome',
@@ -87,22 +91,22 @@ export default function renderTextStatistics(stat) {
     {
       name: 'averageMonthIncome',
       class: 'info_income',
-      data: formatNumber(stat.avgMonth.income),
+      data: formatNumber(stat.avgMonth?.income || 0),
     },
     {
       name: 'yearIncome',
       class: 'info_income',
-      data: formatNumber(stat.perYear.income.years[thisYear]),
+      data: formatNumber(stat.perYear?.income?.years[thisYear] || 0),
     },
     {
       name: 'averageYearIncome',
       class: 'info_income',
-      data: formatNumber(stat.perYear.income.avgYear),
+      data: formatNumber(stat.perYear?.income?.avgYear || 0),
     },
     {
       name: 'allTimeIncome',
       class: 'info_income',
-      data: formatNumber(stat.perYear.income.total),
+      data: formatNumber(stat.perYear?.income?.total || 0),
     },
   ];
 
