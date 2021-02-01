@@ -17,12 +17,7 @@ const router = () => {
 
   document.querySelector('main').innerHTML = '';
 
-  try {
-    match.component();
-  } catch (e) {
-    console.log(e.message);
-  }
-  // match.component();
+  match.component();
 };
 
 export default router;

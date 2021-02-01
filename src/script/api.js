@@ -1,6 +1,6 @@
-// import renderAuthorizationPage from './components/authorization/authorization';
 import getCurrencylist from './components/settings/currencyList';
 import pubsub from './pubsub';
+// import pubsub from './pubsub';
 
 class ApiClient {
   constructor(apiUrl) {
@@ -17,7 +17,7 @@ class ApiClient {
     this.currencyList = this.currencyList.sort();
   }
 
-  setLocalStorage(userId, email, token, refreshToken) {
+  async setLocalStorage(userId, email, token, refreshToken) {
     Object.assign(this, {
       userId, email, token, refreshToken,
     });
@@ -37,6 +37,13 @@ class ApiClient {
     localStorage.removeItem('email');
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
+  }
+
+  CheckCurrentUser() {
+    if (this.userId && this.token && this.refreshToken) {
+      return true;
+    }
+    return false;
   }
 
   async getNewTokens(method = 'POST', route = '/users/token', body = false, auth = true) {
@@ -60,7 +67,8 @@ class ApiClient {
       return response;
     }
     // console.log('refresh token !ok: ', response);
-    this.logout();
+    // this.logout();
+    pubsub.publish('logout');
     return response;
   }
 
@@ -75,28 +83,35 @@ class ApiClient {
     if (body) {
       reqParams.body = JSON.stringify(body);
     }
-    if (auth && (this.token)) {
+    // console.log('this from request', this);
+    if (auth && !(this.token == null)) {
       reqParams.withCredentials = true;
-      reqParams.headers.Authorization = `${this.token}`; // `Bearer ${this.token}`
+      reqParams.headers.Authorization = `${this.token}`;
+    }
+    if ((this.CheckCurrentUser() === false) && (auth === true)) {
+      // pubsub.publish('navigateTo', '/login');
+      return undefined;
     }
     const response = await fetch(`${this.apiUrl}${route}`, reqParams);
     // console.log('first response', response);
-    if (!response.ok) {
+    if ((response.ok === false) && (this.CheckCurrentUser() === true)) {
       const result = await this.getNewTokens('POST', '/users/token', { email: this.email, userId: this.userId }, auth);
       // console.log('second response', result);
       if (!result.ok) {
-        await result.json();
+        // const content = await result.json();
         // console.log('message from content', content);
-        // window.history.pushState(null, null, '/login');
-        // renderAuthorizationPage();
-        // document.getElementById('forcostil').click();
-        pubsub.publish('navigateTo', '/login');
+        // pubsub.publish('navigateTo', '/login');
+        // return content;
         return undefined;
-        // throw new Error('sahbnsaf,fffas');
       }
       // console.log(result);
       const content = await result.json();
-      this.setLocalStorage(content.userId, content.email, content.token, content.refreshToken);
+      await this.setLocalStorage(
+        content.userId,
+        content.email,
+        content.token,
+        content.refreshToken,
+      );
       const responseAfterRefresh = await this.request(method, route, body, auth);
       // console.log('after refresh', responseAfterRefresh);
       return responseAfterRefresh;
@@ -106,12 +121,13 @@ class ApiClient {
 
   async login(email, password) {
     const result = await this.request('POST', '/users/login', { email, password }, false);
-    const { userId, token, refreshToken } = result;
-    if (userId) {
-      this.setLocalStorage(userId, email, token, refreshToken);
+    if (result.userId && result.token && result.refreshToken && result.email) {
+      const { userId, token, refreshToken } = result;
+      await this.setLocalStorage(userId, email, token, refreshToken);
       return true;
     }
-    throw new Error(result.message);
+    // throw new Error(result.message);
+    return result.message;
   }
 
   async registerUser(email, password) {
@@ -119,7 +135,8 @@ class ApiClient {
     if (result.user) {
       return true;
     }
-    throw new Error(result.message);
+    // throw new Error(result.message);
+    return result.message;
   }
 
   async getTransactionsStats() {
@@ -147,7 +164,8 @@ class ApiClient {
   }
 
   async getUser() {
-    return this.request('GET', '/users/current');
+    const result = await this.request('GET', '/users/current');
+    return result;
   }
 
   async updateUser(userData) {

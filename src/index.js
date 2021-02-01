@@ -2,11 +2,7 @@ import './styles/main.scss';
 import 'bootstrap';
 
 import router from './script/router';
-// import renderAuthorizationPage from './script/components/authorization/authorization';
 import toggleSettings from './script/components/settings/settings';
-// import renderHistoryPage from './script/components/history/history';
-// import renderStatisticsPage from './script/components/statistics/statistics';
-// import renderTransactionsPage from './script/components/transactions/transactions';
 import navSlideIn from './script/components/navbar';
 import app from './script/app';
 import pubsub from './script/pubsub';
@@ -14,10 +10,10 @@ import hotKeys from './script/utils/hotKeys';
 import './assets/images/favicon.png';
 
 const navigateTo = (url) => {
-  // if (app.user) {
-  window.history.pushState(null, null, url);
-  router();
-  // }
+  if (app.user || url.includes('login')) {
+    window.history.pushState(null, null, url);
+    router();
+  }
 };
 
 toggleSettings();
@@ -38,9 +34,17 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   pubsub.subscribe('navigateTo', navigateTo);
+
   app.init().then(router);
-  // router();
 });
+
+document.getElementById('logout').addEventListener('click', (e) => {
+  e.preventDefault();
+  app.logout();
+  navigateTo('/login');
+});
+
+pubsub.subscribe('logout', () => app.logout);
 
 hotKeys();
 navSlideIn();

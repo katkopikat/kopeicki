@@ -1,4 +1,5 @@
 import api from './api';
+// import pubsub from './pubsub';
 
 class App {
   constructor(apiInstance) {
@@ -19,11 +20,17 @@ class App {
   async checkAuth() {
     try {
       this.user = await this.api.getUser();
-      this.transactions = await this.getTransactions();
-      // console.log(this.api);
-      // console.log(this.user);
-      // console.log(this.transactions);
-      // console.log(this.transactionsSummary);
+      if (this.user) {
+        this.transactions = await this.getTransactions();
+        document.getElementById('profile-name').textContent = this.api.email;
+      } else {
+        const isLogout = this.api.CheckCurrentUser();
+        if (isLogout === false) {
+          this.logout();
+        }
+        console.log('navigateTo', '/login');
+        window.history.pushState(null, null, '/login');
+      }
     } catch (e) {
       // console.error(e.message);
     }
@@ -31,28 +38,42 @@ class App {
 
   logout() {
     this.api.logout();
+    this.user = null;
+    this.transactions = null;
+    this.transactionsSummary = null;
+    document.getElementById('profile-name').textContent = '';
   }
 
   async login(email, password) {
     try {
       // await this.api.login('user2@rsclone.com', 'test');
-      await this.api.login(email, password);
-      this.user = await this.api.getUser();
-      this.transactions = await this.getTransactions();
+      const result = await this.api.login(email, password);
+      if (result === true) {
+        this.user = await this.api.getUser();
+        this.transactions = await this.getTransactions();
+        document.getElementById('profile-name').textContent = this.api.email;
+        return true;
+      }
       // console.log(this.user);
       // console.log(this);
       // console.log('login success');
+      return result;
     } catch (e) {
       // console.error(e.message);
+      return e;
     }
   }
 
   async register(email, password) {
     try {
-      await this.api.registerUser(email, password);
-      await this.login(email, password);
+      const result = await this.api.registerUser(email, password);
+      if (result === true) {
+        await this.login(email, password);
+      }
+      return result;
     } catch (e) {
       // console.error(e.message);
+      return e;
     }
   }
 
