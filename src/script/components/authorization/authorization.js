@@ -3,15 +3,9 @@ import pubsub from '../../pubsub';
 import createElement from '../../utils/create';
 import createSelect from '../../utils/select';
 
-const emailValidation = (email) => {
-  const isValid = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/.test(email);
-  return isValid;
-};
+const emailValidation = (email) => /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/.test(email);
 
-const passwordValidation = (password) => {
-  const isValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/.test(password);
-  return isValid;
-};
+const passwordValidation = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/.test(password);
 
 const login = async () => {
   const email = document.getElementById('log-in-email').value;
