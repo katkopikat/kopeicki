@@ -34,6 +34,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   pubsub.subscribe('navigateTo', navigateTo);
+  pubsub.subscribe('logout', () => app.logout);
 
   app.init().then(router);
 });
@@ -43,8 +44,6 @@ document.getElementById('logout').addEventListener('click', (e) => {
   app.logout();
   navigateTo('/login');
 });
-
-pubsub.subscribe('logout', () => app.logout);
 
 hotKeys();
 navSlideIn();

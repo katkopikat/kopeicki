@@ -189,6 +189,8 @@ button:focus {
   &__log-out {
     color: var(--gray);
     text-decoration: none;
+    transition: all 1s;
+    opacity: 0;
 
     &:hover {
       color: var(--light);
