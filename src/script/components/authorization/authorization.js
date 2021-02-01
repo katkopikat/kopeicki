@@ -20,6 +20,7 @@ const register = async () => {
   const email = document.getElementById('sign-up-email').value;
   const password = document.getElementById('sign-up-password').value;
   const confirmPassword = document.getElementById('sign-up-confirm-password').value;
+  const currency = document.querySelector('.currency-list .select__value').innerText;
 
   if (password !== confirmPassword) {
     console.log('passwords not equal');
@@ -34,7 +35,7 @@ const register = async () => {
     return false;
   }
   console.log('all done', password);
-  const result = await app.register(email, password);
+  const result = await app.register(email, password, currency);
 
   console.log('register res from auth', result);
   return result;
