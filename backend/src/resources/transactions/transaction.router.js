@@ -56,8 +56,10 @@ router.route('/:id')
   )
   .delete(
     asyncHandler(async (req, res) => {
-      const deletedTxId = await Transaction.findByIdAndDelete(req.params.id).exec();
-      if (deletedTxId) {
+      const deletedTx = await Transaction.findByIdAndDelete(req.params.id).exec();
+      if (deletedTx) {
+        deletedTx.amount = -deletedTx.amount;
+        await updateAccount(deletedTx);
         res.json(req.params.id);
       } else {
         res.sendStatus(404);
