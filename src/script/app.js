@@ -22,6 +22,7 @@ class App {
       this.user = await this.api.getUser();
       if (this.user) {
         this.transactions = await this.getTransactions();
+        document.getElementById('profile-name').textContent = this.api.email;
       } else {
         const isLogout = this.api.CheckCurrentUser();
         if (isLogout === false) {
@@ -40,6 +41,7 @@ class App {
     this.user = null;
     this.transactions = null;
     this.transactionsSummary = null;
+    document.getElementById('profile-name').textContent = '';
   }
 
   async login(email, password) {
@@ -49,6 +51,7 @@ class App {
       if (result === true) {
         this.user = await this.api.getUser();
         this.transactions = await this.getTransactions();
+        document.getElementById('profile-name').textContent = this.api.email;
         return true;
       }
       // console.log(this.user);
