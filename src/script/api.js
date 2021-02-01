@@ -1,4 +1,5 @@
 import getCurrencylist from './components/settings/currencyList';
+import pubsub from './pubsub';
 // import pubsub from './pubsub';
 
 class ApiClient {
@@ -64,7 +65,8 @@ class ApiClient {
       return response;
     }
     // console.log('refresh token !ok: ', response);
-    this.logout();
+    // this.logout();
+    pubsub.publish('logout');
     return response;
   }
 
@@ -94,10 +96,11 @@ class ApiClient {
       const result = await this.getNewTokens('POST', '/users/token', { email: this.email, userId: this.userId }, auth);
       // console.log('second response', result);
       if (!result.ok) {
-        const content = await result.json();
+        // const content = await result.json();
         // console.log('message from content', content);
         // pubsub.publish('navigateTo', '/login');
-        return content;
+        // return content;
+        return undefined;
       }
       // console.log(result);
       const content = await result.json();

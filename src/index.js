@@ -44,5 +44,7 @@ document.getElementById('logout').addEventListener('click', (e) => {
   navigateTo('/login');
 });
 
+pubsub.subscribe('logout', () => app.logout);
+
 hotKeys();
 navSlideIn();
