@@ -72,11 +72,11 @@ export default function renderAuthorizationPage() {
         <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
       </svg>
     </div>
-    <button class="btn" id="submit" data-auth="sign in">Log in</button>
+    <button class="btn" id="submit" data-auth="sign in">Sign in</button>
   </div>`;
 
   const leftSideSignUp = `<h2>Welcome back!</h2>
-  <p>To start counting copecks with us please login with your personal info</p>`;
+  <p>To start counting copecks with us please login with your credential</p>`;
 
   const rightSideSignUp = `
   <div class="img-wrapper gif-coin">
@@ -106,11 +106,11 @@ export default function renderAuthorizationPage() {
       </svg>
     </div>
     <div class="form-group two-col">
-      <label for="formFile" class="form-file">
-        <img src="icons/input-file.svg" alt="">
-        <span>Profile photo</span>
-      </label>
-      <input class="file-input" id="formFile" type="file">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash" viewBox="0 0 16 16">
+        <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+        <path d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2H3z"/>
+      </svg>
+      <span id="currency-list">Choose currency</span>
     </div>
     <button class="btn btn-yellow" id="submit" data-auth="sign up">sign up</button>
     </div>`;
@@ -120,12 +120,12 @@ export default function renderAuthorizationPage() {
   loginWrapper.insertAdjacentHTML(
     'afterbegin',
     `<div class="login__content">
-  <div class="left side border-left">
-  <div class="left__content">${leftSideSignIn}</div>
-  <button class="btn btn-sign-up" data-action="go-right" id="move-id">Sign up</button>
-  </div>
-  <div class="right side border-right">${rightSideSignIn}</div>
-  </div>`,
+    <div class="left side">
+    <div class="left__content">${leftSideSignIn}</div>
+    <button class="btn btn-sign-up" data-action="go-right" id="move"><span class="btn-text">Sign up</span></button>
+    </div>
+    <div class="right side">${rightSideSignIn}</div>
+    </div>`,
   );
 
   main.append(loginWrapper);
@@ -133,45 +133,59 @@ export default function renderAuthorizationPage() {
   const loginContent = loginWrapper.querySelector('.login__content');
 
   loginContent.addEventListener('click', async (e) => {
-    if (!e.target.tagName === 'BUTTON') return false;
+    const submitBtn = e.target.closest('#move');
 
-    const { action } = e.target.dataset;
-    const leftSide = loginContent.querySelector('.left');
-    const rightSide = loginContent.querySelector('.right');
-    const buttonSubmit = document.getElementById('move-id');
-    const btnSignUp = document.querySelector('.btn-sign-up');
+    if (submitBtn) {
+      const { action } = submitBtn.dataset;
+      const submitBtnText = submitBtn.children[0];
+      const leftSide = loginContent.querySelector('.left');
+      const leftSideContent = leftSide.children[0];
+      const rightSide = loginContent.querySelector('.right');
 
-    if (action) {
       if (action === 'go-right') {
-        leftSide.style.animation = 'goRight 1s ease forwards';
-        rightSide.style.animation = 'goLeft 1s ease forwards';
-        btnSignUp.style.animation = 'stretchBtn 1s ease';
-        buttonSubmit.textContent = 'sign in';
-        buttonSubmit.dataset.action = 'go-left';
+        leftSide.style.animation = 'goRight 1s linear forwards';
+        rightSide.style.animation = 'goLeft 1s linear forwards';
 
-        leftSide.classList.toggle('border-right');
-        leftSide.classList.toggle('border-left');
-        rightSide.classList.toggle('border-right');
-        rightSide.classList.toggle('border-left');
+        leftSideContent.style.animation = 'fadeOutFromLeft 0.5s linear forwards';
+
+        submitBtnText.style.animation = 'fadeOutFromLeft 0.5s linear forwards';
+        submitBtn.style.animation = 'stretchBtn 1s ease';
 
         setTimeout(() => {
-          leftSide.children[0].innerHTML = leftSideSignUp;
+          leftSideContent.innerHTML = leftSideSignUp;
+          leftSideContent.style.animation = 'fadeInFromRight 0.5s linear forwards';
+
+          submitBtnText.innerText = 'sign in';
+          submitBtnText.style.animation = 'fadeInFromRight 0.5s linear forwards';
+          submitBtn.dataset.action = 'go-left';
+
           rightSide.innerHTML = rightSideSignUp;
-          const selectElement = createSelect(document.getElementById('formFile'), {
+          createSelect(document.getElementById('currency-list'), {
             class: 'currency-list',
             placeholder: 'RUB',
             list: app.api.currencyList,
             isTranslatable: false,
           });
-          console.log(selectElement);
-        }, 300);
-      } else if (action === 'go-left') {
-        leftSide.style.animation = 'goRight 1s ease backwards reverse';
-        rightSide.style.animation = 'goLeft 1s ease backwards reverse';
-        buttonSubmit.textContent = 'sign up';
-        buttonSubmit.dataset.action = 'go-right';
-        leftSide.children[0].innerHTML = leftSideSignIn;
-        rightSide.innerHTML = rightSideSignIn;
+        }, 500);
+      } else {
+        leftSide.style.animation = 'goLeftBack 1s linear forwards';
+        rightSide.style.animation = 'goRightBack 1s linear forwards';
+
+        leftSideContent.style.animation = 'fadeOutFromRight 0.5s linear forwards';
+
+        submitBtnText.style.animation = 'fadeOutFromRight 0.5s linear forwards';
+        submitBtn.style.animation = 'stretchBtn 1s ease';
+
+        setTimeout(() => {
+          leftSideContent.innerHTML = leftSideSignIn;
+          leftSideContent.style.animation = 'fadeInFromLeft 0.5s linear forwards';
+
+          submitBtnText.innerText = 'sign up';
+          submitBtnText.style.animation = 'fadeInFromLeft 0.5s linear forwards';
+          submitBtn.dataset.action = 'go-right';
+
+          rightSide.innerHTML = rightSideSignIn;
+        }, 500);
       }
     }
 
@@ -179,6 +193,7 @@ export default function renderAuthorizationPage() {
       console.log('asd');
       if (e.target.dataset.auth === 'sign in') {
         const result = await login();
+
         if (result !== true) {
           console.log('error ', result);
         }
@@ -196,6 +211,5 @@ export default function renderAuthorizationPage() {
         }
       }
     }
-    return true;
   });
 }
