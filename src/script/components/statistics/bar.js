@@ -191,7 +191,6 @@ function generateBarInstance() {
     type: 'bar',
     data: {
       labels: setMonthLang(),
-
       datasets: [
         {
           minBarLength: 2,
@@ -206,7 +205,6 @@ function generateBarInstance() {
     options: {
       title: {
         display: false,
-        text: `${typeTransaction} for the ${choosenYear} year`,
       },
       scales: {
         yAxes: [
@@ -215,10 +213,7 @@ function generateBarInstance() {
               beginAtZero: true,
               fontSize: setLegendFontSize(),
               callback(value) {
-                if (Number(value) >= 1000) {
-                  return `${String(value).slice(0, -3)}K`;
-                }
-                return value;
+                return Number(value) >= 1000 ? `${String(value).slice(0, -3)}K` : value;
               },
             },
           },

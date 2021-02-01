@@ -1,5 +1,5 @@
 import { Popover } from 'bootstrap';
-import { getSound } from '../utils/localStorage';
+import { playSound } from './settings/sound';
 
 export default function showPopover(elem, errorMessage, placement) {
   const popover = new Popover(elem, {
@@ -19,12 +19,7 @@ export default function showPopover(elem, errorMessage, placement) {
     },
   });
 
-  if (getSound() === 'on') {
-    const soundError = new Audio();
-    soundError.src = 'sounds/error.mp3';
-    soundError.play();
-  }
-
+  playSound('error');
   popover.show();
 
   setTimeout(() => {

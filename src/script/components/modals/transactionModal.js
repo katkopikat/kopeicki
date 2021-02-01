@@ -5,9 +5,10 @@ import modal from './modal';
 import showPopover from '../popover';
 import api from '../../api';
 import app from '../../app';
-import { getLanguage, getSound } from '../../utils/localStorage';
+import { getLanguage } from '../../utils/localStorage';
 import getExchangeData from '../settings/currencyConverter';
 import pubsub from '../../pubsub';
+import playSound from '../settings/sound';
 
 /* options = {
  *    type: 'expenses',
@@ -191,11 +192,7 @@ export default function transactionModal(options) {
       modal.hide();
       setTimeout(preloader, 1500);
 
-      if (getSound() === 'on') {
-        const sound = new Audio();
-        sound.src = `sounds/${options.type}.mp3`;
-        sound.play();
-      }
+      playSound(options.type);
     }
   });
 

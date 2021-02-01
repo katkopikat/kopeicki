@@ -7,6 +7,7 @@ import navSlideIn from './script/components/navbar';
 import app from './script/app';
 import pubsub from './script/pubsub';
 import hotKeys from './script/utils/hotKeys';
+import { playSound } from './script/components/settings/sound';
 import './assets/images/favicon.png';
 
 const navigateTo = (url) => {
@@ -42,6 +43,7 @@ document.getElementById('logout').addEventListener('click', (e) => {
   e.preventDefault();
   app.logout();
   navigateTo('/login');
+  playSound('error', true);
 });
 
 pubsub.subscribe('logout', () => app.logout);

@@ -1,5 +1,5 @@
 import switchTheme from './theme';
-import toggleSound from './sound';
+import { toggleSound } from './sound';
 import createSelect from '../../utils/select';
 import { getLanguage, setLanguage } from '../../utils/localStorage';
 
