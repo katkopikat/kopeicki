@@ -4,8 +4,7 @@ export function getRandom(min, max) {
 
 export function formatNumber(n) {
   const num = String(parseInt(n, 10));
-  // eslint-disable-next-line no-useless-concat
-  return num.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, '$1' + ' ');
+  return num.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, '$1 ');
 }
 export function formatDate(date) {
   let dd = date.getDate();

@@ -138,7 +138,7 @@ function buttonsYearsListeners() {
   document.querySelectorAll('[name="bar-year"]').forEach((btn) => {
     btn.addEventListener('click', () => {
       if (btn.checked === true) {
-        choosenYear = btn.id;
+        choosenYear = Number(btn.id);
         barChart.destroy();
         filterTransaction();
         generateBarInstance();
@@ -154,8 +154,7 @@ function filterTransaction() {
 
   const filtredHistory = dataHistory.filter((transaction) => {
     const trYear = new Date(transaction.date).getFullYear();
-    // eslint-disable-next-line eqeqeq
-    return transaction.type === typeTransaction && trYear == choosenYear;
+    return transaction.type === typeTransaction && trYear === choosenYear;
   });
 
   filtredHistory.reduce((total, trans) => {
