@@ -9,9 +9,7 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'object-curly-newline': 'off',
     'linebreak-style': 0,
-    'no-console': 'off',
     'no-param-reassign': 'off',
   },
 };

@@ -1,5 +1,7 @@
 import createElement from '../../utils/create';
-import { dragStart, dragEnd, dragOver, dragEnter, dragLeave, dragDrop } from './dragnDrop';
+import {
+  dragStart, dragEnd, dragOver, dragEnter, dragLeave, dragDrop,
+} from './dragnDrop';
 import createCategoryList from './categories';
 import renderHistory from './history';
 import translatePage from '../settings/language';
@@ -27,7 +29,7 @@ export default async function renderTransactionsPage() {
       <h4 data-i18n="accounts">Accounts</h4>
       <div>
         <p data-i18n="rest">Rest:</p>
-        <h5>${formatNumber(app.transactionsSummary.expensesTotal)}</h5>
+        <h5>${formatNumber(app.getAccountsTotal())}</h5>
       </div>
       </div>`,
     );

@@ -18,7 +18,9 @@ class ApiClient {
   }
 
   async setLocalStorage(userId, email, token, refreshToken) {
-    Object.assign(this, { userId, email, token, refreshToken });
+    Object.assign(this, {
+      userId, email, token, refreshToken,
+    });
     localStorage.setItem('userId', userId);
     localStorage.setItem('email', email);
     localStorage.setItem('token', token);
@@ -135,6 +137,10 @@ class ApiClient {
     }
     // throw new Error(result.message);
     return result.message;
+  }
+
+  async getTransactionsStats() {
+    return this.request('GET', '/transactions/statistics');
   }
 
   async getTransactions(/* todo filter */) {

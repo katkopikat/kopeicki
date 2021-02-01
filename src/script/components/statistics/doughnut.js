@@ -25,10 +25,12 @@ function filterTransactions() {
     const trDate = new Date(transaction.date);
     if (period === 'year') {
       const oneYearAgo = new Date().setFullYear(new Date().getFullYear() - 1);
-      return moment(transaction.date).isBetween(oneYearAgo, moment.now())
+      return moment(transaction.date).isBetween(oneYearAgo, moment(new Date()).add(1, 'days'))
              && transaction.type === typeTransaction;
     }
-    return trDate.getMonth() === today.getMonth() && transaction.type === typeTransaction;
+    return trDate.getMonth() === today.getMonth()
+       && trDate.getFullYear() === today.getFullYear()
+       && transaction.type === typeTransaction;
   });
 
   summaryObj = filtredHistory.reduce((summary, trans) => {

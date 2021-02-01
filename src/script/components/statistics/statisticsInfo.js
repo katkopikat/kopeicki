@@ -1,8 +1,11 @@
 import createElement from '../../utils/create';
 import app from '../../app';
 import translatePage from '../settings/language';
+import { formatNumber } from '../../utils/helpers';
+import translations from '../../data/translations';
+import { getLanguage } from '../../utils/localStorage';
 
-export default function renderTextStatistics() {
+export default function renderTextStatistics(stat) {
   const main = document.querySelector('main');
 
   const mainContainer = createElement(
@@ -42,62 +45,68 @@ export default function renderTextStatistics() {
   thirdRow.append(charts);
 
   main.append(mainContainer);
-
+  const lang = getLanguage();
+  const dictionary = (Object.keys(translations[lang]));
+  const thisYear = String(new Date().getFullYear());
+  const { mostSpend } = stat;
+  if (!mostSpend.length) {
+    mostSpend.push('nothing yet');
+  }
   const infoStatistics = [
     {
       name: 'summaryAccount',
       class: 'info_accounts',
-      data: '1000',
+      data: formatNumber(app.getAccountsTotal()),
     },
     {
       name: 'mostExpensesCategories',
       class: 'info_expenses',
-      data: 'Продукты, Транспорт, Дом',
+      data: (mostSpend.map((it) => (dictionary.includes(it) ? translations[lang][it] : it))).join(', '),
     },
     {
       name: 'monthExpenses',
       class: 'info_expenses',
-      data: '1000',
+      data: formatNumber(app.transactionsSummary.expensesTotal),
     },
     {
       name: 'averageMonthExpenses',
       class: 'info_expenses',
-      data: '1000',
+      data: formatNumber(stat.avgMonth?.expenses || 0), // '1000',
     },
     {
       name: 'averageYearExpenses',
       class: 'info_expenses',
-      data: '1000',
+      data: formatNumber(stat.perYear?.expenses?.avgYear || 0),
     },
     {
       name: 'allTimeExpenses',
       class: 'info_expenses',
-      data: '1000',
+      data: formatNumber(stat.perYear?.expenses?.total || 0),
     },
     {
       name: 'monthIncome',
       class: 'info_income',
-      data: '1000',
+      data: formatNumber(app.transactionsSummary.incomeTotal),
     },
     {
       name: 'averageMonthIncome',
       class: 'info_income',
-      data: '1000',
+      data: formatNumber(stat.avgMonth?.income || 0),
     },
     {
       name: 'yearIncome',
       class: 'info_income',
-      data: '1000',
+      data: formatNumber(stat.perYear?.income?.years[thisYear] || 0),
     },
     {
       name: 'averageYearIncome',
       class: 'info_income',
-      data: '1000',
+      data: formatNumber(stat.perYear?.income?.avgYear || 0),
     },
     {
       name: 'allTimeIncome',
       class: 'info_income',
-      data: '1000',
+      data: formatNumber(stat.perYear?.income?.total || 0),
     },
   ];
 

@@ -218,7 +218,6 @@
     }
   }
 
-  
   .select__input {
     color: white;
     font-size: 1.2rem;
@@ -226,25 +225,22 @@
     column-gap: 0.4rem;
     height: 35px;
 
-      .select__value {
-        font-size: 1.2rem;
-        font-weight: 400;
-        color: white;
-      }
-
-      .currency-list {
-        padding: 0;
-        margin: 0;
-        height: 5px;
-    
+    .select__value {
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: white;
     }
 
-    
- }
+    .currency-list {
+      padding: 0;
+      margin: 0;
+      height: 5px;
+    }
+  }
 
-// .currency-list  >  li:nth-child(6){
-//   border-bottom: 3px solid #444444;
-//  }
+  // .currency-list  >  li:nth-child(6){
+  //   border-bottom: 3px solid #444444;
+  //  }
 
   &__category-name {
     text-transform: lowercase;
@@ -277,7 +273,6 @@
       text-align: center;
       font-size: 2rem;
       color: var(--light);
-      text-transform: uppercase;
       border-bottom: 1px dashed var(--light);
       padding-bottom: 0;
     }
@@ -333,4 +328,3 @@ input[type='number']::-webkit-outer-spin-button {
 .btn-light:focus {
   box-shadow: none;
 }
-

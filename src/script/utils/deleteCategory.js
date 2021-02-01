@@ -10,6 +10,7 @@ function deleteCategory(e) {
   e.stopPropagation();
 
   deletionState.isModalOpened = true;
+
   const elem = e.target.closest('.flex-list__item');
 
   const { category } = elem.dataset;

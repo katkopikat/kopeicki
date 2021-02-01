@@ -14,7 +14,7 @@ const monthBe = ['Студз', 'Люты', 'Сак', 'Крас', 'Май', 'Чэ
 
 let choosenYear = new Date().getFullYear();
 const yearsList = [];
-let summaryObj = {};
+let totalByMonth = {};
 let dataHistory;
 
 function renderBarHTML() {
@@ -42,7 +42,7 @@ function renderBarHTML() {
   `,
   );
 }
-
+/* Set bar display settings */
 function renderHeading() {
   const lang = getLanguage();
   const barHeading = document.querySelector('.heading-bar');
@@ -78,6 +78,7 @@ function setMonthLang() {
   }
 }
 
+/* Create buttons controllers */
 function countYears() {
   dataHistory.forEach((trans) => {
     const temp = new Date(trans.date).getFullYear();
@@ -107,43 +108,6 @@ function createYearsBtns() {
     });
 }
 
-function clearObject() {
-  summaryObj = {
-    0: 0,
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0,
-    5: 0,
-    6: 0,
-    7: 0,
-    8: 0,
-    9: 0,
-    10: 0,
-    11: 0,
-  };
-}
-
-function filterTransaction() {
-  clearObject();
-
-  const filtredHistory = dataHistory.filter((transaction) => {
-    const trYear = new Date(transaction.date).getFullYear();
-    // eslint-disable-next-line eqeqeq
-    return transaction.type === typeTransaction && trYear == choosenYear;
-  });
-
-  summaryObj = filtredHistory.reduce((summary, trans) => {
-    const trMonth = new Date(trans.date).getMonth();
-    if (Object.prototype.hasOwnProperty.call(summary, trMonth)) {
-      summary[trMonth] += parseInt(trans.amount, 10);
-    } else {
-      summary[trMonth] = parseInt(trans.amount, 10);
-    }
-    return summary;
-  }, summaryObj);
-}
-
 function buttonsTypeListeners() {
   const typeToggleDiv = document.querySelector('.toggle.bar-type');
   const typeToggle = document.getElementById('bar-type');
@@ -165,7 +129,7 @@ function buttonsTypeListeners() {
     barChart.destroy();
     filterTransaction();
     setBarColor();
-    generateBar();
+    generateBarInstance();
     transition();
   });
 }
@@ -174,17 +138,54 @@ function buttonsYearsListeners() {
   document.querySelectorAll('[name="bar-year"]').forEach((btn) => {
     btn.addEventListener('click', () => {
       if (btn.checked === true) {
-        choosenYear = btn.id;
+        choosenYear = Number(btn.id);
         barChart.destroy();
         filterTransaction();
-        generateBar();
+        generateBarInstance();
         renderHeading();
       }
     });
   });
 }
 
-function generateBar() {
+/* Filtering data  */
+function filterTransaction() {
+  clearDataObject();
+
+  const filtredHistory = dataHistory.filter((transaction) => {
+    const trYear = new Date(transaction.date).getFullYear();
+    return transaction.type === typeTransaction && trYear === choosenYear;
+  });
+
+  filtredHistory.reduce((total, trans) => {
+    const trMonth = new Date(trans.date).getMonth();
+    if (Object.prototype.hasOwnProperty.call(total, trMonth)) {
+      total[trMonth] += parseInt(trans.amount, 10);
+    } else {
+      total[trMonth] = parseInt(trans.amount, 10);
+    }
+    return total;
+  }, totalByMonth);
+}
+
+function clearDataObject() {
+  totalByMonth = {
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 0,
+    8: 0,
+    9: 0,
+    10: 0,
+    11: 0,
+  };
+}
+
+function generateBarInstance() {
   const barContainer = document.querySelector('.bar-container');
   barChart = new Chart(barContainer, {
     type: 'bar',
@@ -195,7 +196,7 @@ function generateBar() {
         {
           minBarLength: 2,
           label: `${typeTransaction}`,
-          data: Object.values(summaryObj),
+          data: Object.values(totalByMonth),
           backgroundColor: setBarColor(),
           borderColor: setBarColor(),
           borderWidth: 1,
@@ -237,29 +238,11 @@ function generateBar() {
   });
 }
 
-function createBarContent() {
-  countYears();
-  renderBarHTML();
-  createYearsBtns();
-  buttonsTypeListeners();
-  buttonsYearsListeners();
-  filterTransaction();
-  generateBar();
-  renderHeading();
-  translatePage();
-  mediaQuerySizes();
-}
-
-export default function renderBarChart(data) {
-  dataHistory = data;
-  createBarContent();
-}
-
-/* Settings for responsive or when theme is changing */
+/* Settings for responsive */
 function trackWindowSize(e) {
   if (e.matches) {
     barChart.destroy();
-    generateBar();
+    generateBarInstance();
   }
 }
 
@@ -271,4 +254,34 @@ function mediaQuerySizes() {
     mediaQuery.addListener(trackWindowSize);
     trackWindowSize(mediaQuery);
   });
+}
+
+/* Label translation when the language changes.
+     Whaiting rendering menu and change language on the localStorage. */
+
+function trackLanguageSwitch() {
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.select__list').addEventListener('click', () => {
+      setTimeout(() => {
+        barChart.destroy();
+        generateBarInstance();
+      }, 0);
+    });
+  });
+}
+
+/* MAIN */
+export default function renderBarChart(data) {
+  dataHistory = data;
+  countYears();
+  renderBarHTML();
+  createYearsBtns();
+  buttonsTypeListeners();
+  buttonsYearsListeners();
+  filterTransaction();
+  generateBarInstance();
+  renderHeading();
+  translatePage();
+  mediaQuerySizes();
+  trackLanguageSwitch();
 }

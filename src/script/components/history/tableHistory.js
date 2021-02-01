@@ -5,6 +5,7 @@ import api from '../../api';
 import translatePage from '../settings/language';
 import { clearPage } from '../../utils/DOM';
 import createSelect from '../../utils/select';
+import { formatDate } from '../../utils/helpers';
 
 let history;
 let typeTransaction = 'all';
@@ -17,6 +18,45 @@ function preloader() {
   preloaderEl.classList.toggle('visible');
 }
 
+/* Getting and filtering data */
+function getUsersCategory() {
+  app.user.income.forEach((it) => { incomeCategories.push(it.name); });
+  app.user.expenses.forEach((it) => { expensesCategories.push(it.name); });
+}
+
+async function getHistory() {
+  const transactions = await app.api.getTransactions();
+  history = [...transactions];
+}
+
+function filterTransaction(categName) {
+  const dataSortByDate = history.sort((a, b) => b.date - a.date);
+  let filtredTable = dataSortByDate;
+  if (typeTransaction === 'all') filtredTable = dataSortByDate;
+  else filtredTable = dataSortByDate.filter((transaction) => transaction.type === typeTransaction);
+
+  if (categoryName.match('ALL CATEGORIES' || 'ВСЕ КАТЕГОРИИ' || 'УСЕ КАТЭГОРЫІ')) return filtredTable;
+  return filtredTable.filter((transaction) => transaction.category === categName);
+}
+
+/* Delete transactions */
+async function deleteTransactionCallback(el) {
+  if ((el).classList.contains('cell__delete')) {
+    const idDelete = el.getAttribute('data-id');
+    api.deleteTransaction(idDelete).then(() => {
+      rerenderTable();
+    });
+  }
+}
+
+function deleteTransaction() {
+  document.querySelector('.table').addEventListener('click', (e) => {
+    e.preventDefault();
+    deleteTransactionCallback(e.target);
+  });
+}
+
+/* Genarate table HTML */
 function historyHtml() {
   const main = document.querySelector('main');
   const row = createElement('div', 'row table-wrapper');
@@ -34,47 +74,59 @@ function historyHtml() {
   tableHeading.innerText = 'История транзакций';
 }
 
-function formatDate(date) {
-  let dd = date.getDate();
-  if (dd < 10) dd = `0${dd}`;
+function tableCreate() {
+  const filtredHistory = filterTransaction(categoryName);
+  const table = document.createElement('table');
+  table.className = 'table';
+  table.innerHTML = `<thead>
+      <tr>
+        <th scope="col" data-i18n="Date">Date</th>
+        <th scope="col" data-i18n="Category">Category</th>
+        <th scope="col" data-i18n="Amount">Amount</th>
+        <th scope="col" data-i18n="Account">Account</th>
+        <th scope="col" data-i18n="Description">Description</th>
+        <th scope="col" data-i18n="Delete">Delete</th>
+      </tr>
+    </thead>`;
+  const tbody = document.createElement('tbody');
+  table.appendChild(tbody);
+  filtredHistory.forEach((transaction, i) => {
+    const row = tbody.insertRow(i);
+    const cell1 = row.insertCell();
+    const cell2 = row.insertCell();
+    const cell3 = row.insertCell();
+    const cell4 = row.insertCell();
+    const cell5 = row.insertCell();
+    const cell6 = row.insertCell();
 
-  let mm = date.getMonth() + 1;
-  if (mm < 10) mm = `0${mm}`;
+    const {
+      type, date, category, amount, account, description, id,
+    } = transaction;
 
-  let yy = date.getFullYear() % 100;
-  if (yy < 10) yy = `0${yy}`;
+    cell1.className = 'cell__date';
+    cell2.className = type === 'expenses' ? 'cell__category-expense' : 'cell__category-income';
+    cell3.className = 'cell__amount';
+    cell4.className = 'cell__account';
+    cell5.className = 'cell__description';
+    cell6.className = 'cell__delete';
 
-  return `${dd}.${mm}.${yy}`;
+    cell1.innerHTML = formatDate(new Date(date));
+    cell2.innerHTML = category;
+    cell3.innerHTML = amount;
+    cell4.innerHTML = account;
+    cell5.innerHTML = description;
+    cell6.innerHTML = 'delete';
+
+    cell2.dataset.i18n = category;
+    cell4.dataset.i18n = account;
+    cell6.dataset.i18n = 'Delete';
+    cell6.dataset.id = id;
+  });
+
+  document.querySelector('.table-mask').append(table);
 }
 
-async function getHistory() {
-  const transactions = await app.api.getTransactions();
-  history = [...transactions];
-}
-
-function filterTransaction(categName) {
-  const dataSortByDate = history.sort((a, b) => b.date - a.date);
-  let filtredTable = dataSortByDate;
-  if (typeTransaction === 'all') filtredTable = dataSortByDate;
-  else filtredTable = dataSortByDate.filter((transaction) => transaction.type === typeTransaction);
-
-  if (categoryName.match('ALL CATEGORIES' || 'ВСЕ КАТЕГОРИИ' || 'УСЕ КАТЭГОРЫІ')) return filtredTable;
-  return filtredTable.filter((transaction) => transaction.category === categName);
-
-  // const trDate = new Date(transaction.date);
-  // if (period === 'year') {
-  //   const oneYearAgo = new Date().setFullYear(new Date().getFullYear() - 1);
-  //   return moment(transaction.date).isBetween(oneYearAgo, moment.now())
-  //          && transaction.type === typeTransaction;
-  // }
-  // return trDate.getMonth() === today.getMonth() && transaction.type === typeTransaction;
-}
-
-function getUsersCategory() {
-  app.user.income.forEach((it) => { incomeCategories.push(it.name); });
-  app.user.expenses.forEach((it) => { expensesCategories.push(it.name); });
-}
-
+/* Create constollers */
 function createCategoryList() {
   let renderList;
   if (typeTransaction === 'expenses') renderList = expensesCategories;
@@ -106,73 +158,6 @@ function createCategoryList() {
 
 function clearCategoryList() {
   document.querySelector('.table-wrapper .select').remove();
-}
-
-function tableCreate() {
-  const filtredHistory = filterTransaction(categoryName);
-  const table = document.createElement('table');
-  table.className = 'table';
-  table.innerHTML = `<thead>
-      <tr>
-        <th scope="col" data-i18n="Date">Date</th>
-        <th scope="col" data-i18n="Category">Category</th>
-        <th scope="col" data-i18n="Amount">Amount</th>
-        <th scope="col" data-i18n="Account">Account</th>
-        <th scope="col" data-i18n="Description">Description</th>
-        <th scope="col" data-i18n="Delete">Delete</th>
-      </tr>
-    </thead>`;
-  const tbody = document.createElement('tbody');
-  table.appendChild(tbody);
-  filtredHistory.forEach((transaction, i) => {
-    const row = tbody.insertRow(i);
-    const cell1 = row.insertCell();
-    const cell2 = row.insertCell();
-    const cell3 = row.insertCell();
-    const cell4 = row.insertCell();
-    const cell5 = row.insertCell();
-    const cell6 = row.insertCell();
-
-    const { type, date, category, amount, account, description, id } = transaction;
-
-    cell1.className = 'cell__date';
-    cell2.className = type === 'expenses' ? 'cell__category-expense' : 'cell__category-income';
-    cell3.className = 'cell__amount';
-    cell4.className = 'cell__account';
-    cell5.className = 'cell__description';
-    cell6.className = 'cell__delete';
-
-    cell1.innerHTML = formatDate(new Date(date));
-    cell2.innerHTML = category;
-    cell3.innerHTML = amount;
-    cell4.innerHTML = account;
-    cell5.innerHTML = description;
-    cell6.innerHTML = 'delete';
-
-    cell2.dataset.i18n = category;
-    cell4.dataset.i18n = account;
-    cell6.dataset.i18n = 'Delete';
-    cell6.dataset.id = id;
-  });
-
-  document.querySelector('.table-mask').append(table);
-}
-
-async function deleteTransactionCallback(el) {
-  if ((el).classList.contains('cell__delete')) {
-    const idDelete = el.getAttribute('data-id');
-    // eslint-disable-next-line no-use-before-define
-    api.deleteTransaction(idDelete).then(() => {
-      rerenderTable();
-    });
-  }
-}
-
-function deleteTransaction() {
-  document.querySelector('.table').addEventListener('click', (e) => {
-    e.preventDefault();
-    deleteTransactionCallback(e.target);
-  });
 }
 
 function renderTableBtns() {
@@ -224,6 +209,7 @@ function buttonsTypeListeners() {
   });
 }
 
+/* MAIN */
 function createTableContent() {
   getUsersCategory();
   filterTransaction(categoryName);

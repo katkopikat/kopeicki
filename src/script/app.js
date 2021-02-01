@@ -32,7 +32,7 @@ class App {
         window.history.pushState(null, null, '/login');
       }
     } catch (e) {
-      console.error(e.message);
+      // console.error(e.message);
     }
   }
 
@@ -59,7 +59,7 @@ class App {
       // console.log('login success');
       return result;
     } catch (e) {
-      console.error(e.message);
+      // console.error(e.message);
       return e;
     }
   }
@@ -72,7 +72,7 @@ class App {
       }
       return result;
     } catch (e) {
-      console.error(e.message);
+      // console.error(e.message);
       return e;
     }
   }
@@ -118,6 +118,11 @@ class App {
     });
     // console.log('this month: ', monthSummary);
     this.transactionsSummary = monthSummary;
+  }
+
+  getAccountsTotal() {
+    const accounts = this.user?.accounts || [];
+    return accounts.reduce((total, acc) => total + Number(acc.amount || 0), 0);
   }
 
   getUserAccounts() {
