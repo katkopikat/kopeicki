@@ -23,6 +23,10 @@ class App {
       if (this.user) {
         this.transactions = await this.getTransactions();
       } else {
+        const isLogout = this.api.CheckCurrentUser();
+        if (isLogout === false) {
+          this.logout();
+        }
         console.log('navigateTo', '/login');
         window.history.pushState(null, null, '/login');
       }
@@ -33,6 +37,9 @@ class App {
 
   logout() {
     this.api.logout();
+    this.user = null;
+    this.transactions = null;
+    this.transactionsSummary = null;
   }
 
   async login(email, password) {
