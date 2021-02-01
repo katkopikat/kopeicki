@@ -97,6 +97,13 @@ class App {
     return tx;
   }
 
+  async deleteTransaction(txData) {
+    const tx = await this.api.deleteTransaction(txData);
+    await this.getTransactions(true);
+    this.user = await this.api.getUser();
+    return tx;
+  }
+
   calcTxsSummary(transactions) {
     const txsByMonth = {};
     const monthKey = (date) => `${date.getFullYear()}${String(date.getMonth()).padStart(2, '0')}`;

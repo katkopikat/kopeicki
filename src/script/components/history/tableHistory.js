@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 import createElement from '../../utils/create';
 import app from '../../app';
-import api from '../../api';
 import translatePage from '../settings/language';
 import { clearPage } from '../../utils/DOM';
 import createSelect from '../../utils/select';
@@ -43,7 +42,7 @@ function filterTransaction(categName) {
 async function deleteTransactionCallback(el) {
   if ((el).classList.contains('cell__delete')) {
     const idDelete = el.getAttribute('data-id');
-    api.deleteTransaction(idDelete).then(() => {
+    app.deleteTransaction(idDelete).then(() => {
       rerenderTable();
     });
   }
