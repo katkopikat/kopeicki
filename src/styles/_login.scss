@@ -17,6 +17,13 @@
     border-radius: 15px;
     overflow: hidden;
 
+    @media (max-width: 400px) {
+      h2,
+      h3 {
+        font-size: 1.1rem !important;
+      }
+    }
+
     .side {
       @include flex-col;
       justify-content: center;
@@ -28,6 +35,12 @@
       &-coin {
         width: 7.5rem;
 
+        @media (max-width: 400px) {
+          & {
+            width: 6.5rem;
+          }
+        }
+
         img {
           margin-top: 0.5rem;
         }
@@ -37,6 +50,12 @@
         width: 9rem;
         margin-top: -0.8rem;
         margin-bottom: 0.8rem;
+
+        @media (max-width: 400px) {
+          & {
+            width: 7rem;
+          }
+        }
       }
     }
 
@@ -48,6 +67,12 @@
       border-bottom-left-radius: 15px;
       background: #327ceb;
       overflow: hidden;
+
+      @media (max-width: 400px) {
+        & {
+          padding: 0.5rem;
+        }
+      }
 
       h2,
       p {
@@ -97,6 +122,12 @@
           position: relative;
           width: 60%;
 
+          @media (max-width: 400px) {
+            & {
+              width: 85%;
+            }
+          }
+
           &.two-col {
             display: flex;
             justify-content: space-between;
@@ -110,6 +141,18 @@
               padding: 0.2rem 0.2rem 0.2rem 2.2rem;
               color: rgba(92, 92, 92, 0.6);
               background: #fff;
+
+              @media (max-width: 400px) {
+                & {
+                  font-size: 0.9rem;
+                }
+              }
+            }
+
+            @media (max-width: 400px) {
+              .select__input {
+                font-size: 1rem;
+              }
             }
 
             .select.open .select__dropdown {
@@ -140,6 +183,12 @@
           input::placeholder {
             color: var(--gray);
             opacity: 0.6;
+
+            @media (max-width: 400px) {
+              & {
+                font-size: 0.9rem;
+              }
+            }
           }
 
           input {
@@ -159,6 +208,12 @@
       color: #327ceb;
       text-transform: uppercase;
       outline: none;
+
+      @media (max-width: 400px) {
+        & {
+          width: 6rem;
+        }
+      }
 
       &.btn-yellow {
         color: #dcac00;
