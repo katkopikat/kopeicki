@@ -27,41 +27,45 @@ const sortByDays = (list) => {
 
 export default async function renderHistory() {
   const transactions = await app.getTransactions();
+
   if (transactions) {
-    const lastTransactions = transactions.slice(0, 9);
-    const sortedByDays = sortByDays(lastTransactions);
+    const historyDiv = document.querySelector('.transactions-history');
 
-    document.querySelector('.transactions-history').innerHTML = '';
+    historyDiv.innerHTML = '';
 
-    sortedByDays.reverse().forEach((day) => {
-      const dateDiv = createElement('div');
-      const dayDiv = createElement('div', 'day');
+    if (transactions.length > 0) {
+      const lastTransactions = transactions.slice(0, 9);
+      const sortedByDays = sortByDays(lastTransactions);
 
-      const date = new Date(day[0].date);
+      sortedByDays.reverse().forEach((day) => {
+        const dateDiv = createElement('div');
+        const dayDiv = createElement('div', 'day');
 
-      let dayOfWeek;
+        const date = new Date(day[0].date);
 
-      if (moment(new Date()).isSame(date, 'day')) {
-        dayOfWeek = 'today';
-      } else if (moment().subtract(1, 'days').isSame(date, 'day')) {
-        dayOfWeek = 'yesterday';
-      } else {
-        dayOfWeek = new Intl.DateTimeFormat('en-GB', { weekday: 'long' }).format(date);
-      }
+        let dayOfWeek;
 
-      dateDiv.insertAdjacentHTML(
-        'afterbegin',
-        `
+        if (moment(new Date()).isSame(date, 'day')) {
+          dayOfWeek = 'today';
+        } else if (moment().subtract(1, 'days').isSame(date, 'day')) {
+          dayOfWeek = 'yesterday';
+        } else {
+          dayOfWeek = new Intl.DateTimeFormat('en-GB', { weekday: 'long' }).format(date);
+        }
+
+        dateDiv.insertAdjacentHTML(
+          'afterbegin',
+          `
           <span class="day-of-week" data-i18n="${dayOfWeek}"></span>
           <span class="date"> ${date.getDate()} </span>
           <span class="date" data-i18n="${date.getMonth()}"></span>
         `,
-      );
+        );
 
-      day.forEach((transaction) => {
-        dayDiv.insertAdjacentHTML(
-          'beforeend',
-          `
+        day.forEach((transaction) => {
+          dayDiv.insertAdjacentHTML(
+            'beforeend',
+            `
           <div class="row">
           <div class="col">
             <p class="account-name" data-i18n="${transaction.account}">${transaction.account}</p>
@@ -76,13 +80,23 @@ export default async function renderHistory() {
           </div>
         </div>
           `,
-        );
+          );
+        });
+
+        const container = createElement('div', '', [dateDiv, dayDiv]);
+        historyDiv.prepend(container);
       });
+    } else if (transactions.length === 0) {
+      const noTransactionMsg = createElement(
+        'div',
+        'no-transactions-msg',
+        "Oops, it looks like you don't have any transactions yet.",
+        ['i18n', 'no-trx-msg'],
+      );
 
-      const container = createElement('div', '', [dateDiv, dayDiv]);
-      document.querySelector('.transactions-history').prepend(container);
+      historyDiv.append(noTransactionMsg);
+    }
 
-      translatePage();
-    });
+    translatePage();
   }
 }

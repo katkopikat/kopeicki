@@ -88,6 +88,7 @@ export default {
     stat8: 'This year your income is ',
     stat9: 'On average, you earn per year ',
     stat10: 'For the entire period of tracking your incomes, you have earned ',
+    'no-trx-msg': "Oops, it looks like you don't have any transactions yet.",
   },
   ru: {
     Settings: 'Настройки',
@@ -180,6 +181,7 @@ export default {
     stat8: 'В этом году ваш доход ',
     stat9: 'В среднем, в год вы зарабатываете ',
     stat10: 'За всё время ведения доходов вы заработали ',
+    'no-trx-msg': 'Похоже, у вас еще не добавлено ни одной операции.',
   },
   by: {
     Settings: 'Настройкі',
@@ -272,5 +274,6 @@ export default {
     stat8: 'У гэтым годзе ваш даход ',
     stat9: 'У сярэднім, у год вы зарабляеце ',
     stat10: 'За ўвесь час вядзення даходаў вы зарабілі ',
+    'no-trx-msg': 'Здаецца, вы яшчэ не дадалі ні воднай аперацыі.',
   },
 };
