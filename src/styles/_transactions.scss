@@ -1,4 +1,6 @@
 .transactions-container {
+  padding: 2rem 2.5rem;
+
   @media (max-width: 768px) {
     .row {
       flex-direction: column;
@@ -13,7 +15,6 @@
 .transactions-dashboard {
   @include flex-col;
   row-gap: 2rem;
-  padding: 1.8rem 1.5rem;
 
   &__item {
     width: 100%;

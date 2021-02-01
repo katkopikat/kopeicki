@@ -21,6 +21,7 @@ const register = async () => {
   const email = document.getElementById('sign-up-email').value;
   const password = document.getElementById('sign-up-password').value;
   const confirmPassword = document.getElementById('sign-up-confirm-password').value;
+  const currency = document.querySelector('.currency-list .select__value').innerText;
 
   if (password !== confirmPassword) {
     console.log('passwords not equal');
@@ -35,7 +36,7 @@ const register = async () => {
     return false;
   }
   console.log('all done', password);
-  const result = await app.register(email, password);
+  const result = await app.register(email, password, currency);
 
   console.log('register res from auth', result);
   return result;
@@ -105,7 +106,7 @@ export default function renderAuthorizationPage() {
         <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
         <path d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2H3z"/>
       </svg>
-      <span id="currency-list">Choose currency</span>
+      <span id="currency-list">Currency</span>
     </div>
     <button class="btn btn-yellow" id="submit" data-auth="sign up">sign up</button>
     </div>`;

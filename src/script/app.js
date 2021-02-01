@@ -23,8 +23,9 @@ class App {
       if (this.user) {
         this.transactions = await this.getTransactions();
         document.getElementById('profile-name').textContent = this.api.email;
+        document.getElementById('logout').style.opacity = 1;
       } else {
-        const isLogout = this.api.CheckCurrentUser();
+        const isLogout = this.api.checkCurrentUser();
         if (isLogout === false) {
           this.logout();
         }
@@ -42,6 +43,7 @@ class App {
     this.transactions = null;
     this.transactionsSummary = null;
     document.getElementById('profile-name').textContent = '';
+    document.getElementById('logout').style.opacity = 0;
   }
 
   async login(email, password) {
@@ -52,6 +54,7 @@ class App {
         this.user = await this.api.getUser();
         this.transactions = await this.getTransactions();
         document.getElementById('profile-name').textContent = this.api.email;
+        document.getElementById('logout').style.opacity = 1;
         return true;
       }
       // console.log(this.user);
@@ -64,9 +67,9 @@ class App {
     }
   }
 
-  async register(email, password) {
+  async register(email, password, currency) {
     try {
-      const result = await this.api.registerUser(email, password);
+      const result = await this.api.registerUser(email, password, currency);
       if (result === true) {
         await this.login(email, password);
       }

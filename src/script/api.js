@@ -39,7 +39,7 @@ class ApiClient {
     localStorage.removeItem('refreshToken');
   }
 
-  CheckCurrentUser() {
+  checkCurrentUser() {
     if (this.userId && this.token && this.refreshToken) {
       return true;
     }
@@ -88,13 +88,13 @@ class ApiClient {
       reqParams.withCredentials = true;
       reqParams.headers.Authorization = `${this.token}`;
     }
-    if ((this.CheckCurrentUser() === false) && (auth === true)) {
+    if ((this.checkCurrentUser() === false) && (auth === true)) {
       // pubsub.publish('navigateTo', '/login');
       return undefined;
     }
     const response = await fetch(`${this.apiUrl}${route}`, reqParams);
     // console.log('first response', response);
-    if ((response.ok === false) && (this.CheckCurrentUser() === true)) {
+    if ((response.ok === false) && (this.checkCurrentUser() === true)) {
       const result = await this.getNewTokens('POST', '/users/token', { email: this.email, userId: this.userId }, auth);
       // console.log('second response', result);
       if (!result.ok) {
@@ -130,8 +130,8 @@ class ApiClient {
     return result.message;
   }
 
-  async registerUser(email, password) {
-    const result = await this.request('POST', '/users', { email, password }, false);
+  async registerUser(email, password, currency) {
+    const result = await this.request('POST', '/users', { email, password, currency }, false);
     if (result.user) {
       return true;
     }
