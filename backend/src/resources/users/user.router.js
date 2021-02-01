@@ -11,8 +11,8 @@ router.post('/login', async (req, res) => {
   res.status(statusCode).json(response);
 });
 router.post('/', async (req, res) => {
-  const { email, password } = req.body;
-  const [statusCode, response] = await register(email, password);
+  const { email, password, currency } = req.body;
+  const [statusCode, response] = await register(email, password, currency);
   res.status(statusCode).json(response);
 });
 

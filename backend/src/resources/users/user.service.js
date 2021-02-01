@@ -24,7 +24,7 @@ export async function login(email, password) {
   return [500, { message: 'server error' }];
 }
 
-export async function register(email, password) {
+export async function register(email, password, currency) {
   const searchUser = await User.findOne({ email });
   if (searchUser) {
     return [403, { message: 'invalid email-password' }];
@@ -36,6 +36,7 @@ export async function register(email, password) {
     email,
     password: await hashPassword(password),
     ...template.toObject(),
+    currency,
   });
   console.log(user);
   return [201, { user }];
