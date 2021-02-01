@@ -100,7 +100,9 @@ function tableCreate() {
     const cell5 = row.insertCell();
     const cell6 = row.insertCell();
 
-    const { type, date, category, amount, account, description, id } = transaction;
+    const {
+      type, date, category, amount, account, description, id,
+    } = transaction;
 
     cell1.className = 'cell__date';
     cell2.className = type === 'expenses' ? 'cell__category-expense' : 'cell__category-income';

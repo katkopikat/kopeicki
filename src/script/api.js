@@ -18,7 +18,9 @@ class ApiClient {
   }
 
   setLocalStorage(userId, email, token, refreshToken) {
-    Object.assign(this, { userId, email, token, refreshToken });
+    Object.assign(this, {
+      userId, email, token, refreshToken,
+    });
     localStorage.setItem('userId', userId);
     localStorage.setItem('email', email);
     localStorage.setItem('token', token);
@@ -83,7 +85,7 @@ class ApiClient {
       const result = await this.getNewTokens('POST', '/users/token', { email: this.email, userId: this.userId }, auth);
       // console.log('second response', result);
       if (!result.ok) {
-        const content = await result.json();
+        await result.json();
         // console.log('message from content', content);
         // window.history.pushState(null, null, '/login');
         // renderAuthorizationPage();

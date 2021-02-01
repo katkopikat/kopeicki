@@ -1,5 +1,7 @@
 import createElement from '../../utils/create';
-import { dragStart, dragEnd, dragOver, dragEnter, dragLeave, dragDrop } from './dragnDrop';
+import {
+  dragStart, dragEnd, dragOver, dragEnter, dragLeave, dragDrop,
+} from './dragnDrop';
 import createCategoryList from './categories';
 import renderHistory from './history';
 import translatePage from '../settings/language';
