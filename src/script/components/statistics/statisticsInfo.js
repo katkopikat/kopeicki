@@ -2,6 +2,8 @@ import createElement from '../../utils/create';
 import app from '../../app';
 import translatePage from '../settings/language';
 import { formatNumber } from '../../utils/helpers';
+import translations from '../../data/translations';
+import { getLanguage } from '../../utils/localStorage';
 
 export default function renderTextStatistics(stat) {
   const main = document.querySelector('main');
@@ -43,7 +45,8 @@ export default function renderTextStatistics(stat) {
   thirdRow.append(charts);
 
   main.append(mainContainer);
-
+  const lang = getLanguage();
+  const dictionary = (Object.keys(translations[lang]));
   const thisYear = String(new Date().getFullYear());
   const infoStatistics = [
     {
@@ -54,7 +57,7 @@ export default function renderTextStatistics(stat) {
     {
       name: 'mostExpensesCategories',
       class: 'info_expenses',
-      data: stat.mostSpend.join(', '), // 'Продукты, Транспорт, Дом',
+      data: (stat.mostSpend.map((it) => (dictionary.includes(it) ? translations[lang][it] : it))).join(', '),
     },
     {
       name: 'monthExpenses',

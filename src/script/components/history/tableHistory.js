@@ -5,6 +5,7 @@ import api from '../../api';
 import translatePage from '../settings/language';
 import { clearPage } from '../../utils/DOM';
 import createSelect from '../../utils/select';
+import { formatDate } from '../../utils/helpers';
 
 let history;
 let typeTransaction = 'all';
@@ -17,34 +18,10 @@ function preloader() {
   preloaderEl.classList.toggle('visible');
 }
 
-function historyHtml() {
-  const main = document.querySelector('main');
-  const row = createElement('div', 'row table-wrapper');
-  const mainContainer = createElement('div', 'container-xxl table-container', row);
-  const tableHeading = createElement('h3', 'heading heading-table', null, ['i18n', 'transactionHistory']);
-  const table = createElement('div', 'table-mask');
-
-  const tableBtnsWrapper = createElement(
-    'div',
-    'btns-table-container',
-  );
-
-  main.append(mainContainer);
-  row.append(tableHeading, tableBtnsWrapper, table);
-  tableHeading.innerText = 'История транзакций';
-}
-
-function formatDate(date) {
-  let dd = date.getDate();
-  if (dd < 10) dd = `0${dd}`;
-
-  let mm = date.getMonth() + 1;
-  if (mm < 10) mm = `0${mm}`;
-
-  let yy = date.getFullYear() % 100;
-  if (yy < 10) yy = `0${yy}`;
-
-  return `${dd}.${mm}.${yy}`;
+/* Getting and filtering data */
+function getUsersCategory() {
+  app.user.income.forEach((it) => { incomeCategories.push(it.name); });
+  app.user.expenses.forEach((it) => { expensesCategories.push(it.name); });
 }
 
 async function getHistory() {
@@ -60,52 +37,42 @@ function filterTransaction(categName) {
 
   if (categoryName.match('ALL CATEGORIES' || 'ВСЕ КАТЕГОРИИ' || 'УСЕ КАТЭГОРЫІ')) return filtredTable;
   return filtredTable.filter((transaction) => transaction.category === categName);
-
-  // const trDate = new Date(transaction.date);
-  // if (period === 'year') {
-  //   const oneYearAgo = new Date().setFullYear(new Date().getFullYear() - 1);
-  //   return moment(transaction.date).isBetween(oneYearAgo, moment.now())
-  //          && transaction.type === typeTransaction;
-  // }
-  // return trDate.getMonth() === today.getMonth() && transaction.type === typeTransaction;
 }
 
-function getUsersCategory() {
-  app.user.income.forEach((it) => { incomeCategories.push(it.name); });
-  app.user.expenses.forEach((it) => { expensesCategories.push(it.name); });
-}
-
-function createCategoryList() {
-  let renderList;
-  if (typeTransaction === 'expenses') renderList = expensesCategories;
-  else if (typeTransaction === 'income') renderList = incomeCategories;
-  else renderList = [...incomeCategories, ...expensesCategories];
-
-  createSelect(document.querySelector('.btns-table-container'), {
-    placeholder: 'ALL',
-    class: 'category-list',
-    list: ['ALL CATEGORIES', ...renderList],
-    isTranslatable: true,
-  });
-
-  document.querySelector('#ALL').classList.add('selected');
-  document.querySelector('#ALL').setAttribute('data-i18n', 'allCategories');
-  document.querySelector('#ALL').innerHTML = 'ALL CATEGORIES';
-
-  setTimeout(() => {
-    document.querySelectorAll('.select__item').forEach((it) => {
-      it.addEventListener('click', () => {
-        categoryName = it.id;
-        document.querySelector('.table').remove();
-        tableCreate();
-        deleteTransaction();
-      });
+/* Delete transactions */
+async function deleteTransactionCallback(el) {
+  if ((el).classList.contains('cell__delete')) {
+    const idDelete = el.getAttribute('data-id');
+    // eslint-disable-next-line no-use-before-define
+    api.deleteTransaction(idDelete).then(() => {
+      rerenderTable();
     });
-  }, 1000);
+  }
 }
 
-function clearCategoryList() {
-  document.querySelector('.table-wrapper .select').remove();
+function deleteTransaction() {
+  document.querySelector('.table').addEventListener('click', (e) => {
+    e.preventDefault();
+    deleteTransactionCallback(e.target);
+  });
+}
+
+/* Genarate table HTML */
+function historyHtml() {
+  const main = document.querySelector('main');
+  const row = createElement('div', 'row table-wrapper');
+  const mainContainer = createElement('div', 'container-xxl table-container', row);
+  const tableHeading = createElement('h3', 'heading heading-table', null, ['i18n', 'transactionHistory']);
+  const table = createElement('div', 'table-mask');
+
+  const tableBtnsWrapper = createElement(
+    'div',
+    'btns-table-container',
+  );
+
+  main.append(mainContainer);
+  row.append(tableHeading, tableBtnsWrapper, table);
+  tableHeading.innerText = 'История транзакций';
 }
 
 function tableCreate() {
@@ -158,21 +125,38 @@ function tableCreate() {
   document.querySelector('.table-mask').append(table);
 }
 
-async function deleteTransactionCallback(el) {
-  if ((el).classList.contains('cell__delete')) {
-    const idDelete = el.getAttribute('data-id');
-    // eslint-disable-next-line no-use-before-define
-    api.deleteTransaction(idDelete).then(() => {
-      rerenderTable();
+/* Create constollers */
+function createCategoryList() {
+  let renderList;
+  if (typeTransaction === 'expenses') renderList = expensesCategories;
+  else if (typeTransaction === 'income') renderList = incomeCategories;
+  else renderList = [...incomeCategories, ...expensesCategories];
+
+  createSelect(document.querySelector('.btns-table-container'), {
+    placeholder: 'ALL',
+    class: 'category-list',
+    list: ['ALL CATEGORIES', ...renderList],
+    isTranslatable: true,
+  });
+
+  document.querySelector('#ALL').classList.add('selected');
+  document.querySelector('#ALL').setAttribute('data-i18n', 'allCategories');
+  document.querySelector('#ALL').innerHTML = 'ALL CATEGORIES';
+
+  setTimeout(() => {
+    document.querySelectorAll('.select__item').forEach((it) => {
+      it.addEventListener('click', () => {
+        categoryName = it.id;
+        document.querySelector('.table').remove();
+        tableCreate();
+        deleteTransaction();
+      });
     });
-  }
+  }, 1000);
 }
 
-function deleteTransaction() {
-  document.querySelector('.table').addEventListener('click', (e) => {
-    e.preventDefault();
-    deleteTransactionCallback(e.target);
-  });
+function clearCategoryList() {
+  document.querySelector('.table-wrapper .select').remove();
 }
 
 function renderTableBtns() {
@@ -224,6 +208,7 @@ function buttonsTypeListeners() {
   });
 }
 
+/* MAIN */
 function createTableContent() {
   getUsersCategory();
   filterTransaction(categoryName);
