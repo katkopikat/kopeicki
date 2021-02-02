@@ -1,5 +1,5 @@
 import { hashPassword, checkHashedPassword } from '../utils/hashHelper.js';
-import User from './User.model.js';
+import { User, UserTemplate } from './User.model.js';
 import { getTokens } from '../utils/token.js';
 
 export async function login(email, password) {
@@ -29,10 +29,14 @@ export async function register(email, password) {
   if (searchUser) {
     return [403, { message: 'invalid email-password' }];
   }
+
+  const template = await UserTemplate.findOne({ lang: 'en' }, '-_id');
+
   const user = await User.create({
     email,
     password: await hashPassword(password),
+    ...template.toObject(),
   });
-  console.log(user);
+  //console.log(user);
   return [201, { user }];
 }

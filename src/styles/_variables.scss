@@ -1,12 +1,3 @@
-// $yellow: #f2c200;
-// $gr:#1000f2;
-// $blue: #327ceb;
-// $green: #66ab0c;
-// $dark: #14161E;
-// $middle: #161821;
-// $light: #ffffff;
-// $gray: #5c5c5c;
-
 :root {
   --accounts: #f2c200;
   --expenses: #327ceb;
@@ -15,19 +6,35 @@
   --middle: #161821;
   --light: #ececec;
   --gray: #5c5c5c;
+  --category-sum: #8C92AB;
+  --catergory-bg: #1d202b;
   --filter: invert(0);
   --shadow: 0 4px 7px -1px rgba(0, 0, 0, 0.4);
+  --font-light: white;
+  --font-dark: black;
+  --expenses-alpha: rgba(243, 94, 110, 0.5);
+  --income-alpha: rgba(75, 192, 192, 0.5);
+  --toggle-bg: #afb1b7;
+  --toggle-shadow: inset 0 4px 4px rgba(0, 0, 0, 0.35);
+  --settings-h: #f2c200;
+  --preloader-bg: rgba(20, 22, 30, 0.5);
 }
 :root[theme='light'] {
   --accounts: #ecaf12;
-  --expenses: #f35e6e;
+  --expenses: #e85060;
   --income: #2fba93;
   --dark: #e3e9ef;
   --middle: #eaedf1;
   --light: #14161e;
   --gray: #5c5c5c;
   --filter: invert(1);
+  --catergory-bg: #eaf0f7;
+  --font-light: black;
+  --font-dark: rgb(243, 243, 243);
   --shadow: 8px 10px 14px -7px rgba(0, 0, 0, 0.1);
+  --toggle-bg: #ecaf12;
+  --settings-h: #5c5c5c;
+  --preloader-bg: rgba(227, 233, 239, 0.5);
 }
 
 @mixin flex-col() {

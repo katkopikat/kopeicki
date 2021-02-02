@@ -29,14 +29,95 @@
   textarea:focus {
     background: var(--accounts);
   }
+
+  .modal-body {
+    padding: 0;
+
+    &__title {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+  }
+  .btns-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 7%;
+  }
+
+  .content {
+    row-gap: 0.5rem;
+
+    .title {
+      margin-bottom: -2px;
+    }
+
+    .modal-body__amount {
+      text-align: center;
+    }
+
+    .new-category__icons {
+      width: 81%;
+      margin-bottom: 1rem;
+    }
+    .new-account_currency {
+      color: white;
+      margin: -0.5rem 0 1rem;
+    }
+  }
 }
 
 .modal-content {
+  transition: all 1s;
   border-radius: 1rem;
   line-height: 1;
 
   .form-floating {
     padding-top: 0.25rem;
+  }
+}
+
+.modal-dialog {
+  transition: all 0.4s;
+}
+
+.modal-content.expenses-btn {
+  transition: all 0.3s;
+  background: var(--expenses);
+}
+
+.modal-content.income-btn {
+  transition: all 0.3s;
+  background: var(--income);
+}
+
+.modal-content.warning {
+  background: var(--accounts);
+
+  .modal-body__title {
+    margin-bottom: 1.7rem;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .btns-container {
+    display: flex;
+    justify-content: center;
+    column-gap: 2.5rem;
+
+    .btn {
+      padding: 0.2rem 1.5rem;
+      font-size: 1.2rem;
+      color: var(--light);
+      background: var(--dark);
+      transition: all 0.3s;
+
+      &:hover {
+        color: var(--dark);
+        background: var(--light);
+        cursor: pointer;
+      }
+    }
   }
 }
 
@@ -47,20 +128,19 @@
 }
 
 .modal-body {
+  transition: all 0.4s;
   padding: 0 2rem;
   color: var(--dark);
 
   input,
-  select,
   textarea {
-    font-size: 1.2rem;
-    color: var(--dark);
     border: none;
     outline: none;
   }
 
   textarea {
     resize: none;
+    color: var(--dark);
 
     &:focus {
       padding-left: 0;
@@ -75,17 +155,22 @@
 
   .form-control {
     font-style: italic;
-    color: white;
+    color: var(--font-light);
     overflow: hidden;
 
     &:not(:placeholder-shown) {
       padding-left: 0;
+    }
+    &:focus {
+      box-shadow: none;
     }
   }
 
   input[type='date'] {
     position: relative;
     overflow: visible;
+    margin-top: 0.6rem;
+    margin-bottom: 0.3rem;
   }
 
   input[type='date']::-webkit-calendar-picker-indicator {
@@ -98,23 +183,76 @@
     cursor: pointer;
   }
 
+  [data-from],
+  [data-to] {
+    margin-right: 0.5rem;
+    color: var(--font-light);
+    opacity: 0.5;
+  }
+
+  [data-to] {
+    margin-right: 1.5rem;
+  }
+
   &__title {
+    font-size: 1.5rem;
     text-transform: uppercase;
+    color: var(--font-dark);
   }
 
   &__amount {
-    padding-right: 0.2em;
+    height: 4rem;
     font-size: 4rem;
+    width: 95%;
+    color: var(--font-light) !important;
     outline: none;
+    padding: 0;
+    margin-bottom: 1rem;
 
     &:hover {
       cursor: auto;
     }
+    &::placeholder {
+      color: white;
+      font-size: 4rem;
+    }
   }
+
+  .select__input {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    column-gap: 0.4rem;
+    height: 35px;
+
+    .select__value {
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: white;
+    }
+
+    .currency-list {
+      padding: 0;
+      margin: 0;
+      height: 5px;
+    }
+  }
+
+  // .currency-list  >  li:nth-child(6){
+  //   border-bottom: 3px solid #444444;
+  //  }
 
   &__category-name {
     text-transform: lowercase;
     font-size: 1.2rem;
+  }
+
+  .btn {
+    margin-bottom: 2rem;
+    font-weight: 500;
+    background: white;
+    text-transform: uppercase;
+    outline: none;
   }
 
   .new-category {
@@ -135,7 +273,6 @@
       text-align: center;
       font-size: 2rem;
       color: var(--light);
-      text-transform: uppercase;
       border-bottom: 1px dashed var(--light);
       padding-bottom: 0;
     }
@@ -166,7 +303,7 @@
     }
 
     .btn {
-      text-transform: uppercase;
+      margin-bottom: 0;
     }
 
     .selected {
@@ -176,26 +313,18 @@
   }
 }
 
-.modal-footer {
-  padding: 0.2rem 0 1rem 2rem;
-  justify-content: flex-start;
-  border: 0;
-
-  * {
-    margin: 0;
-  }
-
-  .btn {
-    background: var(--light);
-    text-transform: uppercase;
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
-}
-
 .btn-close {
   opacity: 0.25;
 }
 
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.btn-light:focus {
+  box-shadow: none;
+}

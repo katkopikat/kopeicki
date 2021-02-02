@@ -28,6 +28,7 @@ module.exports = {
           from: path.resolve(__dirname, 'src/assets'),
           to: path.resolve(__dirname, 'dist'),
         },
+        '../_redirects',
       ],
     }),
     new MiniCssExtractPlugin({
@@ -46,12 +47,26 @@ module.exports = {
             },
           },
           'css-loader',
-          'postcss-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [
+                  [
+                    'postcss-preset-env',
+                    {
+                      stage: 1,
+                    },
+                  ],
+                ],
+              },
+            },
+          },
           'sass-loader',
         ],
       },
       {
-        test: /\.(png|jpg|svg)/,
+        test: /\.(png|jpg|jpeg|svg|gif)/,
         use: ['file-loader'],
       },
       {

@@ -1,50 +1,51 @@
 import './styles/main.scss';
 import 'bootstrap';
 
-import renderStatisticsPage from './script/components/statistics/statistics';
-import renderSettingsPage from './script/components/settings/settings';
-import renderTransactionsPage from './script/components/transactions/transactions';
-
-const Planning = () => {
-    console.log('Отрисовалась планинг')
-};
-
-const router = () => {
-  const routes = [
-    { path: '/statistics', component: renderStatisticsPage },
-    { path: '/planning', component: Planning },
-    { path: '/settings', component: renderSettingsPage},
-    { path: '/', component: renderTransactionsPage },
-  ];
-
-  const path = window.location.href;
-
-  const match = routes.find((r) => path.includes(r.path));
-
-  document.querySelector('main').innerHTML = '';
-
-  match.component();
-};
+import router from './script/router';
+import toggleSettings from './script/components/settings/settings';
+import navSlideIn from './script/components/navbar';
+import app from './script/app';
+import pubsub from './script/pubsub';
+import hotKeys from './script/utils/hotKeys';
+import { playSound } from './script/components/settings/sound';
+import './assets/images/favicon.png';
 
 const navigateTo = (url) => {
-  window.history.pushState(null, null, url);
-  router();
+  if (app.user || url.includes('login')) {
+    window.history.pushState(null, null, url);
+    router();
+  }
 };
+
+toggleSettings();
 
 window.addEventListener('popstate', router);
 
 window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('navbar').addEventListener('click', (e) => {
+  document.querySelector('.nav__list').addEventListener('click', (e) => {
     if (e.target.matches('[data-link]')) {
       e.preventDefault();
       navigateTo(e.target.href);
 
-      document.querySelectorAll('.nav-item').forEach((el) => {
+      document.querySelectorAll('.nav__link').forEach((el) => {
         el.classList.remove('active');
       });
       e.target.classList.add('active');
     }
   });
 
-  router();
+  pubsub.subscribe('navigateTo', navigateTo);
+  pubsub.subscribe('logout', () => app.logout);
+
+  app.init().then(router);
 });
+
+document.getElementById('logout').addEventListener('click', (e) => {
+  e.preventDefault();
+  app.logout();
+  navigateTo('/login');
+  playSound('error', true);
+});
+
+hotKeys();
+navSlideIn();

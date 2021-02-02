@@ -10,7 +10,7 @@ router.route('/').get(
       user: res.locals.userId,
     };
     const txs = await Transaction.find(findParams)
-      .sort({ date: -1 }) // desc
+      .sort({ date: -1, _id: -1 }) // desc
       .exec();
     res.json(txs);
   }),

@@ -3,48 +3,85 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CoinKeeper</title>
+    <title>Kopeicki - учёт финансов</title>
   </head>
   <body>
     <header>
-      <nav class="navbar navbar-expand-md navbar-light">
-        <div class="container-fluid">
-          <div class="settings-container">
-            <button class="toggle-theme">Тема</button>
-            <div class="currency-container"></div>
-          </div>
-          <a class="navbar-brand" href="#">CoinKeeper</a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#menu"
-            aria-controls="menu"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
+      <button class="burger" type="button">
+        <span class="burger__line"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img class="logo" src="images/logo.png"></img></a>
+    </header>
+    <div class="wrapper">
+      <nav class="nav">
+        <div class="profile">
+          <img src="gifs/user.gif" alt="Profile image" class="profile__image">
+          <p class="profile__name" id="profile-name"></p>
+          <a class="profile__log-out" id="logout" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+              <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+            </svg>
+            Log Out
+          </a>
         </div>
-        <div class="collapse navbar-collapse" id="navbar">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a href="/" class="nav-link active" data-link>Transactions</a>
-            </li>
-            <li class="nav-item">
-              <a href="/statistics" class="nav-link" data-link>Statistics</a>
-            </li>
-            <li class="nav-item">
-              <a href="/planning" class="nav-link" data-link>Planning</a>
-            </li>
-            <li class="nav-item">
-              <a href="/settings" class="nav-link" data-link>Settings</a>
-            </li>
-          </ul>
+        <ul class="nav__list">
+          <li class="nav__item">
+            <a href="/" class="nav__link active" data-i18n="Transactions" data-link>Transactions</a>
+          </li>
+          <li class="nav__item">
+            <a href="/statistics" class="nav__link" data-i18n="Statistics" data-link>Statistics</a>
+          </li>
+          <li class="nav__item">
+            <a href="/history" class="nav__link" data-i18n="History" data-link>History</a>
+          </li>
+        </ul>
+        <div class="settings-container">
+          <p data-i18n="Settings">Settings:</p>
+          <div class="toggle lang">
+            <span class="lang-select" style="display: none;"></span>
+            <span data-i18n="Language">Language</span>
+          </div>
+          <div class="toggle theme">
+            <input type="checkbox" class="checkbox" id="theme" />
+            <label for="theme" class="label">
+              <div class="ball"></div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brightness-high" viewBox="0 0 16 16">
+                <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-moon" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M14.53 10.53a7 7 0 0 1-9.058-9.058A7.003 7.003 0 0 0 8 15a7.002 7.002 0 0 0 6.53-4.47z"/>
+              </svg>
+            </label>
+            <span data-i18n="Theme">Theme</span>
+          </div>
+          <div class="toggle sound">
+            <input type="checkbox" class="checkbox" id="sound" />
+            <label for="sound" class="label">
+              <div class="ball"></div>
+            </label>
+            <span data-i18n="Sound">Sound</span>
+          </div>
         </div>
       </nav>
-    </header>
-    <main></main>
-    <footer></footer>
+      <main></main>
+    </div>
+    <div id="preloader" class="hidden"><div class="coin-preloader"></div></div>
+     <!--<footer>
+      <span class="code_btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code-slash" viewBox="0 0 16 16">
+          <path d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294l4-13zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0zm6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0z"/>
+        </svg>
+  </span>
+      <span class="footer__links">
+        Made by <a class="link_item" href="https://github.com/katkopikat">katkopikat</a>  |
+                <a class="link_item"href="https://github.com/yulia-kri">yulia-kri</a>  |
+                <a class="link_item" href="https://github.com/v0f">v0f</a>  |
+                <a class="link_item" href="https://github.com/akulaualiaksei">akulaualiaksei</a>
+      </span>
+   <a class="rs__link" href="https://rs.school/js/"><img class="logo__img" src="./assets/images/rs_logo.png"></a>
+
+
+  </footer>-->
   </body>
 </html>

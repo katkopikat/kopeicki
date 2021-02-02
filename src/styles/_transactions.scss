@@ -1,75 +1,159 @@
 .transactions-container {
-  // background-color: $middle;
-  .transactions-dashboard {
-    @include flex-col;
-    row-gap: 2rem;
-    padding: 1.5rem;
+  padding: 2rem 2.5rem;
 
-    &__item {
+  @media (max-width: 768px) {
+    .row {
+      flex-direction: column;
+      row-gap: 4rem;
+    }
+
+    .col-8,
+    .col-4 {
       width: 100%;
-      padding: 1.3rem;
-      border-radius: 8px;
-      box-shadow: var(--shadow);
+    }
+  }
+}
+.transactions-dashboard {
+  @include flex-col;
+  row-gap: 2rem;
+
+  &__item {
+    width: 100%;
+    padding: 1.3rem;
+    border-radius: 8px;
+    background-color: var(--catergory-bg);
+    box-shadow: var(--shadow);
+
+    .item__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+
+      div {
+        text-align: right;
+
+        p {
+          margin: 0;
+          font-style: italic;
+          color: var(--gray);
+          font-size: 0.9rem;
+        }
+
+        h5 {
+          font-weight: 400;
+        }
+      }
 
       h4 {
         font-size: calc(1.1rem + 0.3vw);
-        margin-bottom: 1rem;
         text-transform: uppercase;
       }
+    }
 
-      .flex-list {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        column-gap: 0.8rem;
-        row-gap: 0.8rem;
+    .flex-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      column-gap: 0.8rem;
+      row-gap: 0.8rem;
 
-        &__item {
-          width: 6rem;
-          @include flex-col;
-          align-items: center;
-          row-gap: 0.2em;
+      &__item {
+        position: relative;
+        width: 6rem;
+        @include flex-col;
+        align-items: center;
+        row-gap: 0.2em;
 
-          .category-icon {
-            padding: 0.8em;
-            border-radius: 50%;
+        .category-amount {
+          color: var(--category-sum);
+          font-size: 0.7rem;
+          margin-top: -0.3rem;
+        }
 
-            .icon-svg {
-              background-size: 90%;
-              background-repeat: no-repeat;
-              background-position: center;
-              height: 42px;
-              width: 42px;
-              filter: var(--filter);
-            }
+        .category-icon {
+          padding: 0.8em;
+          border-radius: 50%;
+
+          .icon-svg {
+            background-size: 90%;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 42px;
+            width: 42px;
+            filter: var(--filter);
+            transition: all linear 0.25s;
           }
+        }
 
-          span {
-            color: var(--light);
-            text-align: center;
-            font-size: 0.85rem;
-          }
+        span {
+          color: var(--light);
+          text-align: center;
+          font-size: 0.85rem;
+        }
 
-          &:hover {
-            cursor: pointer;
-          }
+        &:hover {
+          cursor: pointer;
+        }
 
-          &:hover .icon-svg {
-            filter: invert(1);
-          }
-
-          // &:hover .icon-svg {
-          //   transition: all 0.15s;
-          //   transform: scale(1.1);
-          // }
+        &:hover .icon-svg {
+          filter: invert(1);
         }
       }
+    }
+  }
+
+  .edit {
+    padding: 0.5em;
+    line-height: 42px;
+    border-radius: 50%;
+    transition: all 0.25s;
+
+    &:before {
+      content: '\002B';
+      padding: 0 14px;
+      font-size: 2rem;
+    }
+
+    &:hover {
+      border-radius: 0%;
+    }
+  }
+
+  .delete-category {
+    color: var(--gray);
+
+    &.selected span {
+      color: var(--light);
+    }
+
+    span {
+      color: var(--gray);
+    }
+
+    .delete {
+      opacity: 0.3;
+      border: 2px solid var(--gray);
+
+      &:before {
+        content: '\2212';
+      }
+
+      &:hover {
+        border: 2px solid var(--light);
+        border-radius: 0%;
+        color: var(--light);
+      }
+    }
+
+    .delete:hover ~ span {
+      color: var(--light);
     }
   }
 }
 
 .accounts {
-  h4 {
+  .item__header {
     color: var(--accounts);
   }
   .category-icon {
@@ -81,16 +165,25 @@
     color: var(--accounts);
   }
 
+  .selected .delete {
+    border: 2px solid var(--accounts);
+    border-radius: 0%;
+    color: var(--accounts);
+    opacity: 1;
+  }
+
   .flex-list__item * {
     pointer-events: none;
   }
-  .flex-list__item .add {
+
+  .flex-list__item .add,
+  .flex-list__item .delete {
     pointer-events: all;
   }
 }
 
 .expenses {
-  h4 {
+  .item__header {
     color: var(--expenses);
   }
 
@@ -102,10 +195,17 @@
     border: 2px solid var(--expenses);
     color: var(--expenses);
   }
+
+  .selected .delete {
+    border: 2px solid var(--expenses);
+    border-radius: 0%;
+    color: var(--expenses);
+    opacity: 1;
+  }
 }
 
 .income {
-  h4 {
+  .item__header {
     color: var(--income);
   }
 
@@ -117,29 +217,54 @@
     border: 2px solid var(--income);
     color: var(--income);
   }
+
+  .selected .delete {
+    border: 2px solid var(--income);
+    border-radius: 0%;
+    color: var(--income);
+    opacity: 1;
+  }
 }
 
-.add {
-  padding: 0.5em;
-  line-height: 42px;
-  border-radius: 50%;
-  transition: all 0.25s;
+.deleting {
+  &:before {
+    content: '\2212';
+    position: absolute;
+    left: 9px;
+    top: -9px;
+    z-index: 10;
+    display: block;
+    padding: 1px 8px;
+    font-size: 1rem;
+    border-radius: 50%;
+    color: var(--gray);
+    background: var(--light);
+  }
+
+  .category-amount {
+    opacity: 0;
+  }
 }
 
-.add:before {
-  content: ' \002B';
-  padding: 0 14px;
-  font-size: 2rem;
-}
+@keyframes beforeDeletion {
+  10%,
+  90% {
+    transform: translate3d(-1px, -1px, 0) rotate(5deg);
+  }
 
-.add:hover {
-  border-radius: 0%;
-  transition: all 0.25s;
-  // transform: rotate(90deg);
-}
+  20%,
+  80% {
+    transform: translate3d(2px, -3px, 0) rotate(-2deg);
+  }
 
-// .add:hover::before {
-//   transition: all 0.4s;
-//   transform: rotate(90deg);
-//   color: red;
-// }
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-3px, -1px, 0) rotate(3deg);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(3px, 2px, 0) rotate(-4deg);
+  }
+}

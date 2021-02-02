@@ -1,58 +1,84 @@
 /* eslint-disable no-param-reassign */
 
 import { Chart } from 'chart.js';
+import moment from 'moment';
 import createElement from '../../utils/create';
-import history from '../../helpers/history_transactions';
+import { getTheme, getLanguage } from '../../utils/localStorage';
+import { moveToggle } from '../../utils/DOM';
+import translatePage from '../settings/language';
+import translations from '../../data/translations';
 
 const today = new Date();
-let typeTransaction = 'expense';
+let typeTransaction = 'expenses';
 let period = 'mounth';
-let summaryObj = null;
+let filtredData = null;
 let doughnut = null;
+let dataHistory;
 
-function setBGColor() {
-  return document.documentElement.hasAttribute('theme') ? 'rgba(234, 237, 241, 1)' : 'rgba(37, 40, 54, 1)';
+function preloader() {
+  const preloaderEl = document.getElementById('preloader');
+  preloaderEl.classList.toggle('visible');
 }
 
+function filterTransactions() {
+  const filtredByPeriod = dataHistory.filter((transaction) => {
+    const trDate = new Date(transaction.date);
+    if (period === 'year') {
+      const oneYearAgo = new Date().setFullYear(new Date().getFullYear() - 1);
+      return moment(transaction.date).isBetween(oneYearAgo, moment(new Date()).add(1, 'days'))
+             && transaction.type === typeTransaction;
+    }
+    return trDate.getMonth() === today.getMonth()
+        && trDate.getFullYear() === today.getFullYear()
+        && transaction.type === typeTransaction;
+  });
+
+  filtredData = filtredByPeriod.reduce((total, transaction) => {
+    if (Object.prototype.hasOwnProperty.call(total, transaction.category)) {
+      total[transaction.category] += parseInt(transaction.amount, 10);
+    } else {
+      total[transaction.category] = parseInt(transaction.amount, 10);
+    }
+    return total;
+  },
+  {});
+}
+
+/* Set settings for doughnuts chart */
 function renderDoughnutHTML() {
   const doughnutWrapperDiv = createElement('div', 'wrapper-doughnut');
+  const doughnutHeading = createElement('h3', 'heading heading-doughnut');
   const doughnutCanvas = createElement('canvas', 'doughnut-container');
 
   const doughnutTypeBtnsWrapper = createElement(
     'div',
-    'btn-group btn-group-toggle',
-    null,
-    ['toggle', 'buttons'],
+    'toggle doughnut-type',
   );
 
   const doughnutPeriodBtnsWrapper = createElement(
     'div',
-    'btn-group btn-group-toggle bar-years',
-    null,
-    ['toggle', 'buttons'],
+    'toggle doughnut-period',
   );
 
   const doughnutPeriodBtns = `
-  <label class="btn btn-secondary active">
-  <input type="radio" name="period" id="month" autocomplete="off" checked> Month
-</label>
-<label class="btn btn-secondary">
-  <input type="radio" name="period" id="year" autocomplete="off"> Year
-  </label>`;
+  <input type="checkbox" class="checkbox" id="doughnut-period" />
+  <span data-i18n="Month">Month</span>
+  <label for="doughnut-period" class="label">
+    <div class="ball"></div>
+  </label>
+  <span data-i18n="Year">Year</span>`;
 
   const doughnutTypeBtns = `
-<label class="btn btn-secondary active">
-<input type="radio" name="type" id="expense" autocomplete="off" checked> Expense
-</label>
-<label class="btn btn-secondary">
-<input type="radio" name="type" id="income" autocomplete="off"> Income
-  </label>`;
+  <input type="checkbox" class="checkbox" id="doughnut-type" />
+  <span data-i18n="Expenses">Expenses</span>
+  <label for="doughnut-type" class="label">
+    <div class="ball"></div>
+  </label>
+  <span data-i18n="Income">Income</span>`;
 
   document.querySelector('.charts-wrapper').append(doughnutWrapperDiv);
-  doughnutWrapperDiv.append(doughnutCanvas);
-
-  doughnutWrapperDiv.append(doughnutTypeBtnsWrapper);
-  doughnutWrapperDiv.append(doughnutPeriodBtnsWrapper);
+  doughnutWrapperDiv.append(doughnutHeading, doughnutCanvas,
+    doughnutPeriodBtnsWrapper, doughnutTypeBtnsWrapper);
 
   doughnutPeriodBtnsWrapper.insertAdjacentHTML(
     'beforeend',
@@ -64,38 +90,72 @@ function renderDoughnutHTML() {
   );
 }
 
-function filterTransaction() {
-  const filtredHistory = history.filter((transaction) => {
-    const trDate = new Date(transaction.date);
-    if (period === 'year') {
-      return trDate.getFullYear() === today.getFullYear() && transaction.type === typeTransaction;
-    }
-    return trDate.getMonth() === today.getMonth() && transaction.type === typeTransaction;
-  });
+function setBGColor() {
+  return getTheme() === 'light' ? 'rgba(234, 240, 247, 1)' : 'rgba(29, 32, 43, 1)';
+}
 
-  summaryObj = filtredHistory.reduce((summary, trans) => {
-    if (Object.prototype.hasOwnProperty.call(summary, trans.category)) {
-      summary[trans.category] += parseFloat(trans.amount);
-    } else {
-      summary[trans.category] = parseFloat(trans.amount);
-    }
-    return summary;
-  },
-  {});
+function setLegendDisplay() {
+  if (window.innerWidth <= 450) {
+    return {
+      display: false,
+    };
+  }
+  if (window.innerWidth <= 500) {
+    return {
+      display: true,
+      position: 'bottom',
+      labels: {
+        fontSize: 8,
+        boxWidth: 10,
+      },
+    };
+  } if (window.innerWidth <= 700) {
+    return {
+      display: true,
+      position: 'bottom',
+      labels: {
+        fontSize: 10,
+        boxWidth: 10,
+      },
+    };
+  }
+  return {
+    display: true,
+    position: 'bottom',
+    labels: {
+      fontSize: 11,
+      boxWidth: 20,
+      padding: 20,
+    },
+  };
 }
 
 function calculateTotalSum() {
-  return Object.values(summaryObj).reduce((sum, it) => sum + it);
+  return Object.values(filtredData).length !== 0
+    ? parseInt(Object.values(filtredData).reduce((sum, it) => sum + it), 10) : 0;
 }
 
-function generateChart(type, time) {
+function renderHeading() {
+  const doughnutHeading = document.querySelector('.heading-doughnut');
+  doughnutHeading.innerText = `Total ${typeTransaction} for the ${period} ${calculateTotalSum()} rub.`;
+}
+
+function translateCategoriesNames() {
+  const lang = getLanguage();
+  const categoryName = Object.keys(filtredData);
+  const dictionary = (Object.keys(translations[lang]));
+  return categoryName.map((it) => (dictionary.includes(it) ? translations[lang][it] : it));
+}
+
+/* Renderings Chart instance */
+function generateChart() {
   const canvas = document.querySelector('.doughnut-container');
   doughnut = new Chart(canvas, {
     type: 'doughnut',
     data: {
-      labels: Object.keys(summaryObj),
+      labels: Object.keys(filtredData).length !== 0 ? translateCategoriesNames() : ['You`re haven`t any transactions'],
       datasets: [{
-        data: Object.values(summaryObj),
+        data: Object.values(filtredData).length !== 0 ? Object.values(filtredData) : [1],
         backgroundColor: [
           'rgba(243, 94, 110, 1)',
           'rgba(54, 162, 235, 1)',
@@ -107,6 +167,7 @@ function generateChart(type, time) {
           'rgba(52, 62, 176, 1)',
           'rgba(47, 186, 147, 1)',
           'rgba(0, 93, 236, 1)',
+
           'rgba(243, 94, 110, 1)',
           'rgba(54, 162, 235, 1)',
           'rgba(255, 206, 86, 1)',
@@ -123,143 +184,127 @@ function generateChart(type, time) {
       }],
     },
     options: {
+      layout: {
+        padding: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+        },
+      },
       responsive: true,
-      cutoutPercentage: 70,
-      // elements: {
-      //   center: {
-      //     text: `Total ${type} for the ${time} ${calculateTotalSum()} rub. `,
-      //     color: centerTextColor, // Default is #000000
-      //     fontStyle: 'Segoe UI', // Default is Arial
-      //     sidePadding: 20, // Default is 20 (as a percentage)
-      //     minFontSize: 12, // Default is 20 (in px), set to false and text will not wrap.
-      //     lineHeight: 24, // Default is 25 (in px), used for when text wraps
-      //   },
-      // },
+      cutoutPercentage: 50,
       title: {
-        display: true,
-        position: 'bottom',
-        text: `Total ${type} for the ${time} ${calculateTotalSum()} rub.`,
+        position: 'top',
+        fontSize: 12,
+        text: `Total ${typeTransaction} for the ${period} ${calculateTotalSum()} rub.`,
       },
-      legend: {
-        position: 'left',
-      },
+      legend: setLegendDisplay(),
     },
 
   });
 }
 
-function buttonsListeners() {
-  document.querySelectorAll('[name="period"]').forEach((btnPer) => {
-    btnPer.addEventListener('click', () => {
-      if (btnPer.checked === true) {
-        period = btnPer.id;
-        doughnut.destroy();
-        filterTransaction();
-        generateChart(typeTransaction, period);
-      }
-    });
-  });
-
-  document.querySelectorAll('[name="type"]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      if (btn.checked === true) {
-        typeTransaction = btn.id;
-        doughnut.destroy();
-        filterTransaction();
-        generateChart(typeTransaction, period);
-      }
-    });
-  });
-}
-
-export default function generateDoughnutChart() {
-  filterTransaction();
-  renderDoughnutHTML();
-  buttonsListeners();
+/* Rerender chart, when toggles are pusded or window size is changed */
+function rerenderDoughnut() {
+  doughnut.destroy();
   generateChart(typeTransaction, period);
 }
 
-Chart.pluginService.register({
-  beforeDraw(chart) {
-    if (chart.config.options.elements.center) {
-      // Get ctx from string
-      const { ctx } = chart.chart;
+/* Rerender chart, when toggles are pusded or window size is changed */
+function rerenderDoughnutByToggles() {
+  filterTransactions();
+  rerenderDoughnut();
+  renderHeading();
+}
 
-      // Get options from the center object in options
-      const centerConfig = chart.config.options.elements.center;
-      const fontStyle = centerConfig.fontStyle || 'Segoe UI';
-      const txt = centerConfig.text;
-      const color = centerConfig.color || '#000';
-      const maxFontSize = centerConfig.maxFontSize || 20;
-      const sidePadding = centerConfig.sidePadding || 20;
-      const sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2);
-      // Start with a base font of 30px
-      ctx.font = `14px ${fontStyle}`;
+/* Buttons */
+function buttonsTypeListeners() {
+  const typeToggleDiv = document.querySelector('.toggle.doughnut-type');
+  const typeToggle = document.getElementById('doughnut-type');
+  const width = 24;
 
-      /* Get the width of the string and also the width of the elementminus
-      10 to give it 5px side padding */
-      const stringWidth = ctx.measureText(txt).width;
-      const elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+  const isChecked = typeTransaction === 'income';
+  typeToggle.checked = isChecked;
 
-      // Find out how much the font can grow in width.
-      const widthRatio = elementWidth / stringWidth;
-      const newFontSize = Math.floor(30 * widthRatio);
-      const elementHeight = (chart.innerRadius * 2);
+  typeToggle.addEventListener('change', () => {
+    const transition = () => {
+      document.documentElement.classList.add('transition');
+      window.setTimeout(() => {
+        document.documentElement.classList.remove('transition');
+      }, 1000);
+    };
 
-      // Pick a new font size so it will not be larger than the height of label.
-      let fontSizeToUse = Math.min(newFontSize, elementHeight, maxFontSize);
-      let { minFontSize } = centerConfig;
-      const lineHeight = centerConfig.lineHeight || 25;
-      let wrapText = true;
+    moveToggle(typeToggleDiv, width, typeToggle.checked);
+    typeTransaction = typeToggle.checked ? 'income' : 'expenses';
+    rerenderDoughnutByToggles();
+    transition();
+  });
+}
 
-      if (minFontSize === undefined) {
-        minFontSize = 12;
-      }
+function buttonsPeriodListeners() {
+  const periodToggleDiv = document.querySelector('.toggle.doughnut-period');
+  const periodToggle = document.getElementById('doughnut-period');
+  const width = 24;
 
-      if (minFontSize && fontSizeToUse < minFontSize) {
-        fontSizeToUse = minFontSize;
-        wrapText = true;
-      }
+  const isChecked = typeTransaction === 'year';
+  periodToggle.checked = isChecked;
 
-      // Set font settings to draw it correctly.
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-      let centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
-      ctx.font = `${fontSizeToUse}px ${fontStyle}`;
-      ctx.fillStyle = color;
+  periodToggle.addEventListener('change', () => {
+    const transition = () => {
+      document.documentElement.classList.add('transition');
+      window.setTimeout(() => {
+        document.documentElement.classList.remove('transition');
+      }, 1000);
+    };
 
-      if (!wrapText) {
-        ctx.fillText(txt, centerX, centerY);
-        return;
-      }
+    moveToggle(periodToggleDiv, width, periodToggle.checked);
+    period = periodToggle.checked ? 'year' : 'month';
+    rerenderDoughnutByToggles();
+    transition();
+  });
+}
 
-      const words = txt.split(' ');
-      let line = '';
-      const lines = [];
+/* Settings for responsive or when theme is changing */
+function trackWindowSize(e) {
+  if (e.matches) {
+    rerenderDoughnut();
+  }
+}
 
-      // Break words up into multiple lines if necessary
-      for (let n = 0; n < words.length; n += 1) {
-        const testLine = `${line + words[n]} `;
-        const metrics = ctx.measureText(testLine);
-        const testWidth = metrics.width;
-        if (testWidth > elementWidth && n > 0) {
-          lines.push(line);
-          line = `${words[n]} `;
-        } else {
-          line = testLine;
-        }
-      }
+function mediaQuerySizes() {
+  const breakpoints = ['(max-width: 700px)', '(max-width: 500px)', '(max-width: 450px)',
+    '(min-width: 700px)', '(min-width: 500px)', '(min-width: 450px)'];
 
-      // Move the center up depending on line height and number of lines
-      centerY -= (lines.length / 2) * lineHeight;
+  breakpoints.forEach((it) => {
+    const mediaQuery = window.matchMedia(it);
+    mediaQuery.addListener(trackWindowSize);
+    trackWindowSize(mediaQuery);
+  });
+}
 
-      for (let n = 0; n < lines.length; n += 1) {
-        ctx.fillText(lines[n], centerX, centerY);
-        centerY += lineHeight;
-      }
-      // Draw text in center
-      ctx.fillText(line, centerX, centerY);
-    }
-  },
+document.getElementById('theme').addEventListener('click', () => {
+  if (doughnut) {
+    doughnut.destroy();
+    setTimeout(generateChart, 0);
+  }
 });
+
+/* Only first time rendering Chart instance */
+function createDoughnutContent() {
+  filterTransactions();
+  renderDoughnutHTML();
+  buttonsTypeListeners();
+  buttonsPeriodListeners();
+  generateChart(typeTransaction, period);
+  renderHeading();
+  translatePage();
+  preloader();
+}
+
+/* Main  */
+export default function renderDoughnutChart(data) {
+  dataHistory = data;
+  createDoughnutContent();
+  mediaQuerySizes();
+}

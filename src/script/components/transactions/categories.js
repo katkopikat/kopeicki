@@ -1,32 +1,37 @@
 import createElement from '../../utils/create';
-import allAccountsCategories from '../../data/accounts';
-import allExpensesCategories from '../../data/expenses';
-import allIncomeCategories from '../../data/income';
-import { modal, transactionModal, newCategoryModal } from '../modal';
+import modal from '../modals/modal';
+import transactionModal from '../modals/transactionModal';
+import accountModal from '../modals/accountModal';
+import newCategoryModal from '../modals/newCategoryModal';
+import app from '../../app';
+import { startDeletion, stopDeletion, deletionState } from '../../utils/deleteCategory';
 
 export default function createCategoryList(group, container) {
+  const txsSummary = app.transactionsSummary;
   let list;
 
   switch (group) {
     case 'accounts':
-      list = [...allAccountsCategories];
+      list = [...app.user.accounts];
       break;
     case 'expenses':
-      list = [...allExpensesCategories];
+      list = [...app.user.expenses];
       break;
     case 'income':
-      list = [...allIncomeCategories];
+      list = [...app.user.income];
       break;
     default:
       break;
   }
 
-  const isDraggable = !!(group !== 'accounts');
+  const isDraggable = group !== 'accounts';
 
   const listContainer = createElement('div', 'flex-list');
 
   list.forEach((category) => {
-    const categoryName = createElement('span', '', category.name);
+    const amount = `${Math.round(txsSummary[group]?.get(category.name) || category.amount || 0)}`;
+    const categoryAmount = createElement('span', 'category-amount', amount, ['category', category.name]);
+    const categoryName = createElement('span', '', category.name, ['i18n', category.name]);
     const imgSrc = `background-image: url(${category.icon});`;
     const categoryIcon = createElement('div', 'icon-svg', null, ['style', imgSrc]);
     const categoryIconDiv = createElement('div', 'category-icon', categoryIcon);
@@ -34,7 +39,7 @@ export default function createCategoryList(group, container) {
     const categoryElem = createElement(
       'div',
       'flex-list__item',
-      [categoryIconDiv, categoryName],
+      [categoryIconDiv, categoryName, categoryAmount],
       ['category', category.name],
       ['group', group],
       ['draggable', isDraggable],
@@ -46,11 +51,20 @@ export default function createCategoryList(group, container) {
   const addCategoryBtn = createElement(
     'div',
     'flex-list__item add-category',
-    '<div class="add"></div> <span>Add category</span>',
+    '<div class="edit add"></div><span data-i18n="new">New category</span>',
     ['group', group],
   );
 
   listContainer.append(addCategoryBtn);
+
+  const deleteCategoryBtn = createElement(
+    'div',
+    'flex-list__item delete-category',
+    '<div class="edit delete"></div><span data-i18n="delete category">Delete category</span>',
+    ['group', group],
+  );
+
+  listContainer.append(deleteCategoryBtn);
 
   listContainer.addEventListener('click', (e) => {
     const categoryItem = e.target.closest('.flex-list__item');
@@ -59,68 +73,27 @@ export default function createCategoryList(group, container) {
 
     const type = categoryItem.dataset.group;
 
-    if (!categoryItem.classList.contains('add-category')) {
+    if (categoryItem.classList.contains('add-category')) {
+      modal.setContent(newCategoryModal(type));
+      modal.show();
+    } else if (categoryItem.classList.contains('delete-category')) {
+      if (container.querySelector('.deleting') || deletionState.isModalOpened) {
+        stopDeletion(container);
+      } else {
+        startDeletion(e.target, container);
+      }
+    } else {
       const { category } = categoryItem.dataset;
 
-      modal.setContent(transactionModal({ type, to: category }));
-    } else {
-      modal.setContent(newCategoryModal(type));
-    }
+      if (categoryItem.dataset.group === 'accounts') {
+        modal.setContent(accountModal({ type, from: category }));
+      } else {
+        modal.setContent(transactionModal({ type, to: category }));
+      }
 
-    modal.show();
+      modal.show();
+    }
   });
 
   container.append(listContainer);
-
-  /* ------------ HOT KEYS ---------------
-      SHIFT + E --> New expense
-      SHIFT + I --> New income
-      SHIFT + A --> New account
-      SHIFT + S --> Open settings page
-      SHIFT + R --> Edit categories (remove catrgories)
-  */
-
-  let shiftIsPressed = false;
-  window.addEventListener('keydown', (e) => {
-    if (e.keyCode === 16) {
-      shiftIsPressed = true;
-      e.preventDefault();
-    }
-  });
-
-  window.addEventListener('keyup', (e) => {
-    if (e.keyCode === 16) {
-      shiftIsPressed = false;
-      e.preventDefault();
-    }
-  });
-
-  window.addEventListener('keydown', (e) => {
-    if (shiftIsPressed && e.keyCode === 69) {
-      console.log('Shift + E => Open new expense modal!');
-      e.preventDefault();
-      modal.setContent(transactionModal('expenses', ''));
-      modal.show();
-    }
-    if (shiftIsPressed && e.keyCode === 73) {
-      console.log('Shift + I => Open mew income modal!');
-      e.preventDefault();
-      modal.setContent(transactionModal('income', ''));
-      modal.show();
-    }
-    if (shiftIsPressed && e.keyCode === 65) {
-      console.log('Shift + A => Open mew account modal!');
-      e.preventDefault();
-      modal.setContent(transactionModal('account', ''));
-      modal.show();
-    }
-    if (shiftIsPressed && e.keyCode === 83) {
-      e.preventDefault();
-      console.log('Shift + S => Open setings page!');
-    }
-    if (shiftIsPressed && e.keyCode === 82) {
-      e.preventDefault();
-      console.log('Shift + R => Edit categories!');
-    }
-  });
 }
