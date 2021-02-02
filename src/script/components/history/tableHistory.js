@@ -76,56 +76,64 @@ function historyHtml() {
 function tableCreate() {
   const filtredHistory = filterTransaction(categoryName);
   const table = document.createElement('table');
+
   table.className = 'table';
-  table.innerHTML = `<thead>
-      <tr>
-        <th scope="col" data-i18n="Date">Date</th>
-        <th scope="col" data-i18n="Category">Category</th>
-        <th scope="col" data-i18n="Amount">Amount</th>
-        <th scope="col" data-i18n="Account">Account</th>
-        <th scope="col" data-i18n="Description">Description</th>
-        <th scope="col" data-i18n="Delete">Delete</th>
-      </tr>
-    </thead>`;
-  const tbody = document.createElement('tbody');
-  table.appendChild(tbody);
-  filtredHistory.forEach((transaction, i) => {
-    const row = tbody.insertRow(i);
-    const cell1 = row.insertCell();
-    const cell2 = row.insertCell();
-    const cell3 = row.insertCell();
-    const cell4 = row.insertCell();
-    const cell5 = row.insertCell();
-    const cell6 = row.insertCell();
 
-    const {
-      type, date, category, amount, account, description, id,
-    } = transaction;
+  if (filtredHistory.length === 0) {
+    table.classList.add('table-empty');
+    table.innerText = 'You don\'t have any transactions yet.';
+    table.setAttribute('data-i18n', 'no-trx-msg');
+  } else {
+    table.innerHTML = `<thead>
+    <tr>
+      <th scope="col" data-i18n="Date">Date</th>
+      <th scope="col" data-i18n="Category">Category</th>
+      <th scope="col" data-i18n="Amount">Amount</th>
+      <th scope="col" data-i18n="Account">Account</th>
+      <th scope="col" data-i18n="Description">Description</th>
+      <th scope="col" data-i18n="Delete">Delete</th>
+    </tr>
+  </thead>`;
+    const tbody = document.createElement('tbody');
+    table.appendChild(tbody);
+    filtredHistory.forEach((transaction, i) => {
+      const row = tbody.insertRow(i);
+      const cell1 = row.insertCell();
+      const cell2 = row.insertCell();
+      const cell3 = row.insertCell();
+      const cell4 = row.insertCell();
+      const cell5 = row.insertCell();
+      const cell6 = row.insertCell();
 
-    cell1.className = 'cell__date';
-    cell2.className = type === 'expenses' ? 'cell__category-expense' : 'cell__category-income';
-    cell3.className = 'cell__amount';
-    cell4.className = 'cell__account';
-    cell5.className = 'cell__description';
-    cell6.className = 'cell__delete';
+      const {
+        type, date, category, amount, account, description, id,
+      } = transaction;
 
-    cell1.innerHTML = formatDate(new Date(date));
-    cell2.innerHTML = category;
-    cell3.innerHTML = amount;
-    cell4.innerHTML = account;
-    cell5.innerHTML = description;
-    cell6.innerHTML = 'delete';
+      cell1.className = 'cell__date';
+      cell2.className = type === 'expenses' ? 'cell__category-expense' : 'cell__category-income';
+      cell3.className = 'cell__amount';
+      cell4.className = 'cell__account';
+      cell5.className = 'cell__description';
+      cell6.className = 'cell__delete';
 
-    cell2.dataset.i18n = category;
-    cell4.dataset.i18n = account;
-    cell6.dataset.i18n = 'Delete';
-    cell6.dataset.id = id;
-  });
+      cell1.innerHTML = formatDate(new Date(date));
+      cell2.innerHTML = category;
+      cell3.innerHTML = amount;
+      cell4.innerHTML = account;
+      cell5.innerHTML = description;
+      cell6.innerHTML = 'delete';
+
+      cell2.dataset.i18n = category;
+      cell4.dataset.i18n = account;
+      cell6.dataset.i18n = 'Delete';
+      cell6.dataset.id = id;
+    });
+  }
 
   document.querySelector('.table-mask').append(table);
 }
 
-/* Create constollers */
+/* Create controllers */
 function createCategoryList() {
   let renderList;
   if (typeTransaction === 'expenses') renderList = expensesCategories;
@@ -147,9 +155,11 @@ function createCategoryList() {
     document.querySelectorAll('.select__item').forEach((it) => {
       it.addEventListener('click', () => {
         categoryName = it.id;
-        document.querySelector('.table').remove();
-        tableCreate();
-        deleteTransaction();
+        if (document.querySelector('.table')) {
+          document.querySelector('.table').remove();
+          tableCreate();
+          deleteTransaction();
+        }
       });
     });
   }, 1000);

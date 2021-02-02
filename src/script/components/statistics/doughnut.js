@@ -11,7 +11,7 @@ import translations from '../../data/translations';
 const today = new Date();
 let typeTransaction = 'expenses';
 let period = 'mounth';
-let summaryObj = null;
+let filtredData = null;
 let doughnut = null;
 let dataHistory;
 
@@ -21,7 +21,7 @@ function preloader() {
 }
 
 function filterTransactions() {
-  const filtredHistory = dataHistory.filter((transaction) => {
+  const filtredByPeriod = dataHistory.filter((transaction) => {
     const trDate = new Date(transaction.date);
     if (period === 'year') {
       const oneYearAgo = new Date().setFullYear(new Date().getFullYear() - 1);
@@ -29,17 +29,17 @@ function filterTransactions() {
              && transaction.type === typeTransaction;
     }
     return trDate.getMonth() === today.getMonth()
-       && trDate.getFullYear() === today.getFullYear()
-       && transaction.type === typeTransaction;
+        && trDate.getFullYear() === today.getFullYear()
+        && transaction.type === typeTransaction;
   });
 
-  summaryObj = filtredHistory.reduce((summary, trans) => {
-    if (Object.prototype.hasOwnProperty.call(summary, trans.category)) {
-      summary[trans.category] += parseInt(trans.amount, 10);
+  filtredData = filtredByPeriod.reduce((total, transaction) => {
+    if (Object.prototype.hasOwnProperty.call(total, transaction.category)) {
+      total[transaction.category] += parseInt(transaction.amount, 10);
     } else {
-      summary[trans.category] = parseInt(trans.amount, 10);
+      total[transaction.category] = parseInt(transaction.amount, 10);
     }
-    return summary;
+    return total;
   },
   {});
 }
@@ -131,8 +131,8 @@ function setLegendDisplay() {
 }
 
 function calculateTotalSum() {
-  return Object.values(summaryObj).length !== 0
-    ? parseInt(Object.values(summaryObj).reduce((sum, it) => sum + it), 10) : 0;
+  return Object.values(filtredData).length !== 0
+    ? parseInt(Object.values(filtredData).reduce((sum, it) => sum + it), 10) : 0;
 }
 
 function renderHeading() {
@@ -140,9 +140,9 @@ function renderHeading() {
   doughnutHeading.innerText = `Total ${typeTransaction} for the ${period} ${calculateTotalSum()} rub.`;
 }
 
-function translateCategoriesName() {
+function translateCategoriesNames() {
   const lang = getLanguage();
-  const categoryName = Object.keys(summaryObj);
+  const categoryName = Object.keys(filtredData);
   const dictionary = (Object.keys(translations[lang]));
   return categoryName.map((it) => (dictionary.includes(it) ? translations[lang][it] : it));
 }
@@ -153,9 +153,9 @@ function generateChart() {
   doughnut = new Chart(canvas, {
     type: 'doughnut',
     data: {
-      labels: Object.keys(summaryObj).length !== 0 ? translateCategoriesName() : ['You`re haven`t any transactions'],
+      labels: Object.keys(filtredData).length !== 0 ? translateCategoriesNames() : ['You`re haven`t any transactions'],
       datasets: [{
-        data: Object.values(summaryObj).length !== 0 ? Object.values(summaryObj) : [1],
+        data: Object.values(filtredData).length !== 0 ? Object.values(filtredData) : [1],
         backgroundColor: [
           'rgba(243, 94, 110, 1)',
           'rgba(54, 162, 235, 1)',
@@ -284,8 +284,10 @@ function mediaQuerySizes() {
 }
 
 document.getElementById('theme').addEventListener('click', () => {
-  doughnut.destroy();
-  setTimeout(generateChart, 0);
+  if (doughnut) {
+    doughnut.destroy();
+    setTimeout(generateChart, 0);
+  }
 });
 
 /* Only first time rendering Chart instance */

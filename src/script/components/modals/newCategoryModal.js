@@ -1,10 +1,11 @@
 import createElement from '../../utils/create';
 import modal from './modal';
 import app from '../../app';
-import { getLanguage, getSound } from '../../utils/localStorage';
+import { getLanguage } from '../../utils/localStorage';
 import showPopover from '../popover';
 import translations from '../../data/translations';
 import pubsub from '../../pubsub';
+import { playSound } from '../settings/sound';
 
 const isNewNameValid = (newName, type, btnElem, inputElem) => {
   const lang = getLanguage();
@@ -151,12 +152,7 @@ export default function newCategoryModal(type) {
         pubsub.publish('navigateTo', '/');
       }
 
-      if (getSound() === 'on') {
-        const audioCategory = new Audio();
-        audioCategory.src = 'sounds/category.mp3';
-        audioCategory.play();
-      }
-
+      playSound('category');
       modal.hide();
     }
   });

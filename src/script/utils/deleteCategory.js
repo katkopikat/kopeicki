@@ -1,8 +1,9 @@
 import { getRandom } from './helpers';
-import { getSound, getLanguage } from './localStorage';
+import { getLanguage } from './localStorage';
 import translations from '../data/translations';
 import modal from '../components/modals/modal';
 import confirmModal from '../components/modals/confirmModal';
+import { playSound } from '../components/settings/sound';
 
 export const deletionState = { isModalOpened: false, isDeletionEnded: true };
 
@@ -16,11 +17,7 @@ function deleteCategory(e) {
   const { category } = elem.dataset;
   const { group } = elem.dataset;
 
-  if (getSound() === 'on') {
-    const audioCategory = new Audio();
-    audioCategory.src = 'sounds/warn.mp3';
-    audioCategory.play();
-  }
+  playSound('warn');
 
   modal.setContent(confirmModal(group, category));
   modal.show();

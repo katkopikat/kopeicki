@@ -191,7 +191,6 @@ function generateBarInstance() {
     type: 'bar',
     data: {
       labels: setMonthLang(),
-
       datasets: [
         {
           minBarLength: 2,
@@ -206,7 +205,6 @@ function generateBarInstance() {
     options: {
       title: {
         display: false,
-        text: `${typeTransaction} for the ${choosenYear} year`,
       },
       scales: {
         yAxes: [
@@ -215,10 +213,7 @@ function generateBarInstance() {
               beginAtZero: true,
               fontSize: setLegendFontSize(),
               callback(value) {
-                if (Number(value) >= 1000) {
-                  return `${String(value).slice(0, -3)}K`;
-                }
-                return value;
+                return Number(value) >= 1000 ? `${String(value).slice(0, -3)}K` : value;
               },
             },
           },
@@ -248,7 +243,6 @@ function trackWindowSize(e) {
 
 function mediaQuerySizes() {
   const breakpoints = ['(max-width: 700px)', '(max-width: 500px)', '(min-width: 700px)', '(min-width: 50px)'];
-
   breakpoints.forEach((it) => {
     const mediaQuery = window.matchMedia(it);
     mediaQuery.addListener(trackWindowSize);
@@ -260,13 +254,13 @@ function mediaQuerySizes() {
      Whaiting rendering menu and change language on the localStorage. */
 
 function trackLanguageSwitch() {
-  window.addEventListener('DOMContentLoaded', () => {
-    document.querySelector('.select__list').addEventListener('click', () => {
-      setTimeout(() => {
+  document.querySelector('.select__list').addEventListener('click', () => {
+    setTimeout(() => {
+      if (barChart) {
         barChart.destroy();
         generateBarInstance();
-      }, 0);
-    });
+      }
+    }, 0);
   });
 }
 

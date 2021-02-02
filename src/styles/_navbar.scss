@@ -177,6 +177,7 @@ button:focus {
     height: 5rem;
     object-fit: cover;
     border-radius: 50%;
+    box-shadow: var(--shadow);
   }
 
   &__name {
