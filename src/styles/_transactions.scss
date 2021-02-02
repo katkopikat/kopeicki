@@ -4,6 +4,7 @@
   @media (max-width: 768px) {
     .row {
       flex-direction: column;
+      row-gap: 4rem;
     }
 
     .col-8,

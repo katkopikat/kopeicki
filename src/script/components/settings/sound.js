@@ -6,7 +6,7 @@ export function toggleSound() {
   const soundToggleEl = document.getElementById('sound');
   const width = 24;
 
-  let isChecked = getSound() === 'on';
+  const isChecked = getSound() === 'on';
 
   moveToggle(soundToggleDiv, width, isChecked);
   soundToggleEl.checked = isChecked;
