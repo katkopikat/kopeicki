@@ -3,42 +3,125 @@ import pubsub from '../../pubsub';
 import createElement from '../../utils/create';
 import createSelect from '../../utils/select';
 import { playSound } from '../settings/sound';
+import showPopover from '../popover';
+import { getLanguage } from '../../utils/localStorage';
 
 const emailValidation = (email) => /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/.test(email);
 
 const passwordValidation = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/.test(password);
 
-const login = async () => {
-  const email = document.getElementById('log-in-email').value;
-  const password = document.getElementById('log-in-password').value;
+const errors = {
+  enterEmail: {
+    en: 'Enter email',
+    ru: 'Введите электронную почту',
+    by: 'Увядзіце адрас электроннай пошты',
+  },
+  enterPassword: {
+    en: 'Enter password',
+    ru: 'Введите пароль',
+    by: 'Увядзіце пароль',
+  },
+  passwordMatch: {
+    en: 'Passwords don\'t match',
+    ru: 'Пароли не совпадают',
+    by: 'Паролі не супадаюць',
+  },
+  invalidEmail: {
+    en: 'Invalid email',
+    ru: 'Неверная электронная почта',
+    by: 'Няправільная электронная пошта',
+  },
+  invalidPassword: {
+    en: 'The password you provided is invalid, use 6 or more characters with a mix of numbers and letters (at least one must be uppercase)',
+    ru: 'Неверный пароль. Используйте не менее 6 символов, включая цифры и буквы (хотя бы одна должена быть прописной)',
+    by: 'Няправільны пароль, выкарыстоўвайце 6 або больш сімвалаў з сумессю лічбаў і літар (прынамсі адна павінна быць прапісная)',
+  },
+  registrationError: {
+    en: 'Sorry, this email address already exists!',
+    ru: 'Извините, этот адрес электронной почты уже существует!',
+    by: 'Выбачайце, гэты адрас электроннай пошты ўжо існуе!',
+  },
+  loginError: {
+    en: 'Wrong password or email. Try again',
+    ru: 'Неверный адрес электронной почты или пароль. Попробуйте снова',
+    by: 'Няправільны адрас электроннай пошты ці пароль. Паспрабуйце зноў',
+  },
+};
 
-  const result = await app.login(email, password);
-  console.log('login res from auth', result);
+const login = async () => {
+  const email = document.getElementById('log-in-email');
+  const password = document.getElementById('log-in-password');
+
+  if (email.value === '') {
+    showPopover(
+      email,
+      errors.enterEmail[getLanguage()],
+      'right',
+    );
+    return false;
+  }
+  if (password.value === '') {
+    showPopover(
+      password,
+      errors.enterPassword[getLanguage()],
+      'right',
+    );
+    return false;
+  }
+
+  const result = await app.login(email.value, password.value);
+
+  // TODO alert from login Wrong password or email. Try again
+  if (result !== true) {
+    showPopover(
+      email,
+      errors.loginError[getLanguage()],
+      'bottom',
+    );
+  }
+
   return result;
 };
 
 const register = async () => {
-  const email = document.getElementById('sign-up-email').value;
-  const password = document.getElementById('sign-up-password').value;
-  const confirmPassword = document.getElementById('sign-up-confirm-password').value;
-  const currency = document.querySelector('.currency-list .select__value').innerText;
+  const email = document.getElementById('sign-up-email');
+  const password = document.getElementById('sign-up-password');
+  const confirmPassword = document.getElementById('sign-up-confirm-password');
+  const currency = document.querySelector('.currency-list .select__value');
 
-  if (password !== confirmPassword) {
-    console.log('passwords not equal');
+  if (password.value !== confirmPassword.value) {
+    showPopover(
+      password,
+      errors.passwordMatch[getLanguage()],
+      'right',
+    );
     return false;
   }
-  if (!emailValidation(email)) {
-    console.log('incorrect email');
+  if (!emailValidation(email.value)) {
+    showPopover(
+      email,
+      errors.invalidEmail[getLanguage()],
+      'right',
+    );
     return false;
   }
-  if (!passwordValidation(password)) {
-    console.log('incorrect password');
+  if (!passwordValidation(password.value)) {
+    showPopover(
+      password,
+      errors.invalidPassword[getLanguage()],
+      'bottom',
+    );
     return false;
   }
-  console.log('all done', password);
-  const result = await app.register(email, password, currency);
+  const result = await app.register(email.value, password.value, currency.innerText);
 
-  console.log('register res from auth', result);
+  if (result !== true) {
+    showPopover(
+      email,
+      errors.registrationError[getLanguage()],
+      'bottom',
+    );
+  }
   return result;
 };
 
@@ -159,7 +242,7 @@ export default function renderAuthorizationPage() {
           createSelect(document.getElementById('currency-list'), {
             class: 'currency-list',
             placeholder: 'RUB',
-            list: app.api.currencyList,
+            list: [...['USD', 'EUR', 'RUB', 'BYN', 'UAH', 'KZT'], ...app.api.currencyList],
             isTranslatable: false,
           });
         }, 500);
@@ -186,12 +269,10 @@ export default function renderAuthorizationPage() {
     }
 
     if (e.target.id === 'submit') {
-      console.log('asd');
       if (e.target.dataset.auth === 'sign in') {
         const result = await login();
 
         if (result !== true) {
-          console.log('error ', result);
           playSound('error-login', true);
         }
         if (app.user) {
@@ -202,9 +283,7 @@ export default function renderAuthorizationPage() {
         const result = await register();
         if (result !== true) {
           playSound('error-login', true);
-          console.log('error ', result);
         }
-        console.log('from regbutt', app.user);
         if (app.user) {
           playSound('income', true);
           pubsub.publish('navigateTo', '/');
