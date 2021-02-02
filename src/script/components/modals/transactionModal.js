@@ -8,7 +8,7 @@ import app from '../../app';
 import { getLanguage } from '../../utils/localStorage';
 import getExchangeData from '../settings/currencyConverter';
 import pubsub from '../../pubsub';
-import playSound from '../settings/sound';
+import { playSound } from '../settings/sound';
 
 /* options = {
  *    type: 'expenses',
@@ -191,7 +191,6 @@ export default function transactionModal(options) {
 
       modal.hide();
       setTimeout(preloader, 1500);
-
       playSound(options.type);
     }
   });
