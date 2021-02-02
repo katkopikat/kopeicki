@@ -5,7 +5,7 @@ import { getLanguage } from '../../utils/localStorage';
 import showPopover from '../popover';
 import translations from '../../data/translations';
 import pubsub from '../../pubsub';
-import playSound from '../settings/sound';
+import { playSound } from '../settings/sound';
 
 const isNewNameValid = (newName, type, btnElem, inputElem) => {
   const lang = getLanguage();

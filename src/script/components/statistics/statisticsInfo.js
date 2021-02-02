@@ -117,7 +117,7 @@ export default function renderTextStatistics(stat) {
         'statistic-text',
         `<span data-i18n="stat${i}"></span>
         <span class="${info.class}">${info.data}
-        ${info.name === 'mostExpensesCategories' ? '' : app.user.currency.toUpperCase()}.</span>`,
+        ${info.name === 'mostExpensesCategories' ? '' : app.user.currency.toUpperCase()}</span>`,
       );
 
       if (info.class === 'info_accounts') {

@@ -284,8 +284,10 @@ function mediaQuerySizes() {
 }
 
 document.getElementById('theme').addEventListener('click', () => {
-  doughnut.destroy();
-  setTimeout(generateChart, 0);
+  if (doughnut) {
+    doughnut.destroy();
+    setTimeout(generateChart, 0);
+  }
 });
 
 /* Only first time rendering Chart instance */

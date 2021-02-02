@@ -3,7 +3,7 @@ import { getLanguage } from './localStorage';
 import translations from '../data/translations';
 import modal from '../components/modals/modal';
 import confirmModal from '../components/modals/confirmModal';
-import playSound from '../components/settings/sound';
+import { playSound } from '../components/settings/sound';
 
 export const deletionState = { isModalOpened: false, isDeletionEnded: true };
 

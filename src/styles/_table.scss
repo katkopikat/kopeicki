@@ -83,10 +83,6 @@
         
       }
       
-    //   input[type=radio]:checked ~ .check::before{
-    //     background: #ecaf12;
-    //   }
-      
       input[type=radio]:checked ~ label{
         color: var(--gray)
       }      
@@ -110,6 +106,11 @@
 .table {
   background-color: var(--catergory-bg);
   position: relative;
+
+  &-empty {
+    color: var(--font-light);
+    opacity: 0.7;
+  }
 
   &-wrapper{
       max-height: 85vh;

@@ -52,7 +52,7 @@ export default function renderAuthorizationPage() {
   <div class="img-wrapper gif-wallet">
   <img src="gifs/wallet2.gif" alt="" />
   </div>
-  <h3 class="form__header">Log in to Copeicki</h3>
+  <h3 class="form__header">Log in to Kopeicki</h3>
   <p class="form__subtitle">#countingcopecks</p>
   <div class="form__body">
     <div class="form-group">

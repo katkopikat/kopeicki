@@ -243,7 +243,6 @@ function trackWindowSize(e) {
 
 function mediaQuerySizes() {
   const breakpoints = ['(max-width: 700px)', '(max-width: 500px)', '(min-width: 700px)', '(min-width: 50px)'];
-
   breakpoints.forEach((it) => {
     const mediaQuery = window.matchMedia(it);
     mediaQuery.addListener(trackWindowSize);
@@ -255,13 +254,13 @@ function mediaQuerySizes() {
      Whaiting rendering menu and change language on the localStorage. */
 
 function trackLanguageSwitch() {
-  window.addEventListener('DOMContentLoaded', () => {
-    document.querySelector('.select__list').addEventListener('click', () => {
-      setTimeout(() => {
+  document.querySelector('.select__list').addEventListener('click', () => {
+    setTimeout(() => {
+      if (barChart) {
         barChart.destroy();
         generateBarInstance();
-      }, 0);
-    });
+      }
+    }, 0);
   });
 }
 
