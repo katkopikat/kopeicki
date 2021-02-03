@@ -9,6 +9,7 @@
 @import './login';
 @import './history';
 @import './table';
+@import './info';
 
 body {
   background: var(--dark);
@@ -20,10 +21,8 @@ header {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1020;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  z-index: 100;
+  @include flex-center;
   height: 4rem;
   background: #14161e;
 
@@ -48,37 +47,6 @@ main {
   transition: 0.5s ease-in-out;
 }
 
-footer {
-  @include flex-col;
-  text-align: center;
-
-  .code_btn {
-    text-align: center;
-    opacity: 0.3;
-
-    &:hover {
-      cursor: pointer;
-    }
-
-    .bi-code-slash {
-      height: 25px;
-      width: 25px;
-    }
-  }
-
-  .footer__links {
-    padding-bottom: 0.3rem;
-    font-size: 0.9rem;
-    color: var(--gray);
-    opacity: 0.5;
-  }
-
-  .link_item {
-    color: var(--gray);
-    text-decoration: none;
-  }
-}
-
 .popover-body {
   padding: 0.5rem;
 }
@@ -97,7 +65,8 @@ footer {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 1300;
+  z-index: 1020;
+  @include flex-center;
   width: 100vw;
   height: 100vh;
   overflow: visible;
@@ -105,17 +74,13 @@ footer {
 }
 
 .coin-preloader {
-  position: fixed;
-  left: 50%;
-  top: 40%;
-  z-index: 1500;
+  height: 80px;
+  width: 80px;
   background: url('../assets/animation/coin.png') no-repeat center center;
   background-size: 100% 100%;
   animation: shake 0.5s;
   animation-direction: alternate;
   animation-iteration-count: infinite;
-  height: 80px;
-  width: 80px;
 }
 
 .hidden {

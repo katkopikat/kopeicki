@@ -4,10 +4,8 @@
   bottom: 0;
   right: 0;
   left: 0;
+  @include flex-center;
   background: var(--dark);
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
   .login__content {
     display: flex;
@@ -190,7 +188,6 @@
               }
             }
           }
-          
 
           input {
             padding: 0.2rem 0.2rem 0.2rem 2.2rem;

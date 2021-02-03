@@ -5,7 +5,7 @@ import modal from '../components/modals/modal';
 import confirmModal from '../components/modals/confirmModal';
 import { playSound } from '../components/settings/sound';
 
-export const deletionState = { isModalOpened: false, isDeletionEnded: true };
+export const deletionState = { isModalOpened: false };
 
 function deleteCategory(e) {
   e.stopPropagation();
@@ -24,7 +24,6 @@ function deleteCategory(e) {
 }
 
 export function stopDeletion(container) {
-  deletionState.isDeletionEnded = true;
   deletionState.isModalOpened = false;
 
   container.querySelectorAll('[draggable]').forEach((el) => {
@@ -48,8 +47,6 @@ export function stopDeletion(container) {
 }
 
 export function startDeletion(elClicked, container) {
-  deletionState.isDeletionEnded = false;
-
   const lang = getLanguage();
 
   const btn = elClicked.closest('.flex-list__item');

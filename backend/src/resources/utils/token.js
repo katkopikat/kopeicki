@@ -45,17 +45,14 @@ export const deleteToken = async (email, userId) => {
 };
 
 export const refreshTokens = async (email, userId) => {
-  //console.log('userID from refresh', userId);
   const token = await TokenSchema.findOne({ userId });
-  //console.log('find token', token);
   if (!token) {
     deleteToken(email, userId);
-    return [null, 'invalid token'];
+    return [null, { message: 'Access token is missing or invalid' }];
   }
-  //console.log('actualData', Date.now());
   if (Date.now() > token.expire) {
     deleteToken(email, userId);
-    return [null, 'invalid token'];
+    return [null, { message: 'Access token is missing or invalid' }];
   }
   const tokens = await getTokens(email, userId);
   return [tokens, 'accept'];
