@@ -99,7 +99,9 @@ function tableCreate() {
       const cell5 = row.insertCell();
       const cell6 = row.insertCell();
 
-      const { type, date, category, amount, account, description, id } = transaction;
+      const {
+        type, date, category, amount, account, description, id,
+      } = transaction;
 
       cell1.className = 'cell__date';
       cell2.className = type === 'expenses' ? 'cell__category-expense' : 'cell__category-income';
@@ -144,7 +146,7 @@ function createCategoryList() {
   document.querySelector('#ALL').innerHTML = 'ALL CATEGORIES';
 
   setTimeout(() => {
-    document.querySelectorAll('.select__item').forEach((it) => {
+    document.querySelectorAll('.table-container .select__item').forEach((it) => {
       it.addEventListener('click', () => {
         categoryName = it.id;
         if (document.querySelector('.table')) {
