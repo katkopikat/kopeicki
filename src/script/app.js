@@ -29,7 +29,7 @@ class App {
         if (isLogout === false) {
           this.logout();
         }
-        console.log('navigateTo', '/login');
+        // console.log('navigateTo', '/login');
         window.history.pushState(null, null, '/login');
       }
     } catch (e) {
