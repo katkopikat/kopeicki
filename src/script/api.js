@@ -88,6 +88,9 @@ class ApiClient {
     }
     const response = await fetch(`${this.apiUrl}${route}`, reqParams);
     if ((response.ok === false) && (this.checkCurrentUser() === true)) {
+      if (response.status === 404 && method === 'DELETE') {
+        return undefined;
+      }
       const result = await this.getNewTokens('POST', '/users/token', { email: this.email, userId: this.userId }, auth);
       if (!result.ok) {
         return undefined;
@@ -127,7 +130,7 @@ class ApiClient {
     return this.request('GET', '/transactions/statistics');
   }
 
-  async getTransactions(/* todo filter */) {
+  async getTransactions() {
     return this.request('GET', '/transactions');
   }
 
