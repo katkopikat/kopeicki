@@ -52,7 +52,7 @@ class App {
       }
       return result;
     } catch (e) {
-      return e;
+      throw new Error(e);
     }
   }
 
@@ -64,7 +64,7 @@ class App {
       }
       return result;
     } catch (e) {
-      return e;
+      throw new Error(e);
     }
   }
 
