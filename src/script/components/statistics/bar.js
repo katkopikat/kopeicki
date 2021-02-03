@@ -255,12 +255,14 @@ function mediaQuerySizes() {
 
 function trackLanguageSwitch() {
   document.querySelector('.select__list').addEventListener('click', () => {
-    setTimeout(() => {
-      if (barChart) {
-        barChart.destroy();
-        generateBarInstance();
-      }
-    }, 0);
+    if (document.location.href === 'https://kopeicki.netlify.app/statistics') {
+      setTimeout(() => {
+        if (barChart) {
+          barChart.destroy();
+          generateBarInstance();
+        }
+      }, 0);
+    }
   });
 }
 

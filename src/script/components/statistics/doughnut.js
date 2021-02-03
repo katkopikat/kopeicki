@@ -284,8 +284,10 @@ function mediaQuerySizes() {
 
 document.getElementById('theme').addEventListener('click', () => {
   if (doughnut) {
-    doughnut.destroy();
-    setTimeout(generateChart, 0);
+    if (document.location.href === 'https://kopeicki.netlify.app/statistics') {
+      doughnut.destroy();
+      setTimeout(generateChart, 0);
+    }
   }
 });
 
