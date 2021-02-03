@@ -1,0 +1,87 @@
+.day-of-week {
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  color: var(--light);
+}
+
+.date {
+  font-size: 1.25rem;
+  color: var(--light);
+}
+
+.day {
+  padding: 1rem;
+  margin-bottom: 1.8rem;
+  border-radius: 8px;
+  background-color: var(--catergory-bg);
+  box-shadow: var(--shadow);
+
+  p {
+    margin: 0;
+  }
+
+  .row::after {
+    content: '';
+    width: calc(100% - 1rem);
+    height: 1px;
+    margin: 0.5rem auto;
+    background: var(--gray);
+    opacity: 0.5;
+  }
+
+  .row:last-child::after {
+    display: none;
+  }
+
+  .col:last-child {
+    text-align: right;
+  }
+
+  .account-name {
+    font-size: 0.9rem;
+    color: var(--gray);
+  }
+
+  .category-name {
+    font-size: 1.1rem;
+    color: var(--light);
+  }
+
+  .money-amount {
+    font-size: 1.7rem;
+
+    .history_currency {
+      font-size: 1.2rem;
+      margin-left: -0.3rem;
+    }
+  }
+
+  .money-amount.expenses {
+    color: var(--expenses);
+  }
+
+  .money-amount.income {
+    color: var(--income);
+  }
+
+  .description {
+    padding-left: 10%;
+    font-size: 0.875rem;
+    font-style: italic;
+    color: var(--gray);
+  }
+}
+
+.no-transactions-msg {
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--gray);
+  background-color: var(--catergory-bg);
+  box-shadow: var(--shadow);
+}
+
+.transactions-history {
+  margin-top: -2rem;
+}
