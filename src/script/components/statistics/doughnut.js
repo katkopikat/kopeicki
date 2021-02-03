@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 import { Chart } from 'chart.js';
 import moment from 'moment';
 import createElement from '../../utils/create';
@@ -34,10 +32,11 @@ function filterTransactions() {
   });
 
   filtredData = filtredByPeriod.reduce((total, transaction) => {
+    const tempTotal = total;
     if (Object.prototype.hasOwnProperty.call(total, transaction.category)) {
-      total[transaction.category] += parseInt(transaction.amount, 10);
+      tempTotal[transaction.category] += parseInt(transaction.amount, 10);
     } else {
-      total[transaction.category] = parseInt(transaction.amount, 10);
+      tempTotal[transaction.category] = parseInt(transaction.amount, 10);
     }
     return total;
   },
@@ -285,8 +284,10 @@ function mediaQuerySizes() {
 
 document.getElementById('theme').addEventListener('click', () => {
   if (doughnut) {
-    doughnut.destroy();
-    setTimeout(generateChart, 0);
+    if (document.location.href === 'https://kopeicki.netlify.app/statistics') {
+      doughnut.destroy();
+      setTimeout(generateChart, 0);
+    }
   }
 });
 

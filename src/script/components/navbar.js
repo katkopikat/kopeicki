@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 export default function navSlideIn() {
   const burger = document.querySelector('.burger');
   const nav = document.querySelector('.nav');
@@ -23,10 +22,11 @@ export default function navSlideIn() {
     nav.classList.toggle('nav_open');
 
     links.forEach((link, index) => {
+      const tempLink = link;
       if (link.style.animation) {
-        link.style.animation = '';
+        tempLink.style.animation = '';
       } else {
-        link.style.animation = `linkFade 0.5s ease-in-out ${index / 6 + 0.5}s forwards`;
+        tempLink.style.animation = `linkFade 0.5s ease-in-out ${index / 6 + 0.5}s forwards`;
       }
     });
   });

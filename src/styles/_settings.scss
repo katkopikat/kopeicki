@@ -1,6 +1,7 @@
 $scale: 46px;
 
 .settings-container p {
+  margin: 0;
   font-size: 1.25rem;
   color: var(--settings-h);
 }
@@ -40,19 +41,17 @@ $scale: 46px;
     cursor: pointer;
 
     svg {
-      // width: $scale/2 - 6px;
-      // height: $scale/2 - 6px;
       width: 17px;
       height: 17px;
       color: var(--font-dark);
       transition: all 0.4s ease-in-out;
     }
 
-    .bi-brightness-high{
+    .bi-brightness-high {
       padding-left: 0.2rem;
     }
 
-    .bi-moon{
+    .bi-moon {
       fill: none;
       stroke: var(--font-dark);
       stroke-width: 1.5;
@@ -78,7 +77,6 @@ $scale: 46px;
 .select {
   position: relative;
   display: inline-block;
-  // width: $scale; // ИЗМЕНИТЬ!!!!
 
   &.open {
     .select__dropdown {
@@ -174,12 +172,30 @@ $scale: 46px;
     }
   }
 
-  .select__language{
+  .select__language {
     height: 21px;
     width: 46px;
     border-radius: 23px;
     background-color: var(--toggle-bg);
     box-shadow: var(--toggle-shadow);
+  }
+}
+
+.info-link {
+  padding-left: 1rem;
+
+  .bi-info-circle {
+    width: 1.3rem;
+    height: 1.3rem;
+    color: var(--gray);
+  }
+
+  &:hover {
+    cursor: pointer;
+
+    svg {
+      color: var(--light);
+    }
   }
 }
 

@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kopeicki - учёт финансов</title>
+    <title>Kopeicki #считаемкопейки</title>
+    <link rel="icon" href="images/favicon.png">
   </head>
   <body>
     <header>
@@ -37,7 +38,15 @@
           </li>
         </ul>
         <div class="settings-container">
-          <p data-i18n="Settings">Settings:</p>
+          <div class="d-flex align-items-center">
+            <p data-i18n="Settings">Settings:</p>
+            <span class="info-link" id="info">
+             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+              </svg>
+            </span>
+          </div>
           <div class="toggle lang">
             <span class="lang-select" style="display: none;"></span>
             <span data-i18n="Language">Language</span>
@@ -66,22 +75,8 @@
       </nav>
       <main></main>
     </div>
-    <div id="preloader" class="hidden"><div class="coin-preloader"></div></div>
-     <!--<footer>
-      <span class="code_btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code-slash" viewBox="0 0 16 16">
-          <path d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294l4-13zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0zm6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0z"/>
-        </svg>
-  </span>
-      <span class="footer__links">
-        Made by <a class="link_item" href="https://github.com/katkopikat">katkopikat</a>  |
-                <a class="link_item"href="https://github.com/yulia-kri">yulia-kri</a>  |
-                <a class="link_item" href="https://github.com/v0f">v0f</a>  |
-                <a class="link_item" href="https://github.com/akulaualiaksei">akulaualiaksei</a>
-      </span>
-   <a class="rs__link" href="https://rs.school/js/"><img class="logo__img" src="./assets/images/rs_logo.png"></a>
-
-
-  </footer>-->
+    <div id="preloader" class="hidden">
+      <div class="coin-preloader"></div>
+    </div>
   </body>
 </html>

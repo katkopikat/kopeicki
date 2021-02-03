@@ -1,5 +1,4 @@
 /* eslint-disable no-use-before-define */
-/* eslint-disable no-param-reassign */
 import { Chart } from 'chart.js';
 import createElement from '../../utils/create';
 import { moveToggle } from '../../utils/DOM';
@@ -159,10 +158,11 @@ function filterTransaction() {
 
   filtredHistory.reduce((total, trans) => {
     const trMonth = new Date(trans.date).getMonth();
+    const tempTotal = total;
     if (Object.prototype.hasOwnProperty.call(total, trMonth)) {
-      total[trMonth] += parseInt(trans.amount, 10);
+      tempTotal[trMonth] += parseInt(trans.amount, 10);
     } else {
-      total[trMonth] = parseInt(trans.amount, 10);
+      tempTotal[trMonth] = parseInt(trans.amount, 10);
     }
     return total;
   }, totalByMonth);
@@ -255,12 +255,14 @@ function mediaQuerySizes() {
 
 function trackLanguageSwitch() {
   document.querySelector('.select__list').addEventListener('click', () => {
-    setTimeout(() => {
-      if (barChart) {
-        barChart.destroy();
-        generateBarInstance();
-      }
-    }, 0);
+    if (document.location.href === 'https://kopeicki.netlify.app/statistics') {
+      setTimeout(() => {
+        if (barChart) {
+          barChart.destroy();
+          generateBarInstance();
+        }
+      }, 0);
+    }
   });
 }
 

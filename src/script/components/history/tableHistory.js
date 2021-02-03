@@ -19,8 +19,12 @@ function preloader() {
 
 /* Getting and filtering data */
 function getUsersCategory() {
-  app.user.income.forEach((it) => { incomeCategories.push(it.name); });
-  app.user.expenses.forEach((it) => { expensesCategories.push(it.name); });
+  app.user.income.forEach((it) => {
+    incomeCategories.push(it.name);
+  });
+  app.user.expenses.forEach((it) => {
+    expensesCategories.push(it.name);
+  });
 }
 
 async function getHistory() {
@@ -40,7 +44,7 @@ function filterTransaction(categName) {
 
 /* Delete transactions */
 async function deleteTransactionCallback(el) {
-  if ((el).classList.contains('cell__delete')) {
+  if (el.classList.contains('cell__delete')) {
     const idDelete = el.getAttribute('data-id');
     app.deleteTransaction(idDelete).then(() => {
       rerenderTable();
@@ -63,10 +67,7 @@ function historyHtml() {
   const tableHeading = createElement('h3', 'heading heading-table', null, ['i18n', 'transactionHistory']);
   const table = createElement('div', 'table-mask');
 
-  const tableBtnsWrapper = createElement(
-    'div',
-    'btns-table-container',
-  );
+  const tableBtnsWrapper = createElement('div', 'btns-table-container');
 
   main.append(mainContainer);
   row.append(tableHeading, tableBtnsWrapper, table);
@@ -81,7 +82,7 @@ function tableCreate() {
 
   if (filtredHistory.length === 0) {
     table.classList.add('table-empty');
-    table.innerText = 'You don\'t have any transactions yet.';
+    table.innerText = "You don't have any transactions yet.";
     table.setAttribute('data-i18n', 'no-trx-msg');
   } else {
     table.innerHTML = `<thead>
@@ -152,7 +153,7 @@ function createCategoryList() {
   document.querySelector('#ALL').innerHTML = 'ALL CATEGORIES';
 
   setTimeout(() => {
-    document.querySelectorAll('.select__item').forEach((it) => {
+    document.querySelectorAll('.table-container .select__item').forEach((it) => {
       it.addEventListener('click', () => {
         categoryName = it.id;
         if (document.querySelector('.table')) {
