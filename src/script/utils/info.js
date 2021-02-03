@@ -3,7 +3,7 @@ import { getLanguage } from './localStorage';
 import createElement from './create';
 
 const infoHtml = () => {
-  document.querySelector('.modal-content').classList.add('modal_bg');
+  document.querySelector('.modal-content').className = 'modal-content modal_bg';
 
   const lang = getLanguage();
 
