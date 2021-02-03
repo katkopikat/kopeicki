@@ -3,7 +3,7 @@ import { getLanguage } from './localStorage';
 import createElement from './create';
 
 const infoHtml = () => {
-  document.querySelector('.modal-content').style.background = '#ffc107';
+  document.querySelector('.modal-content').classList.add('modal_bg');
 
   const lang = getLanguage();
 

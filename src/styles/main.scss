@@ -94,21 +94,3 @@ main {
   opacity: 1;
   transition: opacity 0.4s linear;
 }
-
-.info-link {
-  // position: absolute;
-  // right: 1rem;
-  // top: 1rem;
-  // z-index: 999;
-
-  .bi-info-circle {
-    width: 1.5rem;
-    height: 1.5rem;
-    color: var(--light);
-  }
-
-  &:hover {
-    transform: scale(1.2);
-    cursor: pointer;
-  }
-}
