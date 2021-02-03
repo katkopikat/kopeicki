@@ -270,6 +270,18 @@ export default function renderAuthorizationPage() {
         if (app.user) {
           playSound('income', true);
           pubsub.publish('navigateTo', '/');
+
+          const startScreenEl = createElement(
+            'div',
+            'preloader',
+            '<img src="animation/logo-intro.gif" alt="" width="418px" height="110px">',
+          );
+
+          document.querySelector('body').append(startScreenEl);
+
+          setTimeout(() => {
+            startScreenEl.parentElement.removeChild(startScreenEl);
+          }, 4000);
         }
       }
     }
