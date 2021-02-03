@@ -20,23 +20,23 @@
     .btns-table-container{
       margin-bottom: 1rem;
       }
-      
+
       .btns-table-container ul{
         display: flex;
         margin: 0 !important;
         padding: 0 !important;
       }
-      
+
       ul li{
         display: block;
         position: relative;
       }
-      
+
       ul li input[type=radio]{
         position: absolute;
         visibility: hidden;
       }
-      
+
       ul li label{
         display: block;
         position: relative;
@@ -44,13 +44,11 @@
         font-size: 0.9rem;
         padding: 0px 30px 0px 30px;
         color: var(--gray);
-        // margin: 11px auto;
-        // height: 0px;
         z-index: 9;
         cursor: pointer;
       }
-      
-      
+
+
       ul li .check{
         display: block;
         position: absolute;
@@ -62,7 +60,7 @@
         transition: border 0.25s linear;
         -webkit-transition: border 0.25s linear;
         cursor: pointer;
-        
+
       }
 
       ul li .check::before {
@@ -77,15 +75,15 @@
         margin: auto;
         transition: background 0.25s linear;
       }
-      
+
       input[type=radio]:checked ~ .check {
         border: 3px solid #ecaf12;
-        
+
       }
-      
+
       input[type=radio]:checked ~ label{
         color: var(--gray)
-      }      
+      }
 
       .category-list{
         margin-bottom: 1rem;
@@ -99,7 +97,7 @@
         color: #f2c200;
         opacity: 1;
     }
-      
+
 
 }
 
@@ -126,7 +124,7 @@
       max-height: 64vh;
       overflow: auto;
   }
-  
+
   & > :not(caption){
       border-bottom: 1px solid #383838;
   }
@@ -134,7 +132,7 @@
   tr {
     position: sticky;
     top: 0;
-    
+
   }
 
   th[scope="col"]{
@@ -153,12 +151,10 @@
          opacity: 0.6;
       }
       &__category-income{
-          // background-color: var(--income-alpha);
           background-color: rgb(32 234 230 / 60%);
-          
+
       }
       &__category-expense{
-          // background-color: var(--expenses-alpha);
           background-color: #2d72ff8c
       }
       &__account{
@@ -175,10 +171,10 @@
       }
       &__delete:hover{
           cursor: pointer;
-          opacity: 1;        
+          opacity: 1;
       }
       &__delete:hover:after{
-         content: '\00D7'      
+         content: '\00D7'
       }
   }
 }

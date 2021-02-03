@@ -1,5 +1,4 @@
 import api from './api';
-// import pubsub from './pubsub';
 
 class App {
   constructor(apiInstance) {
@@ -10,11 +9,7 @@ class App {
   }
 
   async init() {
-    // dev mode autologin
-    // await this.login('user2@rsclone.com', 'test');
-    // await this.register('testReg5@rsclone.com', 'test');
     await this.checkAuth();
-    // console.log('from init: ', this.user);
   }
 
   async checkAuth() {
@@ -29,11 +24,10 @@ class App {
         if (isLogout === false) {
           this.logout();
         }
-        // console.log('navigateTo', '/login');
         window.history.pushState(null, null, '/login');
       }
     } catch (e) {
-      // console.error(e.message);
+      window.history.pushState(null, null, '/login');
     }
   }
 
@@ -48,7 +42,6 @@ class App {
 
   async login(email, password) {
     try {
-      // await this.api.login('user2@rsclone.com', 'test');
       const result = await this.api.login(email, password);
       if (result === true) {
         this.user = await this.api.getUser();
@@ -57,12 +50,8 @@ class App {
         document.getElementById('logout').style.opacity = 1;
         return true;
       }
-      // console.log(this.user);
-      // console.log(this);
-      // console.log('login success');
       return result;
     } catch (e) {
-      // console.error(e.message);
       return e;
     }
   }
@@ -75,7 +64,6 @@ class App {
       }
       return result;
     } catch (e) {
-      // console.error(e.message);
       return e;
     }
   }
@@ -112,7 +100,6 @@ class App {
       if (!txsByMonth[yearMonth]) txsByMonth[yearMonth] = [];
       txsByMonth[yearMonth].push(tx);
     });
-    // console.log('months: ', Object.keys(txsByMonth));
     const txsThisMonth = txsByMonth[monthKey(new Date())] || [];
     const monthSummary = {
       expenses: new Map(),
@@ -126,7 +113,6 @@ class App {
       expensesTotal: [...monthSummary.expenses.values()].reduce((acc, x) => acc + x, 0),
       incomeTotal: [...monthSummary.income.values()].reduce((acc, x) => acc + x, 0),
     });
-    // console.log('this month: ', monthSummary);
     this.transactionsSummary = monthSummary;
   }
 
@@ -179,7 +165,5 @@ class App {
 }
 
 const app = new App(api);
-
-// app.init();
 
 export default app;

@@ -71,7 +71,6 @@ const login = async () => {
 
   const result = await app.login(email.value, password.value);
 
-  // TODO alert from login Wrong password or email. Try again
   if (result !== true) {
     showPopover(
       email,

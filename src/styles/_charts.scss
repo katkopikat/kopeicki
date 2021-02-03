@@ -183,10 +183,6 @@ th {
     border: 3px solid #ecaf12;
   }
 
-  //   input[type=radio]:checked ~ .check::before{
-  //     background: #ecaf12;
-  //   }
-
   input[type='radio']:checked ~ label {
     color: var(--gray);
   }

@@ -1,6 +1,5 @@
 import getCurrencylist from './components/settings/currencyList';
 import pubsub from './pubsub';
-// import pubsub from './pubsub';
 
 class ApiClient {
   constructor(apiUrl) {
@@ -63,11 +62,8 @@ class ApiClient {
     }
     const response = await fetch(`${this.apiUrl}${route}`, reqParams);
     if (response.ok) {
-      // console.log('refresh token ok: ', response);
       return response;
     }
-    // console.log('refresh token !ok: ', response);
-    // this.logout();
     pubsub.publish('logout');
     return response;
   }
@@ -83,28 +79,19 @@ class ApiClient {
     if (body) {
       reqParams.body = JSON.stringify(body);
     }
-    // console.log('this from request', this);
     if (auth && !(this.token == null)) {
       reqParams.withCredentials = true;
       reqParams.headers.Authorization = `${this.token}`;
     }
     if ((this.checkCurrentUser() === false) && (auth === true)) {
-      // pubsub.publish('navigateTo', '/login');
       return undefined;
     }
     const response = await fetch(`${this.apiUrl}${route}`, reqParams);
-    // console.log('first response', response);
     if ((response.ok === false) && (this.checkCurrentUser() === true)) {
       const result = await this.getNewTokens('POST', '/users/token', { email: this.email, userId: this.userId }, auth);
-      // console.log('second response', result);
       if (!result.ok) {
-        // const content = await result.json();
-        // console.log('message from content', content);
-        // pubsub.publish('navigateTo', '/login');
-        // return content;
         return undefined;
       }
-      // console.log(result);
       const content = await result.json();
       await this.setLocalStorage(
         content.userId,
@@ -113,7 +100,6 @@ class ApiClient {
         content.refreshToken,
       );
       const responseAfterRefresh = await this.request(method, route, body, auth);
-      // console.log('after refresh', responseAfterRefresh);
       return responseAfterRefresh;
     }
     return response.json();
@@ -126,7 +112,6 @@ class ApiClient {
       await this.setLocalStorage(userId, email, token, refreshToken);
       return true;
     }
-    // throw new Error(result.message);
     return result.message;
   }
 
@@ -135,7 +120,6 @@ class ApiClient {
     if (result.user) {
       return true;
     }
-    // throw new Error(result.message);
     return result.message;
   }
 
@@ -174,6 +158,5 @@ class ApiClient {
 }
 
 const api = new ApiClient('https://rsclone-coinkeeper.herokuapp.com');
-// const api = new ApiClient('http://localhost:8000');
 
 export default api;
