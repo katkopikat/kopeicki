@@ -1,9 +1,9 @@
 .modal_bg {
-  background: var(--dark);
+  background: var(--accounts);
 }
 
 .keys {
-  color: var(--light);
+  color: #14161e;
 
   &__title {
     font-size: 1.2rem;
@@ -46,7 +46,7 @@
 
   .code_btn {
     text-align: center;
-    color: var(--light);
+    color: var(--gray);
     opacity: 0.3;
 
     .bi-code-slash {
@@ -67,7 +67,7 @@
       text-decoration: none;
 
       &:hover {
-        color: var(--light);
+        color: var(--dark);
       }
     }
   }

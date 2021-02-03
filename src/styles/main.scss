@@ -71,7 +71,14 @@ main {
   width: 100vw;
   height: 100vh;
   overflow: visible;
+}
+
+#preloader {
   background: var(--preloader-bg);
+}
+
+.preloader {
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .coin-preloader {
