@@ -1,6 +1,5 @@
 import modal from '../modals/modal';
 import transactionModal from '../modals/transactionModal';
-import { deletionState } from '../../utils/deleteCategory';
 
 export function dragStart() {
   this.classList.add('dragging');
@@ -28,7 +27,7 @@ export function dragLeave() {
 export function dragDrop() {
   this.classList.remove('hovered');
 
-  if (deletionState.isDeletionEnded) {
+  if (!document.querySelector('.deleting')) {
     const { category } = document.querySelector('.dragging').dataset;
     const type = document.querySelector('.dragging').dataset.group;
 
