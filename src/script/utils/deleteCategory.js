@@ -19,7 +19,7 @@ function deleteCategory(e) {
 
   playSound('warn');
 
-  modal.setContent(confirmModal(true, group, category));
+  modal.setContent(confirmModal(group, category));
   modal.show();
 }
 
