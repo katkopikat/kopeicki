@@ -41,8 +41,6 @@ $scale: 46px;
     cursor: pointer;
 
     svg {
-      // width: $scale/2 - 6px;
-      // height: $scale/2 - 6px;
       width: 17px;
       height: 17px;
       color: var(--font-dark);
@@ -79,7 +77,6 @@ $scale: 46px;
 .select {
   position: relative;
   display: inline-block;
-  // width: $scale; // ИЗМЕНИТЬ!!!!
 
   &.open {
     .select__dropdown {

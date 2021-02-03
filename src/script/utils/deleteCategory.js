@@ -27,8 +27,9 @@ export function stopDeletion(container) {
   deletionState.isModalOpened = false;
 
   container.querySelectorAll('[draggable]').forEach((el) => {
+    const tempEl = el;
     el.classList.remove('deleting');
-    el.style.animation = '';
+    tempEl.style.animation = '';
     el.removeEventListener('click', deleteCategory);
   });
 
@@ -56,8 +57,9 @@ export function startDeletion(elClicked, container) {
   btnText.dataset.i18n = 'stop deletion';
 
   container.querySelectorAll('[draggable]').forEach((el) => {
+    const tempEl = el;
     el.classList.add('deleting');
-    el.style.animation = `beforeDeletion 1.5s cubic-bezier(0.3, 0.06, 0.2, 0.9) ${getRandom(0, 0.5)}s infinite`;
+    tempEl.style.animation = `beforeDeletion 1.5s cubic-bezier(0.3, 0.06, 0.2, 0.9) ${getRandom(0, 0.5)}s infinite`;
     el.addEventListener('click', deleteCategory);
   });
 }
