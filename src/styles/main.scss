@@ -107,15 +107,16 @@ footer {
 .coin-preloader {
   position: fixed;
   left: 50%;
-  top: 40%;
+  top: 50%;
   z-index: 1500;
+  height: 80px;
+  width: 80px;
   background: url('../assets/animation/coin.png') no-repeat center center;
   background-size: 100% 100%;
+  transform: translate(-50%, -50%);
   animation: shake 0.5s;
   animation-direction: alternate;
   animation-iteration-count: infinite;
-  height: 80px;
-  width: 80px;
 }
 
 .hidden {
