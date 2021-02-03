@@ -38,7 +38,6 @@ export async function register(email, password, currency) {
     ...template.toObject(),
     currency,
   });
-  console.log(user);
   return [201, { user }];
 }
 

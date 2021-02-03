@@ -23,7 +23,6 @@ router.post('/token', async (req, res) => {
     res.status(403).json({ message });
   } else {
     const { token, refreshToken } = tokens;
-    console.log(tokens);
     res.status(200).json(
       {
         userId,
