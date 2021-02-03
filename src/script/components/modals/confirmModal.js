@@ -4,7 +4,7 @@ import app from '../../app';
 import { getLanguage } from '../../utils/localStorage';
 import pubsub from '../../pubsub';
 
-export default function confirmModal(group, category) {
+export default function confirmModal(isCategory, group, category, transaction) {
   const lang = getLanguage();
 
   const msgCategory = {
@@ -13,11 +13,11 @@ export default function confirmModal(group, category) {
     by: 'Выдаліць катэгорыю?',
   };
 
-  // const msgTransaction = {
-  //   en: 'Delete transaction?',
-  //   ru: 'Удалить операцию?',
-  //   by: 'Выдаліць аперацыю?',
-  // };
+  const msgTransaction = {
+    en: 'Delete transaction?',
+    ru: 'Удалить операцию?',
+    by: 'Выдаліць аперацыю?',
+  };
 
   const msgYes = {
     en: 'Yes',
@@ -37,7 +37,7 @@ export default function confirmModal(group, category) {
 
   wrap.insertAdjacentHTML(
     'afterbegin',
-    `<h5 class="modal-body__title">${msgCategory[lang]}</h5>
+    `<h5 class="modal-body__title">${isCategory ? msgCategory[lang] : msgTransaction[lang]}</h5>
         <div class="btns-container">
           <button class="btn" data-msg="confirm">${msgYes[lang]}</button>
           <button class="btn" data-msg="reject">${msgNo[lang]}</button>
@@ -49,22 +49,36 @@ export default function confirmModal(group, category) {
   buttons.addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON') {
       const isConfirmed = e.target.dataset.msg === 'confirm';
-      if (isConfirmed) {
-        switch (group) {
-          case 'accounts':
-            app.removeUserAccount(category);
-            break;
-          case 'expenses':
-            app.removeUserExpense(category);
-            break;
-          case 'income':
-            app.removeUserIncome(category);
-            break;
-          // no default
+
+      if (isCategory) {
+        if (isConfirmed) {
+          switch (group) {
+            case 'accounts':
+              app.removeUserAccount(category);
+              break;
+            case 'expenses':
+              app.removeUserExpense(category);
+              break;
+            case 'income':
+              app.removeUserIncome(category);
+              break;
+            // no default
+          }
+
+          modal.hide();
+          pubsub.publish('navigateTo', '/');
+        } else {
+          modal.hide();
+        }
+      } else if (isConfirmed) {
+        if (transaction.classList.contains('cell__delete')) {
+          const idDelete = transaction.getAttribute('data-id');
+          app.deleteTransaction(idDelete).then(() => {
+            pubsub.publish('navigateTo', '/history');
+          });
         }
 
         modal.hide();
-        pubsub.publish('navigateTo', '/');
       } else {
         modal.hide();
       }

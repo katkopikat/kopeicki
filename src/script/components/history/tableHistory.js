@@ -1,10 +1,11 @@
-/* eslint-disable no-use-before-define */
 import createElement from '../../utils/create';
 import app from '../../app';
 import translatePage from '../settings/language';
 import { clearPage } from '../../utils/DOM';
 import createSelect from '../../utils/select';
 import { formatDate } from '../../utils/helpers';
+import modal from '../modals/modal';
+import confirmModal from '../modals/confirmModal';
 
 let history;
 let typeTransaction = 'all';
@@ -19,8 +20,12 @@ function preloader() {
 
 /* Getting and filtering data */
 function getUsersCategory() {
-  app.user.income.forEach((it) => { incomeCategories.push(it.name); });
-  app.user.expenses.forEach((it) => { expensesCategories.push(it.name); });
+  app.user.income.forEach((it) => {
+    incomeCategories.push(it.name);
+  });
+  app.user.expenses.forEach((it) => {
+    expensesCategories.push(it.name);
+  });
 }
 
 async function getHistory() {
@@ -38,20 +43,12 @@ function filterTransaction(categName) {
   return filtredTable.filter((transaction) => transaction.category === categName);
 }
 
-/* Delete transactions */
-async function deleteTransactionCallback(el) {
-  if ((el).classList.contains('cell__delete')) {
-    const idDelete = el.getAttribute('data-id');
-    app.deleteTransaction(idDelete).then(() => {
-      rerenderTable();
-    });
-  }
-}
-
 function deleteTransaction() {
   document.querySelector('.table').addEventListener('click', (e) => {
     e.preventDefault();
-    deleteTransactionCallback(e.target);
+    const transaction = e.target;
+    modal.setContent(confirmModal(false, null, null, transaction));
+    modal.show();
   });
 }
 
@@ -63,10 +60,7 @@ function historyHtml() {
   const tableHeading = createElement('h3', 'heading heading-table', null, ['i18n', 'transactionHistory']);
   const table = createElement('div', 'table-mask');
 
-  const tableBtnsWrapper = createElement(
-    'div',
-    'btns-table-container',
-  );
+  const tableBtnsWrapper = createElement('div', 'btns-table-container');
 
   main.append(mainContainer);
   row.append(tableHeading, tableBtnsWrapper, table);
@@ -81,7 +75,7 @@ function tableCreate() {
 
   if (filtredHistory.length === 0) {
     table.classList.add('table-empty');
-    table.innerText = 'You don\'t have any transactions yet.';
+    table.innerText = "You don't have any transactions yet.";
     table.setAttribute('data-i18n', 'no-trx-msg');
   } else {
     table.innerHTML = `<thead>
@@ -105,9 +99,7 @@ function tableCreate() {
       const cell5 = row.insertCell();
       const cell6 = row.insertCell();
 
-      const {
-        type, date, category, amount, account, description, id,
-      } = transaction;
+      const { type, date, category, amount, account, description, id } = transaction;
 
       cell1.className = 'cell__date';
       cell2.className = type === 'expenses' ? 'cell__category-expense' : 'cell__category-income';
