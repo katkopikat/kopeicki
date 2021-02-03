@@ -45,7 +45,7 @@ document.getElementById('logout').addEventListener('click', (e) => {
   e.preventDefault();
   app.logout();
   navigateTo('/login');
-  playSound('error', true);
+  playSound('error');
 });
 
 showInfo();

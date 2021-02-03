@@ -17,10 +17,8 @@ export function toggleSound() {
   });
 }
 
-export function playSound(str, auth = false) {
+export function playSound(str) {
   const sound = new Audio();
   sound.src = `sounds/${str}.mp3`;
   if (getSound() === 'on') sound.play();
-  if (auth === true) sound.play();
-  return false;
 }

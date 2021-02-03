@@ -256,19 +256,19 @@ export default function renderAuthorizationPage() {
         const result = await login();
 
         if (result !== true) {
-          playSound('error-login', true);
+          playSound('error-login');
         }
         if (app.user) {
           pubsub.publish('navigateTo', '/');
-          playSound('income', true);
+          playSound('income');
         }
       } else {
         const result = await register();
         if (result !== true) {
-          playSound('error-login', true);
+          playSound('error-login');
         }
         if (app.user) {
-          playSound('income', true);
+          playSound('income');
           pubsub.publish('navigateTo', '/');
 
           const startScreenEl = createElement(
