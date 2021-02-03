@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import translations from '../../data/translations';
 
 export default function translatePage() {
@@ -5,13 +6,12 @@ export default function translatePage() {
   const elementsToTranslate = document.querySelectorAll('[data-i18n]');
 
   elementsToTranslate.forEach((el) => {
-    const tempEl = el;
     if (el.classList.contains('day-of-week')) {
-      tempEl.textContent = `${translations[language][el.dataset.i18n.toLowerCase()]},`;
+      el.textContent = `${translations[language][el.dataset.i18n.toLowerCase()]},`;
     } else if (el.classList.contains('date')) {
-      tempEl.textContent = translations[language].months[+el.dataset.i18n];
+      el.textContent = translations[language].months[+el.dataset.i18n];
     } else {
-      tempEl.textContent = translations[language][el.dataset.i18n] || el.textContent;
+      el.textContent = translations[language][el.dataset.i18n] || el.textContent;
     }
   });
 }

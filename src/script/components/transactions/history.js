@@ -87,15 +87,6 @@ export default async function renderHistory() {
         historyDiv.prepend(container);
       });
     } else if (transactions.length === 0) {
-      const today = new Date();
-
-      const dateDiv = createElement(
-        'div',
-        '',
-        `<span class="day-of-week" data-i18n="today"></span>
-        <span class="date"> ${today.getDate()} </span>
-        <span class="date" data-i18n="${today.getMonth()}"></span>`,
-      );
       const noTransactionMsg = createElement(
         'div',
         'no-transactions-msg',
@@ -103,7 +94,7 @@ export default async function renderHistory() {
         ['i18n', 'no-trx-msg'],
       );
 
-      historyDiv.append(dateDiv, noTransactionMsg);
+      historyDiv.append(noTransactionMsg);
     }
 
     translatePage();

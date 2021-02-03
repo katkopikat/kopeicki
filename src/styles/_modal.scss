@@ -238,6 +238,10 @@
     }
   }
 
+  // .currency-list  >  li:nth-child(6){
+  //   border-bottom: 3px solid #444444;
+  //  }
+
   &__category-name {
     text-transform: lowercase;
     font-size: 1.2rem;
@@ -266,7 +270,6 @@
     }
 
     &__name {
-      width: 95%;
       text-align: center;
       font-size: 2rem;
       color: var(--light);

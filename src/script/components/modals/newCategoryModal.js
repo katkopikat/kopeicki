@@ -141,6 +141,7 @@ export default function newCategoryModal(type) {
       if (type === 'accounts') {
         newCategoryItem.amount = Number(wrap.querySelector('.modal-body__amount').value);
 
+        console.log(newCategoryItem);
         await app.addUserAccount(newCategoryItem);
         pubsub.publish('navigateTo', '/');
       } else if (type === 'expenses') {

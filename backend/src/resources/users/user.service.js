@@ -24,7 +24,7 @@ export async function login(email, password) {
   return [500, { message: 'server error' }];
 }
 
-export async function register(email, password, currency) {
+export async function register(email, password) {
   const searchUser = await User.findOne({ email });
   if (searchUser) {
     return [403, { message: 'invalid email-password' }];
@@ -36,16 +36,7 @@ export async function register(email, password, currency) {
     email,
     password: await hashPassword(password),
     ...template.toObject(),
-    currency,
   });
+  //console.log(user);
   return [201, { user }];
-}
-
-export async function updateAccount(transaction) {
-  const amount = transaction.type === 'expenses' ? -transaction.amount : transaction.amount;
-  return User.findByIdAndUpdate(
-    transaction.user,
-    { $inc: { 'accounts.$[acc].amount': amount } },
-    { arrayFilters: [{ 'acc.name': transaction.account }] },
-  ).exec();
 }

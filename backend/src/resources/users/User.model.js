@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 const UserProfile = new mongoose.Schema({
   accounts: [{
     name: String,
-    amount: { type: Number, default: 0 },
-    currency: { type: String, default: 'rub' },
+    amount: Number,
+    currency: String,
     icon: String,
   }],
   expenses: [{

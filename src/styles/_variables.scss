@@ -6,7 +6,7 @@
   --middle: #161821;
   --light: #ececec;
   --gray: #5c5c5c;
-  --category-sum: #8c92ab;
+  --category-sum: #8C92AB;
   --catergory-bg: #1d202b;
   --filter: invert(0);
   --shadow: 0 4px 7px -1px rgba(0, 0, 0, 0.4);
@@ -40,10 +40,4 @@
 @mixin flex-col() {
   display: flex;
   flex-direction: column;
-}
-
-@mixin flex-center() {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

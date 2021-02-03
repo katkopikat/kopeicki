@@ -183,7 +183,8 @@ export default function transactionModal(options) {
           }
         })
         .then(() => {
-          app.saveTransaction(tx).then(() => {
+          app.saveTransaction(tx).then((result) => {
+            console.log(result);
             pubsub.publish('renderTransactionsPage');
           });
         });

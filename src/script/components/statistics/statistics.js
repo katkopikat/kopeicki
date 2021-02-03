@@ -17,6 +17,7 @@ async function getDataHistory() {
 
 export default function renderStatisticsPage() {
   Promise.all([getDataHistory(), app.api.getTransactionsStats()]).then(([, stat]) => {
+  // getDataHistory().then(() => {
     clearPage();
     preloader();
     renderTextStatistics(stat);

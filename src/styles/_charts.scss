@@ -101,14 +101,13 @@ th {
   }
 
   .toggle {
+    transform: scale(0.9);
     margin: 0;
     margin-top: 1rem;
-    transform: scale(0.9);
 
     span {
-      padding: 0 0.8rem;
-      color: var(--light);
       opacity: 0.5;
+      padding: 0 0.8rem;
     }
   }
 }
@@ -183,6 +182,10 @@ th {
   input[type='radio']:checked ~ .check {
     border: 3px solid #ecaf12;
   }
+
+  //   input[type=radio]:checked ~ .check::before{
+  //     background: #ecaf12;
+  //   }
 
   input[type='radio']:checked ~ label {
     color: var(--gray);
@@ -284,10 +287,9 @@ th {
   .wrapper-doughnut,
   .bar-wrapper {
     padding: 0.6rem;
-    margin: 0.6rem 0.5rem;
 
     .toggle {
-      transform: scale(0.7);
+      transform: scale(0.4);
       margin: 0;
       margin-top: -0.4rem;
       align-items: center;
