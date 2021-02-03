@@ -24,7 +24,8 @@ if (process.env.NODE_ENV !== 'production') {
 const requestLogger = morgan(
   (tokens, req) => {
     const query = Object.keys(req.query).length ? `PARAMS: ${JSON.stringify(req.query)}` : '';
-    const body = Object.keys(req.body).length ? `BODY: ${JSON.stringify(req.body)}` : '';
+    const hidePass = (k, v) => (k === 'password' ? '*****' : v);
+    const body = Object.keys(req.body).length ? `BODY: ${JSON.stringify(req.body, hidePass)}` : '';
     return `${req.method}: ${req.originalUrl} ${query} ${body}`;
   },
   {
