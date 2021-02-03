@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { requestLogger } from './logger.js';
+import { logger, requestLogger } from './logger.js';
 import transactionRouter from './resources/transactions/transaction.router.js';
 import userRouter from './resources/users/user.router.js';
 import checkAuthentication from './resources/utils/tokenCheck.js';
@@ -23,5 +23,19 @@ app.use('/', (req, res, next) => {
 app.use('/', checkAuthentication);
 app.use('/transactions', transactionRouter);
 app.use('/users', userRouter);
+
+app.use((error, req, res, next) => {
+  logger.error(`${error.message}`);
+  res.status(500).send('Internal server error');
+  next();
+});
+
+process.on('uncaughtException', (error) => {
+  logger.error(`uncaughtException: ${error.message}`);
+});
+
+process.on('unhandledRejection', (reason) => {
+  logger.error(`unhandledRejection: ${reason.message}`);
+});
 
 export default app;
