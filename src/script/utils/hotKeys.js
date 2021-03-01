@@ -20,18 +20,30 @@ export default function hotKeys() {
 
     if (!window.location.href.includes('login')) {
       if (pressed.size === 2 && e.altKey) {
-        if (pressed.has('KeyT')) pubsub.publish('navigateTo', '/');
-        if (pressed.has('KeyS')) pubsub.publish('navigateTo', '/statistics');
-        if (pressed.has('KeyH')) pubsub.publish('navigateTo', '/history');
+        if (pressed.has('KeyT')) {
+          e.preventDefault();
+          pubsub.publish('navigateTo', '/');
+        }
+        if (pressed.has('KeyS')) {
+          e.preventDefault();
+          pubsub.publish('navigateTo', '/statistics');
+        }
+        if (pressed.has('KeyH')) {
+          e.preventDefault();
+          pubsub.publish('navigateTo', '/history');
+        }
         if (pressed.has('KeyE')) {
+          e.preventDefault();
           modal.setContent(transactionModal({ type: 'expenses' }));
           modal.show();
         }
         if (pressed.has('KeyI')) {
+          e.preventDefault();
           modal.setContent(transactionModal({ type: 'income' }));
           modal.show();
         }
         if (pressed.has('KeyA')) {
+          e.preventDefault();
           modal.setContent(accountModal({ type: 'accounts' }));
           modal.show();
         }

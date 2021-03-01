@@ -5,10 +5,11 @@ import { getTheme, getLanguage } from '../../utils/localStorage';
 import { moveToggle } from '../../utils/DOM';
 import translatePage from '../settings/language';
 import translations from '../../data/translations';
+import app from '../../app';
 
 const today = new Date();
 let typeTransaction = 'expenses';
-let period = 'mounth';
+let period = 'month';
 let filtredData = null;
 let doughnut = null;
 let dataHistory;
@@ -136,7 +137,11 @@ function calculateTotalSum() {
 
 function renderHeading() {
   const doughnutHeading = document.querySelector('.heading-doughnut');
-  doughnutHeading.innerText = `Total ${typeTransaction} for the ${period} ${calculateTotalSum()} rub.`;
+  doughnutHeading.innerHTML = `<span data-i18n="Total">Total</span>
+  <span data-i18n="${typeTransaction}S"> ${typeTransaction}</span> 
+  <span data-i18n="forThe">for the</span> 
+  <span data-i18n="${period}">${period}</span>
+  <span>${calculateTotalSum()} ${app.user.currency.toLowerCase()}.</span>`;
 }
 
 function translateCategoriesNames() {
@@ -196,7 +201,7 @@ function generateChart() {
       title: {
         position: 'top',
         fontSize: 12,
-        text: `Total ${typeTransaction} for the ${period} ${calculateTotalSum()} rub.`,
+        text: `Total ${typeTransaction} for the ${period} ${calculateTotalSum()} ${app.user.currency.toLowerCase()}.`,
       },
       legend: setLegendDisplay(),
     },
@@ -215,6 +220,7 @@ function rerenderDoughnutByToggles() {
   filterTransactions();
   rerenderDoughnut();
   renderHeading();
+  translatePage();
 }
 
 /* Buttons */

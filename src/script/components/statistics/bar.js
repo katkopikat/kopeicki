@@ -43,16 +43,13 @@ function renderBarHTML() {
 }
 /* Set bar display settings */
 function renderHeading() {
-  const lang = getLanguage();
   const barHeading = document.querySelector('.heading-bar');
   const type = typeTransaction;
-  if (lang === 'ru') {
-    barHeading.innerHTML = `Суммарные <span data-i18n="${type}">${type}</span> за ${choosenYear} год.`;
-  } else if (lang === 'by') {
-    barHeading.innerHTML = `Сумарны <span data-i18n="${type}">${type}</span> за ${choosenYear} год.`;
-  } else {
-    barHeading.innerHTML = `Total <span data-i18n="${type}">${type}</span> for the ${choosenYear} year.`;
-  }
+  barHeading.innerHTML = `<span data-i18n="Total">Total</span>
+  <span data-i18n="${type}S">${type}</span>
+  <span data-i18n="forThe">for the</span>
+  <span>${choosenYear}</span>
+  <span data-i18n="year">year</span>`;
 }
 
 function setBarColor() {
@@ -130,6 +127,8 @@ function buttonsTypeListeners() {
     setBarColor();
     generateBarInstance();
     transition();
+    renderHeading();
+    translatePage();
   });
 }
 
@@ -142,6 +141,7 @@ function buttonsYearsListeners() {
         filterTransaction();
         generateBarInstance();
         renderHeading();
+        translatePage();
       }
     });
   });

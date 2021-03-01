@@ -100,12 +100,12 @@ const register = async () => {
 };
 
 export default function renderAuthorizationPage() {
-  let lang = getLanguage();
+  let currentLang = getLanguage();
 
-  const leftSideSignIn = `<h2 data-i18n="hello">${transl[lang].hello}</h2>
+  const leftSideSignIn = (lang) => `<h2 data-i18n="hello">${transl[lang].hello}</h2>
   <p data-i18n="enter-data-hello">${transl[lang]['enter-data-hello']}</p>`;
 
-  const rightSideSignIn = `
+  const rightSideSignIn = (lang) => `
   <div class="img-wrapper gif-wallet">
   <img src="gifs/wallet2.gif" alt="" />
   </div>
@@ -128,10 +128,10 @@ export default function renderAuthorizationPage() {
     <button class="btn" id="submit" data-auth="sign in" data-i18n="sign in">${transl[lang]['sign in']}</button>
   </div>`;
 
-  const leftSideSignUp = `<h2 data-i18n="welcome">${transl[lang].welcome}</h2>
+  const leftSideSignUp = (lang) => `<h2 data-i18n="welcome">${transl[lang].welcome}</h2>
   <p data-i18n="enter-data-welcome">${transl[lang]['enter-data-welcome']}</p>`;
 
-  const rightSideSignUp = `
+  const rightSideSignUp = (lang) => `
   <div class="img-wrapper gif-coin">
     <img src="gifs/coin-rotation.gif" alt="">
   </div>
@@ -172,16 +172,18 @@ export default function renderAuthorizationPage() {
 
   const loginWrapper = createElement('div', 'login__overlay');
 
+  const changeButtonText = (lang) => `<span class="btn-text" data-i18n="sign up">${transl[lang]['sign up']}</span>`;
+
   loginWrapper.insertAdjacentHTML(
     'afterbegin',
     `<div class="login__content">
     <div class="left side">
-    <div class="left__content">${leftSideSignIn}</div>
+    <div class="left__content">${leftSideSignIn(currentLang)}</div>
     <button class="btn btn-sign-up" data-action="go-right" id="move">
-      <span class="btn-text" data-i18n="sign up">${transl[lang]['sign up']}</span>
+      ${changeButtonText(currentLang)}
     </button>
     </div>
-    <div class="right side">${rightSideSignIn}</div>
+    <div class="right side">${rightSideSignIn(currentLang)}</div>
     </div>`,
   );
 
@@ -193,7 +195,7 @@ export default function renderAuthorizationPage() {
     const submitBtn = e.target.closest('#move');
 
     if (submitBtn) {
-      lang = getLanguage();
+      currentLang = getLanguage();
 
       const { action } = submitBtn.dataset;
       const submitBtnText = submitBtn.children[0];
@@ -211,15 +213,15 @@ export default function renderAuthorizationPage() {
         submitBtn.style.animation = 'stretchBtn 1s ease';
 
         setTimeout(() => {
-          leftSideContent.innerHTML = leftSideSignUp;
+          leftSideContent.innerHTML = leftSideSignUp(currentLang);
           leftSideContent.style.animation = 'fadeInFromRight 0.5s linear forwards';
 
-          submitBtnText.innerText = `${transl[lang]['sign in']}`;
+          submitBtnText.innerText = `${transl[currentLang]['sign in']}`;
           submitBtnText.style.animation = 'fadeInFromRight 0.5s linear forwards';
           submitBtnText.dataset.i18n = 'sign in';
           submitBtn.dataset.action = 'go-left';
 
-          rightSide.innerHTML = rightSideSignUp;
+          rightSide.innerHTML = rightSideSignUp(currentLang);
           createSelect(document.getElementById('currency-list'), {
             class: 'currency-list',
             placeholder: 'RUB',
@@ -237,15 +239,15 @@ export default function renderAuthorizationPage() {
         submitBtn.style.animation = 'stretchBtn 1s ease';
 
         setTimeout(() => {
-          leftSideContent.innerHTML = leftSideSignIn;
+          leftSideContent.innerHTML = leftSideSignIn(currentLang);
           leftSideContent.style.animation = 'fadeInFromLeft 0.5s linear forwards';
 
-          submitBtnText.innerText = `${transl[lang]['sign up']}`;
+          submitBtnText.innerText = `${transl[currentLang]['sign up']}`;
           submitBtnText.style.animation = 'fadeInFromLeft 0.5s linear forwards';
           submitBtnText.dataset.i18n = 'sign up';
           submitBtn.dataset.action = 'go-right';
 
-          rightSide.innerHTML = rightSideSignIn;
+          rightSide.innerHTML = rightSideSignIn(currentLang);
         }, 500);
       }
     }
