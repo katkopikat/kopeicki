@@ -1,0 +1,104 @@
+@import './variables';
+@import '../../node_modules/bootstrap/scss/bootstrap';
+@import './modal';
+@import './transactions';
+@import './dragnDrop';
+@import './charts';
+@import './navbar';
+@import './settings';
+@import './login';
+@import './history';
+@import './table';
+@import './info';
+
+body {
+  background: var(--dark);
+  overflow-x: hidden;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  @include flex-center;
+  height: 4rem;
+  background: #14161e;
+
+  .navbar-brand {
+    padding: 0;
+
+    .logo {
+      height: 2.5rem;
+    }
+  }
+}
+
+.wrapper {
+  display: flex;
+  margin-top: 4rem;
+}
+
+main {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  transition: 0.5s ease-in-out;
+}
+
+.popover-body {
+  padding: 0.5rem;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateY(8px);
+  }
+
+  100% {
+    transform: translateY(-8px);
+  }
+}
+
+#preloader,
+.preloader {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1020;
+  @include flex-center;
+  width: 100vw;
+  height: 100vh;
+  overflow: visible;
+}
+
+#preloader {
+  background: var(--preloader-bg);
+}
+
+.preloader {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.coin-preloader {
+  height: 80px;
+  width: 80px;
+  background: url('../assets/animation/coin.png') no-repeat center center;
+  background-size: 100% 100%;
+  animation: shake 0.5s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 0.25s, opacity 0.4s linear;
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.4s linear;
+}
